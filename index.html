@@ -167,7 +167,7 @@
         <h2>Let's talk data solutions.</h2>
         <p>Share your challenge and get a response within 1 business day.</p>
       </div>
-      <form class="contact__form" action="#" method="POST">
+      <form class="contact__form" action="https://formspree.io/f/mpwrrgvl" method="POST">
         <label for="name">Name</label>
         <input type="text" id="name" name="name" required>
         <label for="email">Email</label>
@@ -190,5 +190,35 @@
       </form>
     </div>
   </footer>
+  <script>
+    document.querySelector('.contact__form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const form = this;
+      const formData = new FormData(form);
+      
+      fetch(form.action, {
+        method: 'POST',
+        body: formData,
+        headers: {
+          'Accept': 'application/json'
+        }
+      })
+      .then(response => {
+        if (response.ok) {
+          form.reset();
+          document.querySelector('.form-success').style.display = 'block';
+          setTimeout(() => {
+            document.querySelector('.form-success').style.display = 'none';
+          }, 5000);
+        } else {
+          throw new Error('Form submission failed');
+        }
+      })
+      .catch(error => {
+        console.error('Error:', error);
+        alert('There was a problem submitting your form. Please try again.');
+      });
+    });
+  </script>
 </body>
 </html> 
