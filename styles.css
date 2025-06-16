@@ -340,13 +340,13 @@ body {
   background: linear-gradient(90deg, var(--teal), var(--accent));
   transform: translateY(-2px) scale(1.04);
 }
-.form-success {
+/* .form-success {
   color: var(--accent);
   font-weight: 600;
   margin-top: 1rem;
   text-align: center;
   animation: fadeIn 1s cubic-bezier(.4,0,.2,1);
-}
+} */
 
 /* Footer */
 .footer {
