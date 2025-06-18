@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Blog | Practical Data Work</title>
+  <link rel="stylesheet" href="../styles.css">
+  <style>
+    .blog-post {
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid #e5e7eb;
+    }
+    .blog-post:last-child {
+      border-bottom: none;
+    }
+    .blog-post__date {
+      color: #6b7280;
+      font-size: 0.875rem;
+    }
+    .blog-post__title {
+      margin: 0.5rem 0;
+      font-size: 1.5rem;
+    }
+    .blog-post__excerpt {
+      color: #4b5563;
+      margin-bottom: 1rem;
+    }
+    .blog-post__link {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    .blog-post__link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <div class="container header__container">
+      <div class="header__logo">Practical Data Work</div>
+      <nav class="header__nav">
+        <a href="../index.html#services">Services</a>
+        <a href="../index.html#pricing">Pricing</a>
+        <a href="../index.html#about">About</a>
+        <a href="index.html">Blog</a>
+        <a href="../index.html#contact">Contact</a>
+      </nav>
+      <a href="../index.html#contact" class="header__cta">Schedule a Free Call</a>
+    </div>
+  </header>
+  <main class="container" style="max-width: 700px; margin: 40px auto;">
+    <h1>Blog</h1>
+    <p>Insights on data engineering, analytics, and AI/ML best practices.</p>
+    
+    <div class="blog-posts">
+      <article class="blog-post">
+        <div class="blog-post__date">June 2024</div>
+        <h2 class="blog-post__title">
+          <a href="modern-data-stack.html" class="blog-post__link">Building a Modern Data Stack: Key Components and Best Practices</a>
+        </h2>
+        <p class="blog-post__excerpt">
+          Learn about the essential components of a modern data stack and how to implement them effectively for your organization.
+        </p>
+      </article>
+
+      <article class="blog-post">
+        <div class="blog-post__date">May 2024</div>
+        <h2 class="blog-post__title">
+          <a href="mlops-basics.html" class="blog-post__link">MLOps Fundamentals: From Development to Production</a>
+        </h2>
+        <p class="blog-post__excerpt">
+          A comprehensive guide to implementing MLOps practices that ensure reliable and scalable machine learning operations.
+        </p>
+      </article>
+
+      <article class="blog-post">
+        <div class="blog-post__date">April 2024</div>
+        <h2 class="blog-post__title">
+          <a href="data-quality.html" class="blog-post__link">Ensuring Data Quality: Monitoring and Validation Strategies</a>
+        </h2>
+        <p class="blog-post__excerpt">
+          Discover effective strategies for maintaining high data quality through automated monitoring and validation.
+        </p>
+      </article>
+    </div>
+  </main>
+  <footer class="footer">
+    <div class="container footer__container">
+      <div class="footer__copy">&copy; 2024 Practical Data Work | <a href="../privacy">Privacy Policy</a></div>
+      <form class="footer__newsletter" action="#" method="POST">
+        <input type="email" placeholder="Subscribe to newsletter" aria-label="Email">
+        <button type="submit">→</button>
+      </form>
+    </div>
+  </footer>
+</body>
+</html> 
