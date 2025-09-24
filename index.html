@@ -5,40 +5,26 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
   <!-- Primary Meta Tags -->
-  <title>Practical Data Work - Data Engineering, Analytics & MLOps Insights</title>
-  <meta name="title" content="Practical Data Work - Data Engineering, Analytics & MLOps Insights">
-  <meta name="description" content="Practical insights, tutorials, and best practices for data engineering, analytics, and MLOps. Real-world solutions for modern data teams.">
-  <meta name="keywords" content="data engineering, data analytics, MLOps, data science, data governance, data quality, modern data stack, cloud data platforms">
+  <title>Practical Data Work - Data Engineering, Analytics & MLOps Solutions</title>
+  <meta name="title" content="Practical Data Work - Data Engineering, Analytics & MLOps Solutions">
+  <meta name="description" content="Transform your data challenges into competitive advantages. Expert data engineering, analytics, and MLOps consulting for modern businesses.">
+  <meta name="keywords" content="data engineering, data analytics, MLOps, data science consulting, data governance, modern data stack, cloud data platforms">
   <meta name="author" content="Practical Data Work">
   <meta name="robots" content="index, follow">
-  <meta name="language" content="English">
-  <meta name="revisit-after" content="7 days">
   
   <!-- Open Graph / Facebook -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://practicaldatawork.com/">
-  <meta property="og:title" content="Practical Data Work - Data Engineering, Analytics & MLOps Insights">
-  <meta property="og:description" content="Practical insights, tutorials, and best practices for data engineering, analytics, and MLOps.">
+  <meta property="og:title" content="Practical Data Work - Data Engineering, Analytics & MLOps Solutions">
+  <meta property="og:description" content="Transform your data challenges into competitive advantages with expert consulting.">
   <meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
-  <meta property="og:site_name" content="Practical Data Work">
-  <meta property="og:locale" content="en_US">
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image">
   <meta property="twitter:url" content="https://practicaldatawork.com/">
-  <meta property="twitter:title" content="Practical Data Work - Data Engineering, Analytics & MLOps Insights">
-  <meta property="twitter:description" content="Practical insights, tutorials, and best practices for data engineering, analytics, and MLOps.">
+  <meta property="twitter:title" content="Practical Data Work - Data Engineering, Analytics & MLOps Solutions">
+  <meta property="twitter:description" content="Transform your data challenges into competitive advantages with expert consulting.">
   <meta property="twitter:image" content="https://practicaldatawork.com/images/twitter-image.jpg">
-  
-  <!-- Additional SEO Meta Tags -->
-  <meta name="theme-color" content="#2563eb">
-  <meta name="msapplication-TileColor" content="#2563eb">
-  <meta name="apple-mobile-web-app-capable" content="yes">
-  <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="Practical Data Work">
-  
-  <!-- Canonical URL -->
-  <link rel="canonical" href="https://practicaldatawork.com/">
   
   <!-- Favicon -->
   <link rel="icon" type="image/x-icon" href="/favicon.ico">
@@ -47,183 +33,435 @@
   <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
   <link rel="manifest" href="/site.webmanifest">
   
-  <!-- Preconnect to external domains -->
+  <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
   
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
     "@context": "https://schema.org",
-    "@type": "WebSite",
+    "@type": "ProfessionalService",
     "name": "Practical Data Work",
     "url": "https://practicaldatawork.com",
-    "description": "Practical insights, tutorials, and best practices for data engineering, analytics, and MLOps",
-    "publisher": {
-      "@type": "Organization",
-      "name": "Practical Data Work"
-    },
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://practicaldatawork.com/blog?q={search_term_string}",
-      "query-input": "required name=search_term_string"
+    "description": "Data engineering, analytics, and MLOps consulting services",
+    "serviceType": "Data Consulting",
+    "areaServed": "Worldwide",
+    "hasOfferCatalog": {
+      "@type": "OfferCatalog",
+      "name": "Data Services",
+      "itemListElement": [
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Data Engineering",
+            "description": "Build robust, scalable data pipelines and infrastructure"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "Data Analytics",
+            "description": "Turn data into actionable business insights"
+          }
+        },
+        {
+          "@type": "Offer",
+          "itemOffered": {
+            "@type": "Service",
+            "name": "MLOps",
+            "description": "Deploy and manage machine learning systems in production"
+          }
+        }
+      ]
     }
   }
   </script>
 </head>
 <body>
   <!-- Header -->
-  <header class="navbar">
-    <div class="nav-container">
-      <div class="nav-logo">
-        <h2>Practical Data Work</h2>
-      </div>
-      <nav class="nav-menu">
-        <a href="#about">About</a>
-        <a href="#topics">Topics</a>
-        <a href="/blog">Blog</a>
-        <a href="#contact">Contact</a>
-      </nav>
-      <div class="hamburger">
-        <span></span>
-        <span></span>
-        <span></span>
+  <header class="header">
+    <div class="container">
+      <div class="header__content">
+        <div class="header__logo">
+          <a href="/">
+            <span class="logo__text">Practical Data Work</span>
+            <span class="logo__subtitle">Data Engineering & Analytics</span>
+          </a>
+        </div>
+        <nav class="header__nav">
+          <a href="#services">Services</a>
+          <a href="#pricing">Pricing</a>
+          <a href="/blog">Blog</a>
+          <a href="#contact">Contact</a>
+          <a href="#contact" class="header__cta">Get Started</a>
+        </nav>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
   <section class="hero">
-    <div class="hero-container">
-      <div class="hero-content">
-        <h1>Practical Data Work</h1>
-        <h2>Real-world insights for data engineering, analytics, and MLOps</h2>
-        <p class="hero-subtitle">Learn from practical experience. Get actionable insights on modern data stack, cloud platforms, data governance, and MLOps best practices.</p>
-        <div class="hero-buttons">
-          <a href="/blog" class="btn-primary">Read Latest Posts</a>
-          <a href="#topics" class="btn-secondary">Explore Topics</a>
-        </div>
-      </div>
-      <div class="hero-image">
-        <div class="program-card" style="max-width: 300px; margin: 0 auto;">
-          <a href="/blog">
-            <h3>Data Engineering & Analytics</h3>
-          </a>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- About Section -->
-  <section id="about" class="about">
     <div class="container">
-      <div class="about-content">
-        <div class="about-text">
-          <h2>From Theory to Practice</h2>
-          <p>Practical Data Work focuses on real-world solutions for modern data teams. We share insights gained from building and scaling data infrastructure, implementing analytics solutions, and deploying ML systems in production.</p>
-          <p>Our content covers the full spectrum of data work: from data engineering fundamentals to advanced MLOps practices, always with a focus on practical, actionable advice.</p>
-          <div class="about-stats">
+      <div class="hero__content">
+        <div class="hero__text">
+          <h1 class="hero__title">
+            Transform Your Data Into
+            <span class="hero__highlight">Competitive Advantage</span>
+          </h1>
+          <p class="hero__description">
+            Expert data engineering, analytics, and MLOps consulting to help you build robust, scalable data infrastructure that drives real business value.
+          </p>
+          <div class="hero__actions">
+            <a href="#contact" class="btn btn--primary">Start Your Project</a>
+            <a href="#services" class="btn btn--secondary">View Services</a>
+          </div>
+          <div class="hero__stats">
             <div class="stat">
-              <h3>8+</h3>
-              <p>In-Depth Articles</p>
+              <span class="stat__number">50+</span>
+              <span class="stat__label">Projects Delivered</span>
             </div>
             <div class="stat">
-              <h3>4</h3>
-              <p>Core Topics</p>
+              <span class="stat__number">99%</span>
+              <span class="stat__label">Client Satisfaction</span>
             </div>
             <div class="stat">
-              <h3>100%</h3>
-              <p>Practical Focus</p>
+              <span class="stat__number">24/7</span>
+              <span class="stat__label">Support Available</span>
             </div>
           </div>
         </div>
-        <div class="about-image">
-          <div class="image-placeholder">
-            <p>Modern Data Stack</p>
+        <div class="hero__visual">
+          <div class="hero__card">
+            <div class="card__header">
+              <div class="card__icon">📊</div>
+              <h3>Data Engineering & Analytics</h3>
+            </div>
+            <div class="card__content">
+              <p>Build modern data pipelines that scale with your business</p>
+              <a href="/blog" class="card__link">Explore Insights →</a>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Topics Section -->
-  <section id="topics" class="programs">
+  <!-- Services Section -->
+  <section id="services" class="services">
     <div class="container">
-      <h2>Core Topics</h2>
-      <div class="programs-grid">
-        <div class="program-card">
-          <h3>Data Engineering</h3>
-          <p>Building robust, scalable data pipelines and infrastructure. From ETL/ELT patterns to modern data stack architecture.</p>
-          <ul>
-            <li>Modern data stack components</li>
-            <li>Data pipeline design patterns</li>
-            <li>Cloud data platforms</li>
+      <div class="section__header">
+        <h2 class="section__title">Our Services</h2>
+        <p class="section__subtitle">Comprehensive data solutions tailored to your business needs</p>
+      </div>
+      <div class="services__grid">
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+              <path d="M2 17l10 5 10-5"/>
+              <path d="M2 12l10 5 10-5"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Data Engineering</h3>
+          <p class="service-card__description">Build robust, scalable data pipelines and infrastructure that grows with your business.</p>
+          <ul class="service-card__features">
+            <li>Modern data stack implementation</li>
+            <li>ETL/ELT pipeline design</li>
+            <li>Cloud data platform setup</li>
             <li>Data quality & governance</li>
+            <li>Real-time data processing</li>
           </ul>
+          <div class="service-card__price">Starting at $5,000</div>
         </div>
-        <div class="program-card">
-          <h3>Data Analytics</h3>
-          <p>Turning data into actionable insights. Analytics engineering, visualization, and business intelligence best practices.</p>
-          <ul>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M3 3v18h18"/>
+              <path d="M18.7 8l-5.1 5.2-2.8-2.7L7 14.3"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Data Analytics</h3>
+          <p class="service-card__description">Turn your data into actionable insights with advanced analytics and visualization.</p>
+          <ul class="service-card__features">
             <li>Analytics engineering workflows</li>
-            <li>Data visualization techniques</li>
-            <li>Business intelligence strategies</li>
+            <li>Business intelligence dashboards</li>
+            <li>Data visualization & reporting</li>
             <li>Performance optimization</li>
+            <li>Self-service analytics setup</li>
           </ul>
+          <div class="service-card__price">Starting at $3,500</div>
         </div>
-        <div class="program-card">
-          <h3>MLOps</h3>
-          <p>Deploying and managing machine learning systems in production. From model development to monitoring and maintenance.</p>
-          <ul>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/>
+              <polyline points="3.27,6.96 12,12.01 20.73,6.96"/>
+              <line x1="12" y1="22.08" x2="12" y2="12"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">MLOps</h3>
+          <p class="service-card__description">Deploy and manage machine learning systems in production with confidence.</p>
+          <ul class="service-card__features">
             <li>ML pipeline automation</li>
             <li>Model deployment strategies</li>
             <li>MLOps tooling & platforms</li>
             <li>Model monitoring & governance</li>
+            <li>A/B testing frameworks</li>
           </ul>
+          <div class="service-card__price">Starting at $7,500</div>
         </div>
-        <div class="program-card">
-          <h3>Data Governance</h3>
-          <p>Ensuring data quality, security, and compliance. Building frameworks for data management and stewardship.</p>
-          <ul>
+
+        <div class="service-card">
+          <div class="service-card__icon">
+            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M9 12l2 2 4-4"/>
+              <path d="M21 12c-1 0-3-1-3-3s2-3 3-3 3 1 3 3-2 3-3 3"/>
+              <path d="M3 12c1 0 3-1 3-3s-2-3-3-3-3 1-3 3 2 3 3 3"/>
+              <path d="M12 3c0 1-1 3-3 3s-3-2-3-3 1-3 3-3 3 2 3 3"/>
+              <path d="M12 21c0-1 1-3 3-3s3 2 3 3-1 3-3 3-3-2-3-3"/>
+            </svg>
+          </div>
+          <h3 class="service-card__title">Data Governance</h3>
+          <p class="service-card__description">Ensure data quality, security, and compliance across your organization.</p>
+          <ul class="service-card__features">
             <li>Data quality frameworks</li>
             <li>Privacy & security practices</li>
             <li>Compliance & regulations</li>
             <li>Data cataloging & lineage</li>
+            <li>Access control & permissions</li>
           </ul>
+          <div class="service-card__price">Starting at $4,000</div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Latest Posts Section -->
-  <section class="community">
+  <!-- Blog Topics Section -->
+  <section class="blog-topics">
     <div class="container">
-      <h2>Latest Insights</h2>
-      <p class="section-subtitle">Recent articles covering practical data work topics and real-world solutions.</p>
-      <div class="community-grid">
-        <div class="community-item">
-          <h3><a href="/blog/modern-data-stack">Modern Data Stack 2024</a></h3>
-          <p>An overview of the current state of the modern data stack, including key tools, trends, and architectural patterns.</p>
+      <div class="section__header">
+        <h2 class="section__title">Latest Insights</h2>
+        <p class="section__subtitle">Stay ahead with practical data engineering and analytics insights</p>
+      </div>
+      <div class="blog-topics__grid">
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Data Engineering</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/modern-data-stack">Modern Data Stack 2024</a>
+          </h3>
+          <p class="blog-card__excerpt">An overview of the current state of the modern data stack, including key tools, trends, and architectural patterns.</p>
+          <a href="/blog/modern-data-stack" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">MLOps</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/mlops-fundamentals">MLOps Fundamentals</a>
+          </h3>
+          <p class="blog-card__excerpt">Essential concepts and practices for deploying and managing machine learning systems in production environments.</p>
+          <a href="/blog/mlops-fundamentals" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Data Quality</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/data-quality">Data Quality Best Practices</a>
+          </h3>
+          <p class="blog-card__excerpt">Strategies and tools for ensuring data quality throughout your data pipeline and analytics workflows.</p>
+          <a href="/blog/data-quality" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Cloud Platforms</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/cloud-data-platforms">Cloud Data Platforms</a>
+          </h3>
+          <p class="blog-card__excerpt">Comparing and evaluating cloud-based data platforms for your organization's specific needs and requirements.</p>
+          <a href="/blog/cloud-data-platforms" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Data Engineering</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/data-engineering-2024">Data Engineering Trends 2024</a>
+          </h3>
+          <p class="blog-card__excerpt">Key trends and technologies shaping the future of data engineering in 2024 and beyond.</p>
+          <a href="/blog/data-engineering-2024" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Analytics</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/ai-data-analytics">AI in Data Analytics</a>
+          </h3>
+          <p class="blog-card__excerpt">How artificial intelligence is transforming data analytics and what it means for your business.</p>
+          <a href="/blog/ai-data-analytics" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Governance</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/data-governance">Data Governance Framework</a>
+          </h3>
+          <p class="blog-card__excerpt">Building a comprehensive data governance framework to ensure data quality, security, and compliance.</p>
+          <a href="/blog/data-governance" class="blog-card__link">Read More →</a>
+        </article>
+
+        <article class="blog-card">
+          <div class="blog-card__meta">
+            <span class="blog-card__category">Architecture</span>
+            <time class="blog-card__date">2024</time>
+          </div>
+          <h3 class="blog-card__title">
+            <a href="/blog/data-architecture">Data Architecture Patterns</a>
+          </h3>
+          <p class="blog-card__excerpt">Common data architecture patterns and when to use them for different business scenarios.</p>
+          <a href="/blog/data-architecture" class="blog-card__link">Read More →</a>
+        </article>
+      </div>
+      <div class="blog-topics__cta">
+        <a href="/blog" class="btn btn--outline">View All Articles</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="pricing">
+    <div class="container">
+      <div class="section__header">
+        <h2 class="section__title">Transparent Pricing</h2>
+        <p class="section__subtitle">Choose the plan that fits your data needs and budget</p>
+      </div>
+      <div class="pricing__grid">
+        <div class="pricing-card">
+          <div class="pricing-card__header">
+            <h3 class="pricing-card__title">Starter</h3>
+            <p class="pricing-card__subtitle">Perfect for small teams</p>
+            <div class="pricing-card__price">
+              <span class="price__amount">$2,500</span>
+              <span class="price__period">/month</span>
+            </div>
+          </div>
+          <div class="pricing-card__features">
+            <ul>
+              <li>Basic data pipeline setup</li>
+              <li>Simple analytics dashboard</li>
+              <li>Email support</li>
+              <li>Monthly reporting</li>
+              <li>Up to 5 data sources</li>
+            </ul>
+          </div>
+          <div class="pricing-card__cta">
+            <a href="#contact" class="btn btn--outline">Get Started</a>
+          </div>
         </div>
-        <div class="community-item">
-          <h3><a href="/blog/mlops-fundamentals">MLOps Fundamentals</a></h3>
-          <p>Essential concepts and practices for deploying and managing machine learning systems in production environments.</p>
+
+        <div class="pricing-card pricing-card--featured">
+          <div class="pricing-card__badge">Most Popular</div>
+          <div class="pricing-card__header">
+            <h3 class="pricing-card__title">Professional</h3>
+            <p class="pricing-card__subtitle">Ideal for growing businesses</p>
+            <div class="pricing-card__price">
+              <span class="price__amount">$5,000</span>
+              <span class="price__period">/month</span>
+            </div>
+          </div>
+          <div class="pricing-card__features">
+            <ul>
+              <li>Advanced data engineering</li>
+              <li>Custom analytics solutions</li>
+              <li>Priority support</li>
+              <li>Weekly reporting</li>
+              <li>Up to 20 data sources</li>
+              <li>ML model deployment</li>
+              <li>Data governance setup</li>
+            </ul>
+          </div>
+          <div class="pricing-card__cta">
+            <a href="#contact" class="btn btn--primary">Get Started</a>
+          </div>
         </div>
-        <div class="community-item">
-          <h3><a href="/blog/data-quality">Data Quality Best Practices</a></h3>
-          <p>Strategies and tools for ensuring data quality throughout your data pipeline and analytics workflows.</p>
-        </div>
-        <div class="community-item">
-          <h3><a href="/blog/cloud-data-platforms">Cloud Data Platforms</a></h3>
-          <p>Comparing and evaluating cloud-based data platforms for your organization's specific needs and requirements.</p>
+
+        <div class="pricing-card">
+          <div class="pricing-card__header">
+            <h3 class="pricing-card__title">Enterprise</h3>
+            <p class="pricing-card__subtitle">For large organizations</p>
+            <div class="pricing-card__price">
+              <span class="price__amount">$10,000</span>
+              <span class="price__period">/month</span>
+            </div>
+          </div>
+          <div class="pricing-card__features">
+            <ul>
+              <li>Full-scale data platform</li>
+              <li>Advanced MLOps</li>
+              <li>24/7 dedicated support</li>
+              <li>Real-time reporting</li>
+              <li>Unlimited data sources</li>
+              <li>Custom integrations</li>
+              <li>Compliance & security</li>
+              <li>Training & documentation</li>
+            </ul>
+          </div>
+          <div class="pricing-card__cta">
+            <a href="#contact" class="btn btn--outline">Contact Sales</a>
+          </div>
         </div>
       </div>
-      <div class="text-center" style="margin-top: 2rem;">
-        <a href="/blog" class="btn-primary">View All Articles</a>
+      <div class="pricing__addons">
+        <h3>Additional Services</h3>
+        <div class="addons__grid">
+          <div class="addon-item">
+            <h4>Data Migration</h4>
+            <p>Migrate your existing data infrastructure to modern platforms</p>
+            <span class="addon-price">$3,000 - $15,000</span>
+          </div>
+          <div class="addon-item">
+            <h4>Training & Workshops</h4>
+            <p>Train your team on modern data tools and best practices</p>
+            <span class="addon-price">$2,000 - $5,000</span>
+          </div>
+          <div class="addon-item">
+            <h4>Data Audit</h4>
+            <p>Comprehensive assessment of your current data infrastructure</p>
+            <span class="addon-price">$1,500 - $3,000</span>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -231,41 +469,76 @@
   <!-- Contact Section -->
   <section id="contact" class="contact">
     <div class="container">
-      <div class="contact-content">
-        <div class="contact-info">
-          <h2>Get in Touch</h2>
-          <p>Have questions about data engineering, analytics, or MLOps? Want to share your own practical insights? We'd love to hear from you.</p>
-          <div class="contact-details">
+      <div class="contact__content">
+        <div class="contact__info">
+          <h2 class="contact__title">Ready to Transform Your Data?</h2>
+          <p class="contact__description">
+            Let's discuss how we can help you build a robust data infrastructure that drives real business value. Get in touch for a free consultation.
+          </p>
+          <div class="contact__details">
             <div class="contact-item">
-              <h4>Email</h4>
-              <p>hello@practicaldatawork.com</p>
+              <div class="contact-item__icon">📧</div>
+              <div class="contact-item__content">
+                <h4>Email</h4>
+                <p>hello@practicaldatawork.com</p>
+              </div>
             </div>
             <div class="contact-item">
-              <h4>Topics</h4>
-              <p>Data Engineering, Analytics, MLOps, Data Governance</p>
+              <div class="contact-item__icon">💬</div>
+              <div class="contact-item__content">
+                <h4>Response Time</h4>
+                <p>Within 24 hours</p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item__icon">🌍</div>
+              <div class="contact-item__content">
+                <h4>Availability</h4>
+                <p>Worldwide remote consulting</p>
+              </div>
             </div>
           </div>
         </div>
-        <div class="contact-form">
-          <h3>Send a Message</h3>
-          <form action="#" method="POST">
-            <div class="form-group">
-              <label for="name">Name</label>
-              <input type="text" id="name" name="name" required>
+        <div class="contact__form">
+          <form class="form" action="#" method="POST">
+            <div class="form__group">
+              <label for="name" class="form__label">Full Name</label>
+              <input type="text" id="name" name="name" class="form__input" required>
             </div>
-            <div class="form-group">
-              <label for="email">Email</label>
-              <input type="email" id="email" name="email" required>
+            <div class="form__group">
+              <label for="email" class="form__label">Email Address</label>
+              <input type="email" id="email" name="email" class="form__input" required>
             </div>
-            <div class="form-group">
-              <label for="subject">Subject</label>
-              <input type="text" id="subject" name="subject" required>
+            <div class="form__group">
+              <label for="company" class="form__label">Company</label>
+              <input type="text" id="company" name="company" class="form__input">
             </div>
-            <div class="form-group">
-              <label for="message">Message</label>
-              <textarea id="message" name="message" rows="5" required></textarea>
+            <div class="form__group">
+              <label for="service" class="form__label">Service Interest</label>
+              <select id="service" name="service" class="form__select">
+                <option value="">Select a service</option>
+                <option value="data-engineering">Data Engineering</option>
+                <option value="data-analytics">Data Analytics</option>
+                <option value="mlops">MLOps</option>
+                <option value="data-governance">Data Governance</option>
+                <option value="consulting">General Consulting</option>
+              </select>
             </div>
-            <button type="submit" class="btn-primary">Send Message</button>
+            <div class="form__group">
+              <label for="budget" class="form__label">Budget Range</label>
+              <select id="budget" name="budget" class="form__select">
+                <option value="">Select budget range</option>
+                <option value="under-5k">Under $5,000</option>
+                <option value="5k-10k">$5,000 - $10,000</option>
+                <option value="10k-25k">$10,000 - $25,000</option>
+                <option value="25k-plus">$25,000+</option>
+              </select>
+            </div>
+            <div class="form__group">
+              <label for="message" class="form__label">Project Details</label>
+              <textarea id="message" name="message" class="form__textarea" rows="4" placeholder="Tell us about your data challenges and goals..."></textarea>
+            </div>
+            <button type="submit" class="btn btn--primary btn--full">Send Message</button>
           </form>
         </div>
       </div>
@@ -275,44 +548,57 @@
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
-      <div class="footer-content">
-        <div class="footer-section">
-          <h3>Practical Data Work</h3>
-          <p>Real-world insights for data engineering, analytics, and MLOps.</p>
+      <div class="footer__content">
+        <div class="footer__section">
+          <div class="footer__logo">
+            <span class="logo__text">Practical Data Work</span>
+            <span class="logo__subtitle">Data Engineering & Analytics</span>
+          </div>
+          <p class="footer__description">
+            Transforming data challenges into competitive advantages through expert consulting and modern data solutions.
+          </p>
         </div>
-        <div class="footer-section">
-          <h4>Topics</h4>
-          <ul>
+        <div class="footer__section">
+          <h4 class="footer__title">Services</h4>
+          <ul class="footer__links">
+            <li><a href="#services">Data Engineering</a></li>
+            <li><a href="#services">Data Analytics</a></li>
+            <li><a href="#services">MLOps</a></li>
+            <li><a href="#services">Data Governance</a></li>
+          </ul>
+        </div>
+        <div class="footer__section">
+          <h4 class="footer__title">Resources</h4>
+          <ul class="footer__links">
+            <li><a href="/blog">Blog</a></li>
             <li><a href="/blog/modern-data-stack">Modern Data Stack</a></li>
-            <li><a href="/blog/mlops-fundamentals">MLOps</a></li>
+            <li><a href="/blog/mlops-fundamentals">MLOps Guide</a></li>
             <li><a href="/blog/data-quality">Data Quality</a></li>
-            <li><a href="/blog/cloud-data-platforms">Cloud Platforms</a></li>
           </ul>
         </div>
-        <div class="footer-section">
-          <h4>Resources</h4>
-          <ul>
-            <li><a href="/blog">All Articles</a></li>
-            <li><a href="#about">About</a></li>
-            <li><a href="#contact">Contact</a></li>
-            <li><a href="/privacy">Privacy</a></li>
+        <div class="footer__section">
+          <h4 class="footer__title">Contact</h4>
+          <ul class="footer__links">
+            <li><a href="mailto:hello@practicaldatawork.com">hello@practicaldatawork.com</a></li>
+            <li><a href="#contact">Get Started</a></li>
+            <li><a href="#pricing">Pricing</a></li>
           </ul>
-        </div>
-        <div class="footer-section">
-          <h4>Contact</h4>
-          <p>hello@practicaldatawork.com</p>
         </div>
       </div>
-      <div class="footer-bottom">
+      <div class="footer__bottom">
         <p>&copy; 2024 Practical Data Work. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
   <script>
-    // Simple mobile menu toggle
-    document.querySelector('.hamburger').addEventListener('click', function() {
-      document.querySelector('.nav-menu').classList.toggle('active');
+    // Mobile menu toggle
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const headerNav = document.querySelector('.header__nav');
+    
+    mobileMenuToggle.addEventListener('click', () => {
+      headerNav.classList.toggle('active');
+      mobileMenuToggle.classList.toggle('active');
     });
 
     // Smooth scrolling for anchor links
@@ -329,11 +615,23 @@
       });
     });
 
-    // Form submission handling
-    document.querySelector('.contact-form form').addEventListener('submit', function(e) {
+    // Form submission
+    document.querySelector('.form').addEventListener('submit', function(e) {
       e.preventDefault();
-      alert('Thank you for your message! We\'ll get back to you soon.');
+      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+    });
+
+    // Add scroll effect to header
+    window.addEventListener('scroll', () => {
+      const header = document.querySelector('.header');
+      if (window.scrollY > 100) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
     });
   </script>
+</body>
+</html>
 </body>
 </html>
