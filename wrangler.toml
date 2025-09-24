@@ -4,3 +4,12 @@ compatibility_date = "2024-01-15"
 # Static site configuration - assets only
 [assets]
 directory = "."
+
+# Production environment configuration
+[env.production]
+name = "practicaldatawork-com"
+route = "practicaldatawork.com/*"
+
+# Preview environment (for non-main branches)
+[env.preview]
+name = "practicaldatawork-com-preview"
