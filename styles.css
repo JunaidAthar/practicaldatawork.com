@@ -888,11 +888,27 @@ a:hover {
     grid-template-columns: 1fr;
     gap: var(--space-2xl);
   }
+  
+  .services__grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .blog-topics__grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
+  
+  .pricing__grid {
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  }
 }
 
 @media (max-width: 768px) {
   .container {
     padding: 0 var(--space-md);
+  }
+  
+  .header__content {
+    height: 60px;
   }
   
   .header__nav {
@@ -906,6 +922,7 @@ a:hover {
     padding: var(--space-lg);
     box-shadow: var(--shadow-lg);
     border-top: 1px solid var(--border);
+    gap: var(--space-md);
   }
   
   .header__nav.active {
@@ -929,30 +946,54 @@ a:hover {
   }
   
   .hero {
-    padding: 100px 0 var(--space-2xl);
+    padding: 80px 0 var(--space-2xl);
+  }
+  
+  .hero__content {
+    gap: var(--space-xl);
   }
   
   .hero__title {
-    font-size: 2.5rem;
+    font-size: 2.25rem;
+    line-height: 1.2;
+  }
+  
+  .hero__description {
+    font-size: 1.125rem;
   }
   
   .hero__actions {
     flex-direction: column;
-    align-items: center;
+    align-items: stretch;
+    gap: var(--space-md);
+  }
+  
+  .hero__actions .btn {
+    width: 100%;
+    justify-content: center;
   }
   
   .hero__stats {
-    justify-content: center;
+    flex-direction: row;
+    justify-content: space-around;
+    gap: var(--space-md);
+  }
+  
+  .hero__card {
+    max-width: 100%;
+    padding: var(--space-lg);
   }
   
   .services__grid,
   .blog-topics__grid,
   .pricing__grid {
     grid-template-columns: 1fr;
+    gap: var(--space-lg);
   }
   
   .pricing-card--featured {
     transform: none;
+    order: -1;
   }
   
   .pricing-card--featured:hover {
@@ -963,14 +1004,46 @@ a:hover {
     grid-template-columns: 1fr;
   }
   
-  h1 { font-size: 2.5rem; }
-  h2 { font-size: 2rem; }
+  .contact__content {
+    gap: var(--space-xl);
+  }
+  
+  .contact__form {
+    padding: var(--space-lg);
+  }
+  
+  .footer__content {
+    grid-template-columns: 1fr;
+    text-align: center;
+    gap: var(--space-lg);
+  }
+  
+  h1 { font-size: 2.25rem; }
+  h2 { font-size: 1.875rem; }
   h3 { font-size: 1.5rem; }
+  
+  .section__title {
+    font-size: 2rem;
+  }
+  
+  .service-card,
+  .blog-card,
+  .pricing-card {
+    padding: var(--space-lg);
+  }
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 0 var(--space-sm);
+  }
+  
+  .hero {
+    padding: 70px 0 var(--space-xl);
+  }
+  
   .hero__title {
-    font-size: 2rem;
+    font-size: 1.875rem;
   }
   
   .hero__description {
@@ -980,10 +1053,86 @@ a:hover {
   .hero__stats {
     flex-direction: column;
     gap: var(--space-md);
+    text-align: center;
+  }
+  
+  .stat__number {
+    font-size: 1.5rem;
   }
   
   .btn {
     padding: var(--space-md) var(--space-lg);
     font-size: 1rem;
+  }
+  
+  .service-card__icon {
+    width: 48px;
+    height: 48px;
+  }
+  
+  .service-card__title {
+    font-size: 1.25rem;
+  }
+  
+  .blog-card__title {
+    font-size: 1.125rem;
+  }
+  
+  .pricing-card__title {
+    font-size: 1.25rem;
+  }
+  
+  .price__amount {
+    font-size: 2.5rem;
+  }
+  
+  .contact-item {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-sm);
+  }
+  
+  .contact-item__icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+  
+  .form__input,
+  .form__select,
+  .form__textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .header__logo .logo__text {
+    font-size: 1.125rem;
+  }
+  
+  .header__logo .logo__subtitle {
+    font-size: 0.625rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .hero__title {
+    font-size: 1.5rem;
+  }
+  
+  .hero__description {
+    font-size: 0.875rem;
+  }
+  
+  .section__title {
+    font-size: 1.5rem;
+  }
+  
+  .service-card,
+  .blog-card,
+  .pricing-card {
+    padding: var(--space-md);
+  }
+  
+  .hero__card {
+    padding: var(--space-md);
   }
 }
