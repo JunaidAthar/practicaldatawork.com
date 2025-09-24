@@ -1,7 +1,6 @@
 name = "practicaldataworks-com"
 compatibility_date = "2024-01-15"
 
-# Static site configuration using modern assets syntax
+# Static site configuration - assets only
 [assets]
 directory = "."
-binding = "ASSETS"
