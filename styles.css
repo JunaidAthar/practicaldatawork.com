@@ -1149,3 +1149,64 @@ a:hover {
     padding: var(--space-md);
   }
 }
+
+/* Additional Mobile Improvements */
+@media (max-width: 768px) {
+  .hero__actions .btn {
+    min-height: 48px;
+    font-size: 1rem;
+  }
+  
+  .service-card__features li {
+    font-size: 0.875rem;
+  }
+  
+  .blog-card__excerpt {
+    font-size: 0.875rem;
+  }
+  
+  .pricing-card__features li {
+    font-size: 0.875rem;
+  }
+  
+  .section__subtitle {
+    font-size: 1rem;
+  }
+  
+  .contact__description {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero__actions .btn {
+    min-height: 52px;
+    font-size: 1.125rem;
+  }
+  
+  .service-card__price {
+    font-size: 1.125rem;
+  }
+  
+  .blog-card__category {
+    font-size: 0.625rem;
+    padding: 2px 6px;
+  }
+  
+  .pricing-card__badge {
+    font-size: 0.75rem;
+    padding: 4px 8px;
+  }
+  
+  .form__label {
+    font-size: 0.875rem;
+  }
+  
+  .contact-item__content h4 {
+    font-size: 0.875rem;
+  }
+  
+  .contact-item__content p {
+    font-size: 0.875rem;
+  }
+}
