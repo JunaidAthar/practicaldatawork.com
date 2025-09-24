@@ -113,19 +113,41 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  background: var(--slate);
+  background: linear-gradient(135deg, var(--slate) 0%, #2a2f36 100%);
   color: var(--white);
   overflow: hidden;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: url('https://images.unsplash.com/photo-1461749280684-dccba630e2f6?auto=format&fit=crop&w=1500&q=80') center/cover no-repeat;
+  opacity: 0.1;
+  z-index: 1;
 }
 
 .hero-container {
   position: relative;
   z-index: 2;
   text-align: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 4rem 1.5rem 2rem 1.5rem;
+  animation: fadeIn 1.2s cubic-bezier(.4,0,.2,1);
+  width: 100%;
+}
+
+.hero-content {
   max-width: 700px;
   margin: 0 auto;
-  padding: 4rem 0 2rem 0;
-  animation: fadeIn 1.2s cubic-bezier(.4,0,.2,1);
+}
+
+.hero-image {
+  margin-top: 3rem;
 }
 
 .hero h1 {
@@ -213,6 +235,9 @@ body {
   grid-template-columns: 2fr 1fr;
   gap: 2.5rem;
   align-items: center;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .about-text h2 {
@@ -281,6 +306,12 @@ body {
   padding: 4rem 0 3rem 0;
 }
 
+.programs .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
 .programs h2 {
   font-family: 'Sora', 'DM Sans', 'Inter', Arial, sans-serif;
   font-size: 2rem;
@@ -341,6 +372,12 @@ body {
 .community {
   background: var(--gray);
   padding: 4rem 0 3rem 0;
+}
+
+.community .container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .community h2 {
@@ -406,6 +443,9 @@ body {
   grid-template-columns: 1fr 1fr;
   gap: 2.5rem;
   align-items: start;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
 }
 
 .contact-info h2 {
