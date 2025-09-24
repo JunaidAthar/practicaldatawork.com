@@ -1,10 +1,7 @@
-/blog/* /blog/index.html 200
 /blog/modern-data-stack /blog/modern-data-stack.html 200
 /blog/mlops-fundamentals /blog/mlops-fundamentals.html 200
 /blog/data-quality /blog/data-quality.html 200
 /blog/data-engineering-2024 /blog/data-engineering-2024.html 200
 /blog/ai-data-analytics /blog/ai-data-analytics.html 200
 /blog/data-governance /blog/data-governance.html 200
-/blog/cloud-data-platforms /blog/cloud-data-platforms.html 200
-/privacy/* /privacy/index.html 200
-/* /index.html 200 
+/blog/cloud-data-platforms /blog/cloud-data-platforms.html 200 
