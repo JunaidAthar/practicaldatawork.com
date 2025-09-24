@@ -337,6 +337,12 @@ body {
   animation: fadeInUp 1.2s cubic-bezier(.4,0,.2,1);
 }
 
+.program-card a {
+  color: inherit;
+  text-decoration: none;
+  display: block;
+}
+
 .program-card:hover {
   transform: translateY(-6px) scale(1.03);
   box-shadow: 0 8px 32px 0 rgba(124,58,237,0.10);
