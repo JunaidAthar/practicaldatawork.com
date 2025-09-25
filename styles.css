@@ -296,6 +296,13 @@ a:hover {
   margin-bottom: var(--space-lg);
 }
 
+.gradient-text {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
 .hero__highlight {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   -webkit-background-clip: text;
@@ -316,24 +323,40 @@ a:hover {
 }
 
 .hero__stats {
-  display: flex;
-  gap: var(--space-xl);
+  background: rgba(0, 0, 0, 0.3);
+  padding: var(--space-xl) 0;
+  margin-top: var(--space-3xl);
 }
 
-.stat {
+.stats__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-xl);
   text-align: center;
 }
 
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-xs);
+}
+
 .stat__number {
-  display: block;
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 700;
   color: var(--primary);
+  line-height: 1;
 }
 
 .stat__label {
   font-size: 0.875rem;
-  color: var(--gray-400);
+  color: var(--gray-300);
+  font-weight: 500;
+}
+
+.stat {
+  text-align: center;
 }
 
 .hero__visual {
@@ -349,6 +372,42 @@ a:hover {
   padding: var(--space-xl);
   max-width: 300px;
   width: 100%;
+}
+
+.glass-effect {
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.hero__card-title {
+  color: white;
+  font-size: 1.25rem;
+  font-weight: 600;
+  margin-bottom: var(--space-md);
+}
+
+.hero__card-description {
+  color: var(--gray-300);
+  margin-bottom: var(--space-lg);
+  line-height: 1.6;
+}
+
+.btn--small {
+  padding: var(--space-xs) var(--space-md);
+  font-size: 0.8rem;
+}
+
+.btn--accent {
+  background: linear-gradient(135deg, var(--accent) 0%, #f97316 100%);
+  color: white;
+  border: none;
+}
+
+.btn--accent:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-md);
+  color: white;
 }
 
 .card__header {
