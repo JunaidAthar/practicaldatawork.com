@@ -35,16 +35,27 @@
 </head>
 <body>
   <header class="header">
-    <div class="container header__container">
-      <div class="header__logo">Practical Data Work</div>
-      <nav class="header__nav">
-        <a href="../index.html#services">Services</a>
-        <a href="../index.html#pricing">Pricing</a>
-        <a href="../index.html#about">About</a>
-        <a href="index.html">Blog</a>
-        <a href="../index.html#contact">Contact</a>
-      </nav>
-      <a href="../index.html#contact" class="header__cta">Schedule a Free Call</a>
+    <div class="container">
+      <div class="header__content">
+        <div class="header__logo">
+          <a href="../index.html" style="text-decoration: none;">
+            <span class="logo__text">Practical Data Work</span>
+          </a>
+        </div>
+        <nav class="header__nav">
+          <a href="../index.html#services">Services</a>
+          <a href="../index.html#about">About</a>
+          <a href="../index.html#pricing">Pricing</a>
+          <a href="index.html">Blog</a>
+          <a href="../index.html#contact">Contact</a>
+          <a href="../index.html#contact" class="header__cta">Get Started</a>
+        </nav>
+        <button class="mobile-menu-toggle" aria-label="Toggle mobile menu">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
     </div>
   </header>
   <main class="container">
@@ -89,5 +100,18 @@
       </form>
     </div>
   </footer>
+
+  <script>
+    // Mobile menu toggle
+    const mobileMenuToggle = document.querySelector('.mobile-menu-toggle');
+    const headerNav = document.querySelector('.header__nav');
+    
+    if (mobileMenuToggle && headerNav) {
+      mobileMenuToggle.addEventListener('click', () => {
+        headerNav.classList.toggle('active');
+        mobileMenuToggle.classList.toggle('active');
+      });
+    }
+  </script>
 </body>
 </html> 
