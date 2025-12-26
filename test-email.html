@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Email Test - Practical Data Work</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2563eb;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+    input, textarea {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .log {
+      background: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+      font-size: 12px;
+      display: none;
+    }
+    .log.visible {
+      display: block;
+    }
+    .log .error {
+      color: #ef4444;
+    }
+    .log .success {
+      color: #10b981;
+    }
+    .log .info {
+      color: #60a5fa;
+    }
+    .status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      display: none;
+    }
+    .status.visible {
+      display: block;
+    }
+    .status.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>📧 Contact Form Email Debug</h1>
+    <p>This page will show you exactly what's happening with your contact form emails.</p>
+    
+    <form id="test-form">
+      <div class="form-group">
+        <label>Your Name:</label>
+        <input type="text" name="name" value="Debug Test" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Your Email:</label>
+        <input type="email" name="email" value="test@example.com" required>
+      </div>
+      
+      <div class="form-group">
+        <label>Company:</label>
+        <input type="text" name="company" value="Test Company">
+      </div>
+      
+      <div class="form-group">
+        <label>Message:</label>
+        <textarea name="message" rows="4" required>This is a debug test to check if MailChannels is working with the DNS records.</textarea>
+      </div>
+      
+      <button type="submit">Send Test Email</button>
+    </form>
+    
+    <div id="status" class="status"></div>
+    <div id="log" class="log"></div>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #f9fafb; border-radius: 4px;">
+      <h3>What This Test Shows</h3>
+      <p>When you click "Send Test Email", this page will:</p>
+      <ul>
+        <li>Show the exact API request being sent</li>
+        <li>Display the full API response</li>
+        <li>Show any MailChannels errors</li>
+        <li>Reveal if DNS records are the problem</li>
+        <li>Display the submission data being logged</li>
+      </ul>
+      
+      <h3>Common Error Messages</h3>
+      
+      <h4>✅ Success (Email Sent):</h4>
+      <code>"success": true, "method": "mailchannels"</code>
+      <p>DNS is working! Check junaid.athar@gmail.com (and spam folder).</p>
+      
+      <h4>⚠️ DNS Not Verified:</h4>
+      <code>"error": "550 Unauthenticated email is not accepted from this domain"</code>
+      <p>DNS records need more time to propagate (wait 10-20 minutes).</p>
+      
+      <h4>⚠️ Logged Only (Fallback):</h4>
+      <code>"note": "Email delivery is being configured"</code>
+      <p>MailChannels failed, but submission is logged. Check DNS records.</p>
+      
+      <h4>❌ Function Error:</h4>
+      <code>"error": "Failed to process message"</code>
+      <p>Function crashed. Check Cloudflare Pages logs.</p>
+    </div>
+  </div>
+  
+  <script>
+    function log(message, type = 'info') {
+      const logDiv = document.getElementById('log');
+      logDiv.classList.add('visible');
+      
+      const entry = document.createElement('div');
+      entry.className = type;
+      const timestamp = new Date().toLocaleTimeString();
+      entry.textContent = `[${timestamp}] ${message}`;
+      
+      logDiv.appendChild(entry);
+      logDiv.scrollTop = logDiv.scrollHeight;
+      
+      console.log(`[${type.toUpperCase()}]`, message);
+    }
+    
+    function showStatus(message, type) {
+      const statusDiv = document.getElementById('status');
+      statusDiv.className = `status ${type} visible`;
+      statusDiv.innerHTML = message;
+    }
+    
+    document.getElementById('test-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const submitBtn = this.querySelector('button');
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      // Clear previous logs
+      document.getElementById('log').innerHTML = '';
+      document.getElementById('status').className = 'status';
+      
+      try {
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+        
+        log('📤 Sending request to /api/contact...', 'info');
+        log(`Data: ${JSON.stringify(data, null, 2)}`, 'info');
+        
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+        
+        log(`📥 Response received: HTTP ${response.status}`, response.ok ? 'success' : 'error');
+        
+        const responseText = await response.text();
+        log(`Response body: ${responseText}`, 'info');
+        
+        let responseData;
+        try {
+          responseData = JSON.parse(responseText);
+        } catch (e) {
+          responseData = { raw: responseText };
+        }
+        
+        if (response.ok && responseData.success) {
+          if (responseData.method === 'mailchannels') {
+            showStatus('✅ <strong>SUCCESS!</strong> Email was sent via MailChannels.<br>Check <strong>junaid.athar@gmail.com</strong> (and spam folder).', 'success');
+            log('✅ Email sent successfully via MailChannels!', 'success');
+            log('Check junaid.athar@gmail.com for the email', 'success');
+          } else {
+            showStatus('⚠️ <strong>Partial Success</strong><br>Form submitted and logged, but email may not have sent.<br>' + (responseData.note || ''), 'error');
+            log('⚠️ Form logged but email sending unclear', 'error');
+            log(`Note: ${responseData.note}`, 'info');
+          }
+        } else {
+          showStatus('❌ <strong>Error</strong><br>' + (responseData.error || 'Unknown error'), 'error');
+          log(`❌ Error: ${responseData.error}`, 'error');
+          if (responseData.details) {
+            log(`Details: ${responseData.details}`, 'error');
+          }
+        }
+        
+        // Show full response
+        log('─────────────────────────', 'info');
+        log('Full Response:', 'info');
+        log(JSON.stringify(responseData, null, 2), 'info');
+        
+      } catch (error) {
+        showStatus('❌ <strong>Network Error</strong><br>' + error.message, 'error');
+        log(`❌ Network error: ${error.message}`, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Test Email';
+      }
+    });
+  </script>
+</body>
+</html>
+

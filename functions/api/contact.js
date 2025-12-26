@@ -155,17 +155,20 @@ IP: ${request.headers.get('CF-Connecting-IP') || 'Unknown'}
       console.error('MailChannels exception:', mailchannelsError);
     }
     
-    // Fallback: Store in KV or send via webhook
-    // For now, return success and log the submission
-    console.log('Contact form submission:', {
-      name: data.name,
-      email: data.email,
-      company: data.company,
-      service: data.service,
-      budget: data.budget,
-      message: data.message.substring(0, 100),
-      timestamp: new Date().toISOString()
-    });
+    // Fallback: Log the submission with full details
+    console.log('═══════════════════════════════════════════════');
+    console.log('📧 CONTACT FORM SUBMISSION (MailChannels Failed)');
+    console.log('═══════════════════════════════════════════════');
+    console.log('Timestamp:', new Date().toISOString());
+    console.log('Name:', data.name);
+    console.log('Email:', data.email);
+    console.log('Company:', data.company || 'Not provided');
+    console.log('Service:', data.service || 'Not specified');
+    console.log('Budget:', data.budget || 'Not specified');
+    console.log('Message:', data.message);
+    console.log('IP:', request.headers.get('CF-Connecting-IP') || 'Unknown');
+    console.log('User-Agent:', request.headers.get('User-Agent'));
+    console.log('═══════════════════════════════════════════════');
     
     // Return success even if email fails - data is logged
     return new Response(JSON.stringify({ 
