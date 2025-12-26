@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Facebook Pixel Test - Practical Data Work</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1000px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+    .status {
+      padding: 15px;
+      margin: 20px 0;
+      border-radius: 4px;
+      font-weight: bold;
+    }
+    .status.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 2px solid #10b981;
+    }
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 2px solid #ef4444;
+    }
+    .status.warning {
+      background: #fef3c7;
+      color: #92400e;
+      border: 2px solid #f59e0b;
+    }
+    .test-button {
+      background: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      margin: 10px 10px 10px 0;
+    }
+    .test-button:hover {
+      background: #1d4ed8;
+    }
+    .event-log {
+      background: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin-top: 20px;
+      max-height: 400px;
+      overflow-y: auto;
+    }
+    .event-log div {
+      margin: 5px 0;
+      padding: 5px;
+      border-bottom: 1px solid #374151;
+    }
+    .instructions {
+      background: #eff6ff;
+      padding: 20px;
+      border-left: 4px solid #2563eb;
+      margin: 20px 0;
+    }
+    .instructions h3 {
+      margin-top: 0;
+      color: #1e40af;
+    }
+    .instructions ol {
+      margin: 10px 0;
+      padding-left: 20px;
+    }
+    .instructions li {
+      margin: 8px 0;
+    }
+    .code {
+      background: #f3f4f6;
+      padding: 10px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin: 10px 0;
+      word-break: break-all;
+    }
+  </style>
+  
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    var pixelId = 'YOUR_PIXEL_ID';
+    
+    if (pixelId !== 'YOUR_PIXEL_ID') {
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+    }
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
+</head>
+<body>
+  <div class="container">
+    <h1>🎯 Facebook Pixel Test Page</h1>
+    <p>Test your Facebook Pixel installation and tracking events for Practical Data Work.</p>
+    
+    <div id="pixel-status" class="status warning">
+      ⏳ Checking pixel status...
+    </div>
+    
+    <div class="instructions">
+      <h3>📋 Setup Instructions</h3>
+      <ol>
+        <li><strong>Get Your Pixel ID:</strong>
+          <ul>
+            <li>Go to <a href="https://business.facebook.com/events_manager2" target="_blank">Facebook Events Manager</a></li>
+            <li>Click "Add Events" → "From a New Website"</li>
+            <li>Choose "Meta Pixel"</li>
+            <li>Copy your Pixel ID (looks like: 123456789012345)</li>
+          </ul>
+        </li>
+        <li><strong>Update Pixel ID:</strong>
+          <ul>
+            <li>Edit <code>index.html</code> and <code>pixel-test.html</code></li>
+            <li>Replace <code>YOUR_PIXEL_ID</code> with your actual Pixel ID</li>
+            <li>Deploy the changes</li>
+          </ul>
+        </li>
+        <li><strong>Install Facebook Pixel Helper:</strong>
+          <ul>
+            <li>Chrome: <a href="https://chrome.google.com/webstore/detail/facebook-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc" target="_blank">Install Extension</a></li>
+            <li>Look for the icon in your browser toolbar</li>
+            <li>It should show a green checkmark when pixel is working</li>
+          </ul>
+        </li>
+        <li><strong>Test Events:</strong>
+          <ul>
+            <li>Click the test buttons below</li>
+            <li>Watch the event log</li>
+            <li>Verify events appear in Events Manager after 5 minutes</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    
+    <h2>🧪 Test Events</h2>
+    <p>Click these buttons to fire test events. Watch the console and Event Log below.</p>
+    
+    <button class="test-button" onclick="testPageView()">
+      📄 Test PageView
+    </button>
+    
+    <button class="test-button" onclick="testViewContent()">
+      👁️ Test ViewContent
+    </button>
+    
+    <button class="test-button" onclick="testLead()">
+      📧 Test Lead (Download)
+    </button>
+    
+    <button class="test-button" onclick="testSchedule()">
+      📅 Test Schedule (Consultation)
+    </button>
+    
+    <button class="test-button" onclick="testPurchase()">
+      💰 Test Purchase (Client)
+    </button>
+    
+    <button class="test-button" onclick="clearLog()" style="background: #6b7280;">
+      🗑️ Clear Log
+    </button>
+    
+    <h2>📊 Event Log</h2>
+    <div id="event-log" class="event-log">
+      <div>Waiting for events...</div>
+    </div>
+    
+    <div class="instructions" style="margin-top: 30px; background: #fef3c7; border-left-color: #f59e0b;">
+      <h3>⚠️ Troubleshooting</h3>
+      <ul>
+        <li><strong>No events firing?</strong> Check if Pixel ID is updated from 'YOUR_PIXEL_ID'</li>
+        <li><strong>Pixel Helper shows errors?</strong> Verify the Pixel ID is correct</li>
+        <li><strong>Events not in Events Manager?</strong> Wait 5-10 minutes for data to appear</li>
+        <li><strong>Ad blockers?</strong> Disable them for testing</li>
+        <li><strong>Localhost testing?</strong> Deploy to production URL for accurate testing</li>
+      </ul>
+    </div>
+    
+    <h2>📈 Expected Results</h2>
+    <div class="instructions">
+      <h3>In Facebook Events Manager:</h3>
+      <ol>
+        <li>Go to <a href="https://business.facebook.com/events_manager2" target="_blank">Events Manager</a></li>
+        <li>Select your Pixel</li>
+        <li>Click "Test Events" tab</li>
+        <li>You should see events appear within 5-10 minutes:
+          <ul>
+            <li>PageView - Every page load</li>
+            <li>ViewContent - Blog posts, pricing page</li>
+            <li>Lead - Contact form, lead magnet downloads</li>
+            <li>Schedule - Consultation bookings</li>
+            <li>Purchase - Client conversions</li>
+          </ul>
+        </li>
+      </ol>
+    </div>
+    
+    <div style="margin-top: 30px; padding: 20px; background: #f9fafb; border-radius: 4px;">
+      <h3>🔗 Quick Links</h3>
+      <ul>
+        <li><a href="https://business.facebook.com/events_manager2" target="_blank">Facebook Events Manager</a></li>
+        <li><a href="https://business.facebook.com/adsmanager" target="_blank">Ads Manager</a></li>
+        <li><a href="/" target="_blank">Homepage (test PageView)</a></li>
+        <li><a href="/blog" target="_blank">Blog (test ViewContent)</a></li>
+        <li><a href="/#contact" target="_blank">Contact Form (test Lead)</a></li>
+      </ul>
+    </div>
+  </div>
+  
+  <script>
+    // Check pixel status
+    function checkPixelStatus() {
+      const statusDiv = document.getElementById('pixel-status');
+      const pixelId = 'YOUR_PIXEL_ID';
+      
+      if (pixelId === 'YOUR_PIXEL_ID') {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = '❌ Pixel Not Configured - Please update YOUR_PIXEL_ID in the code';
+      } else if (typeof fbq === 'undefined') {
+        statusDiv.className = 'status error';
+        statusDiv.innerHTML = '❌ Facebook Pixel script failed to load - Check ad blockers or network';
+      } else {
+        statusDiv.className = 'status success';
+        statusDiv.innerHTML = `✅ Facebook Pixel Active - ID: ${pixelId}<br>
+          <small>Install <a href="https://chrome.google.com/webstore/detail/facebook-pixel-helper/fdgfkebogiimcoedlicjlajpkdmockpc" target="_blank">Facebook Pixel Helper</a> to verify events</small>`;
+      }
+    }
+    
+    // Log event to display
+    function logEvent(eventName, params) {
+      const log = document.getElementById('event-log');
+      const timestamp = new Date().toLocaleTimeString();
+      const paramsStr = params ? JSON.stringify(params, null, 2) : 'No parameters';
+      
+      const eventDiv = document.createElement('div');
+      eventDiv.innerHTML = `
+        <strong>[${timestamp}]</strong> Event: <span style="color: #60a5fa;">${eventName}</span><br>
+        <span style="color: #9ca3af;">Parameters: ${paramsStr}</span>
+      `;
+      
+      if (log.firstChild && log.firstChild.textContent === 'Waiting for events...') {
+        log.innerHTML = '';
+      }
+      
+      log.insertBefore(eventDiv, log.firstChild);
+      
+      console.log(`Facebook Pixel Event: ${eventName}`, params);
+    }
+    
+    // Test functions
+    function testPageView() {
+      if (typeof fbq !== 'undefined') {
+        fbq('track', 'PageView');
+        logEvent('PageView', null);
+        alert('✅ PageView event fired! Check the Event Log and Facebook Pixel Helper.');
+      } else {
+        alert('❌ Facebook Pixel not loaded. Check configuration.');
+      }
+    }
+    
+    function testViewContent() {
+      if (typeof fbq !== 'undefined') {
+        const params = {
+          content_name: 'Test Content',
+          content_category: 'Test',
+          content_type: 'product'
+        };
+        fbq('track', 'ViewContent', params);
+        logEvent('ViewContent', params);
+        alert('✅ ViewContent event fired! This tracks when users view blog posts or pricing.');
+      } else {
+        alert('❌ Facebook Pixel not loaded. Check configuration.');
+      }
+    }
+    
+    function testLead() {
+      if (typeof fbq !== 'undefined') {
+        const params = {
+          content_name: 'Modern Data Stack 2025 Checklist',
+          content_category: 'Lead Magnet',
+          value: 10.00,
+          currency: 'USD'
+        };
+        fbq('track', 'Lead', params);
+        logEvent('Lead', params);
+        alert('✅ Lead event fired! This tracks lead magnet downloads and contact form submissions.');
+      } else {
+        alert('❌ Facebook Pixel not loaded. Check configuration.');
+      }
+    }
+    
+    function testSchedule() {
+      if (typeof fbq !== 'undefined') {
+        const params = {
+          content_name: 'Free Consultation Booked',
+          content_category: 'Consultation',
+          value: 50.00,
+          currency: 'USD'
+        };
+        fbq('track', 'Schedule', params);
+        logEvent('Schedule', params);
+        alert('✅ Schedule event fired! This tracks consultation bookings.');
+      } else {
+        alert('❌ Facebook Pixel not loaded. Check configuration.');
+      }
+    }
+    
+    function testPurchase() {
+      if (typeof fbq !== 'undefined') {
+        const params = {
+          value: 5000.00,
+          currency: 'USD',
+          content_name: 'Professional Plan',
+          content_type: 'product'
+        };
+        fbq('track', 'Purchase', params);
+        logEvent('Purchase', params);
+        alert('✅ Purchase event fired! This tracks client conversions and contract signings.');
+      } else {
+        alert('❌ Facebook Pixel not loaded. Check configuration.');
+      }
+    }
+    
+    function clearLog() {
+      document.getElementById('event-log').innerHTML = '<div>Log cleared. Fire test events above.</div>';
+    }
+    
+    // Check status on load
+    window.addEventListener('load', checkPixelStatus);
+    
+    // Log initial PageView
+    if (typeof fbq !== 'undefined') {
+      setTimeout(() => {
+        logEvent('PageView', { content_name: 'Pixel Test Page' });
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
+

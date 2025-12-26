@@ -42,6 +42,42 @@
   <!-- Stylesheets -->
   <link rel="stylesheet" href="styles.css">
   
+  <!-- Facebook Pixel Code -->
+  <script>
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    
+    // Initialize with your Pixel ID
+    // REPLACE 'YOUR_PIXEL_ID' with actual ID from Facebook Events Manager
+    // Get it from: https://business.facebook.com/events_manager2
+    var pixelId = 'YOUR_PIXEL_ID';
+    
+    if (pixelId !== 'YOUR_PIXEL_ID') {
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+      
+      // Track homepage as special content
+      fbq('track', 'ViewContent', {
+        content_name: 'Homepage',
+        content_category: 'Main'
+      });
+    } else {
+      console.log('Facebook Pixel: Waiting for Pixel ID configuration');
+      console.log('Get your Pixel ID from: https://business.facebook.com/events_manager2');
+    }
+  </script>
+  <noscript>
+    <img height="1" width="1" style="display:none"
+    src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/>
+  </noscript>
+  <!-- End Facebook Pixel Code -->
+  
   <!-- Structured Data -->
   <script type="application/ld+json">
   {
@@ -734,6 +770,25 @@
         });
         
         if (response.ok) {
+          // Track lead conversion in Facebook Pixel
+          if (typeof fbq !== 'undefined') {
+            fbq('track', 'Lead', {
+              content_name: 'Contact Form Submission',
+              content_category: 'Contact',
+              value: 10.00,
+              currency: 'USD'
+            });
+          }
+          
+          // Track in Google Analytics if available
+          if (typeof gtag !== 'undefined') {
+            gtag('event', 'generate_lead', {
+              'event_category': 'Contact',
+              'event_label': 'Contact Form',
+              'value': 10
+            });
+          }
+          
           alert('Thank you for your message! I\'ll get back to you within 24 hours.');
           form.reset();
         } else {
