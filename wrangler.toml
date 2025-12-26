@@ -13,3 +13,9 @@ route = "practicaldatawork.com/*"
 # Preview environment (for non-main branches)
 [env.preview]
 name = "practicaldatawork-com-preview"
+
+# D1 Database for contact storage
+[[d1_databases]]
+binding = "DB"
+database_name = "contacts"
+database_id = "9ef2d0a0-ca96-43de-940d-e3bb667f6c27"

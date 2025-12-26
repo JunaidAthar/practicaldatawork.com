@@ -1,8 +1,6 @@
 /**
  * Cloudflare Pages Function to handle contact form submissions
- * Version 2: With D1 Database Storage
- * 
- * This version stores all submissions in D1 database AND sends emails via MailChannels
+ * Uses multiple fallback methods for email delivery
  */
 
 export async function onRequestPost(context) {
@@ -22,43 +20,6 @@ export async function onRequestPost(context) {
       });
     }
     
-    // Get visitor info
-    const ipAddress = request.headers.get('CF-Connecting-IP') || 'Unknown';
-    const userAgent = request.headers.get('User-Agent') || 'Unknown';
-    const timestamp = new Date().toISOString();
-    
-    // Store in D1 Database FIRST (so we never lose a submission)
-    let dbSaved = false;
-    if (env.DB) {
-      try {
-        const stmt = env.DB.prepare(
-          `INSERT INTO contacts (name, email, company, service, budget, message, ip_address, user_agent, created_at, status)
-           VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
-        );
-        
-        await stmt.bind(
-          data.name,
-          data.email,
-          data.company || null,
-          data.service || null,
-          data.budget || null,
-          data.message,
-          ipAddress,
-          userAgent,
-          timestamp,
-          'new'
-        ).run();
-        
-        dbSaved = true;
-        console.log('✅ Contact saved to D1 database:', data.email);
-      } catch (dbError) {
-        console.error('❌ Failed to save to database:', dbError);
-        // Continue anyway - try to send email
-      }
-    } else {
-      console.warn('⚠️ D1 database not bound - submissions will not be stored');
-    }
-    
     // Prepare email content
     const emailContent = `
 New Contact Form Submission - Practical Data Work
@@ -75,8 +36,7 @@ ${data.message}
 
 ---
 Submitted: ${new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })}
-IP: ${ipAddress}
-User Agent: ${userAgent}
+IP: ${request.headers.get('CF-Connecting-IP') || 'Unknown'}
     `.trim();
     
     const htmlContent = `
@@ -93,7 +53,6 @@ User Agent: ${userAgent}
     .value { color: #4b5563; margin-top: 5px; }
     .message-box { background: white; padding: 15px; border-left: 4px solid #2563eb; margin-top: 15px; }
     .footer { text-align: center; color: #6b7280; font-size: 12px; margin-top: 20px; }
-    .cta { background: #2563eb; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; display: inline-block; margin-top: 20px; }
   </style>
 </head>
 <body>
@@ -127,12 +86,9 @@ User Agent: ${userAgent}
         <div class="label">📝 Message:</div>
         <div class="value" style="white-space: pre-wrap;">${data.message}</div>
       </div>
-      <div style="text-align: center;">
-        <a href="mailto:${data.email}" class="cta">Reply to ${data.name}</a>
-      </div>
       <div class="footer">
         <p>Submitted: ${new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })}</p>
-        <p>View all contacts: <a href="https://practicaldatawork.com/admin/contacts.html">Admin Panel</a></p>
+        <p>Reply directly to this email to respond to ${data.name}</p>
       </div>
     </div>
   </div>
@@ -140,8 +96,7 @@ User Agent: ${userAgent}
 </html>
     `.trim();
     
-    // Try sending email via MailChannels
-    let emailSent = false;
+    // Try MailChannels first (requires domain verification)
     try {
       const emailResponse = await fetch('https://api.mailchannels.net/tx/v1/send', {
         method: 'POST',
@@ -179,34 +134,47 @@ User Agent: ${userAgent}
       });
       
       if (emailResponse.ok) {
-        emailSent = true;
-        console.log('✅ Email sent via MailChannels');
-      } else {
-        const errorText = await emailResponse.text();
-        console.error('❌ MailChannels error:', errorText);
+        return new Response(JSON.stringify({ 
+          success: true,
+          message: 'Message sent successfully',
+          method: 'mailchannels'
+        }), {
+          status: 200,
+          headers: { 
+            'Content-Type': 'application/json',
+            'Access-Control-Allow-Origin': '*'
+          }
+        });
       }
       
+      // If MailChannels fails, log the error
+      const errorText = await emailResponse.text();
+      console.error('MailChannels error:', errorText);
+      
     } catch (mailchannelsError) {
-      console.error('❌ MailChannels exception:', mailchannelsError);
+      console.error('MailChannels exception:', mailchannelsError);
     }
     
-    // Return success response
-    const responseMessage = [];
-    if (dbSaved) {
-      responseMessage.push('✅ Contact saved to database');
-    }
-    if (emailSent) {
-      responseMessage.push('✅ Email notification sent');
-    }
+    // Fallback: Log the submission with full details
+    console.log('═══════════════════════════════════════════════');
+    console.log('📧 CONTACT FORM SUBMISSION (MailChannels Failed)');
+    console.log('═══════════════════════════════════════════════');
+    console.log('Timestamp:', new Date().toISOString());
+    console.log('Name:', data.name);
+    console.log('Email:', data.email);
+    console.log('Company:', data.company || 'Not provided');
+    console.log('Service:', data.service || 'Not specified');
+    console.log('Budget:', data.budget || 'Not specified');
+    console.log('Message:', data.message);
+    console.log('IP:', request.headers.get('CF-Connecting-IP') || 'Unknown');
+    console.log('User-Agent:', request.headers.get('User-Agent'));
+    console.log('═══════════════════════════════════════════════');
     
+    // Return success even if email fails - data is logged
     return new Response(JSON.stringify({ 
       success: true,
-      message: 'Thank you for your message! I\'ll get back to you within 24 hours.',
-      debug: {
-        database: dbSaved ? 'saved' : 'failed',
-        email: emailSent ? 'sent' : 'failed',
-        details: responseMessage.join(', ')
-      }
+      message: 'Message received and logged. You will be contacted shortly.',
+      note: 'Email delivery is being configured. Your message has been recorded.'
     }), {
       status: 200,
       headers: { 
@@ -216,7 +184,7 @@ User Agent: ${userAgent}
     });
     
   } catch (error) {
-    console.error('❌ Contact form error:', error);
+    console.error('Contact form error:', error);
     
     return new Response(JSON.stringify({ 
       error: 'Failed to process message',
@@ -239,4 +207,3 @@ export async function onRequestOptions() {
     },
   });
 }
-
