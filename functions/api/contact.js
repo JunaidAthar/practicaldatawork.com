@@ -12,10 +12,10 @@ export async function onRequestPost(context) {
     // Parse the form data
     const data = await request.json();
     
-    // Validate required fields
-    if (!data.name || !data.email || !data.message) {
+    // Validate required fields (only name and email are required)
+    if (!data.name || !data.email) {
       return new Response(JSON.stringify({ 
-        error: 'Missing required fields' 
+        error: 'Name and email are required fields' 
       }), {
         status: 400,
         headers: { 'Content-Type': 'application/json' }
@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
           data.company || null,
           data.service || null,
           data.budget || null,
-          data.message,
+          data.message || null,
           ipAddress,
           userAgent,
           timestamp,
@@ -71,7 +71,7 @@ Service Interest: ${data.service || 'Not specified'}
 Budget Range: ${data.budget || 'Not specified'}
 
 Message:
-${data.message}
+${data.message || 'No message provided'}
 
 ---
 Submitted: ${new Date().toLocaleString('en-US', { timeZone: 'America/Chicago' })}
@@ -125,7 +125,7 @@ User Agent: ${userAgent}
       </div>
       <div class="message-box">
         <div class="label">📝 Message:</div>
-        <div class="value" style="white-space: pre-wrap;">${data.message}</div>
+        <div class="value" style="white-space: pre-wrap;">${data.message || 'No message provided'}</div>
       </div>
       <div style="text-align: center;">
         <a href="mailto:${data.email}" class="cta">Reply to ${data.name}</a>
