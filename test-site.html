@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Site Diagnostics - Practical Data Work</title>
+  <link rel="icon" type="image/x-icon" href="/favicon.ico">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 20px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      margin-bottom: 20px;
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+    h2 {
+      color: #1e40af;
+      margin-top: 30px;
+      margin-bottom: 15px;
+      border-bottom: 2px solid #e5e7eb;
+      padding-bottom: 10px;
+    }
+    .status {
+      display: inline-block;
+      padding: 5px 10px;
+      border-radius: 4px;
+      font-weight: bold;
+      margin-left: 10px;
+    }
+    .status.pass {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    .status.fail {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+    .status.pending {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    .test-item {
+      padding: 15px;
+      margin: 10px 0;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+      background: #f9fafb;
+    }
+    .test-button {
+      background: #2563eb;
+      color: white;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      margin: 5px;
+    }
+    .test-button:hover {
+      background: #1d4ed8;
+    }
+    .test-button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .log {
+      background: #1f2937;
+      color: #10b981;
+      padding: 15px;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin-top: 10px;
+      max-height: 300px;
+      overflow-y: auto;
+      font-size: 12px;
+    }
+    .log div {
+      margin: 3px 0;
+      padding: 3px;
+    }
+    .log .error {
+      color: #ef4444;
+    }
+    .log .success {
+      color: #10b981;
+    }
+    .log .info {
+      color: #60a5fa;
+    }
+    a {
+      color: #2563eb;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .link-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 10px;
+      margin: 15px 0;
+    }
+    .link-item {
+      padding: 10px;
+      background: white;
+      border: 1px solid #e5e7eb;
+      border-radius: 4px;
+    }
+    .form-test {
+      background: #f9fafb;
+      padding: 20px;
+      border-radius: 4px;
+      border: 1px solid #e5e7eb;
+    }
+    .form-test input,
+    .form-test textarea,
+    .form-test select {
+      width: 100%;
+      padding: 10px;
+      margin: 5px 0 15px 0;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-family: Arial, sans-serif;
+    }
+    .form-test label {
+      font-weight: bold;
+      color: #374151;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🔍 Site Diagnostics</h1>
+    <p>Testing all site functionality for Practical Data Work</p>
+    
+    <h2>1. Favicon Test <span id="favicon-status" class="status pending">Testing...</span></h2>
+    <div class="test-item">
+      <p><strong>Current favicon in browser tab:</strong> Look at the browser tab above</p>
+      <p><strong>Expected:</strong> Blue "P" logo or icon</p>
+      <p><strong>Files that should exist:</strong></p>
+      <ul>
+        <li>✅ /favicon.ico (5.1 KB)</li>
+        <li>✅ /favicon-16x16.png (624 B)</li>
+        <li>✅ /favicon-32x32.png (1.3 KB)</li>
+        <li>✅ /apple-touch-icon.png (7.3 KB)</li>
+      </ul>
+      <button class="test-button" onclick="testFavicon()">Test Favicon Loading</button>
+      <button class="test-button" onclick="clearCache()">Clear Cache & Reload</button>
+      <div id="favicon-log" class="log" style="display:none;"></div>
+    </div>
+
+    <h2>2. Blog Links Test <span id="blog-status" class="status pending">Testing...</span></h2>
+    <div class="test-item">
+      <p><strong>Testing clean URLs (without .html extension)</strong></p>
+      <div class="link-list" id="blog-links">
+        <!-- Will be populated by JavaScript -->
+      </div>
+      <button class="test-button" onclick="testAllBlogLinks()">Test All Blog Links</button>
+      <div id="blog-log" class="log" style="display:none;"></div>
+    </div>
+
+    <h2>3. Contact Form Test <span id="form-status" class="status pending">Not Tested</span></h2>
+    <div class="test-item">
+      <p><strong>Testing serverless function at /api/contact</strong></p>
+      
+      <div class="form-test">
+        <form id="test-form">
+          <label>Name *</label>
+          <input type="text" name="name" value="Test User" required>
+          
+          <label>Email *</label>
+          <input type="email" name="email" value="test@example.com" required>
+          
+          <label>Company</label>
+          <input type="text" name="company" value="Test Company">
+          
+          <label>Service Interest</label>
+          <select name="service">
+            <option value="Data Pipeline Modernization">Data Pipeline Modernization</option>
+            <option value="Data Governance">Data Governance</option>
+            <option value="Cloud Strategy">Cloud Strategy</option>
+          </select>
+          
+          <label>Budget Range</label>
+          <select name="budget">
+            <option value="$2,500-$5,000/mo">$2,500-$5,000/mo</option>
+            <option value="$5,000-$10,000/mo">$5,000-$10,000/mo</option>
+            <option value="$10,000+/mo">$10,000+/mo</option>
+          </select>
+          
+          <label>Message *</label>
+          <textarea name="message" rows="4" required>This is a test message from the diagnostics page.</textarea>
+          
+          <button type="submit" class="test-button">Send Test Form</button>
+        </form>
+      </div>
+      
+      <div id="form-log" class="log" style="display:none;"></div>
+    </div>
+
+    <h2>4. Quick Links</h2>
+    <div class="test-item">
+      <ul>
+        <li><a href="/">Homepage</a></li>
+        <li><a href="/blog">Blog Index</a></li>
+        <li><a href="/pixel-test.html">Pixel Test Page</a></li>
+        <li><a href="https://business.facebook.com/events_manager2" target="_blank">Facebook Events Manager</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <script>
+    const blogPosts = [
+      { name: 'Modern Data Stack', url: '/blog/modern-data-stack' },
+      { name: 'MLOps Fundamentals', url: '/blog/mlops-fundamentals' },
+      { name: 'Data Quality', url: '/blog/data-quality' },
+      { name: 'Data Engineering 2024', url: '/blog/data-engineering-2024' },
+      { name: 'AI in Data Analytics', url: '/blog/ai-data-analytics' },
+      { name: 'Data Governance', url: '/blog/data-governance' },
+      { name: 'Cloud Data Platforms', url: '/blog/cloud-data-platforms' },
+      { name: 'Data Architecture', url: '/blog/data-architecture' }
+    ];
+
+    // Populate blog links
+    const blogLinksContainer = document.getElementById('blog-links');
+    blogPosts.forEach(post => {
+      const linkItem = document.createElement('div');
+      linkItem.className = 'link-item';
+      linkItem.innerHTML = `
+        <a href="${post.url}" target="_blank">${post.name}</a>
+        <span id="status-${post.url.replace(/\//g, '-')}" style="float: right;">⏳</span>
+      `;
+      blogLinksContainer.appendChild(linkItem);
+    });
+
+    function log(containerId, message, type = 'info') {
+      const logDiv = document.getElementById(containerId);
+      logDiv.style.display = 'block';
+      const entry = document.createElement('div');
+      entry.className = type;
+      const timestamp = new Date().toLocaleTimeString();
+      entry.textContent = `[${timestamp}] ${message}`;
+      logDiv.insertBefore(entry, logDiv.firstChild);
+    }
+
+    async function testFavicon() {
+      log('favicon-log', 'Testing favicon files...', 'info');
+      
+      const faviconFiles = [
+        '/favicon.ico',
+        '/favicon-16x16.png',
+        '/favicon-32x32.png',
+        '/apple-touch-icon.png',
+        '/images/logo.svg'
+      ];
+
+      let allPass = true;
+      
+      for (const file of faviconFiles) {
+        try {
+          const response = await fetch(file, { method: 'HEAD' });
+          if (response.ok) {
+            log('favicon-log', `✅ ${file} - Found (${response.status})`, 'success');
+          } else {
+            log('favicon-log', `❌ ${file} - Not found (${response.status})`, 'error');
+            allPass = false;
+          }
+        } catch (error) {
+          log('favicon-log', `❌ ${file} - Error: ${error.message}`, 'error');
+          allPass = false;
+        }
+      }
+
+      const statusSpan = document.getElementById('favicon-status');
+      if (allPass) {
+        statusSpan.className = 'status pass';
+        statusSpan.textContent = 'All Files Found';
+        log('favicon-log', '✅ All favicon files exist. If you don\'t see the icon, try Ctrl+Shift+R (hard refresh)', 'success');
+      } else {
+        statusSpan.className = 'status fail';
+        statusSpan.textContent = 'Some Files Missing';
+      }
+    }
+
+    function clearCache() {
+      log('favicon-log', 'Clearing cache and reloading...', 'info');
+      setTimeout(() => {
+        location.reload(true);
+      }, 500);
+    }
+
+    async function testBlogLink(post) {
+      const statusId = `status-${post.url.replace(/\//g, '-')}`;
+      const statusSpan = document.getElementById(statusId);
+      
+      try {
+        const response = await fetch(post.url, { method: 'HEAD' });
+        
+        if (response.ok) {
+          statusSpan.textContent = '✅';
+          log('blog-log', `✅ ${post.name} (${post.url}) - ${response.status}`, 'success');
+          return true;
+        } else if (response.status === 308 || response.status === 301) {
+          statusSpan.textContent = '⚠️';
+          log('blog-log', `⚠️ ${post.name} - Redirect ${response.status} to ${response.headers.get('location')}`, 'error');
+          return false;
+        } else {
+          statusSpan.textContent = '❌';
+          log('blog-log', `❌ ${post.name} - Error ${response.status}`, 'error');
+          return false;
+        }
+      } catch (error) {
+        statusSpan.textContent = '❌';
+        log('blog-log', `❌ ${post.name} - ${error.message}`, 'error');
+        return false;
+      }
+    }
+
+    async function testAllBlogLinks() {
+      log('blog-log', 'Testing all blog links...', 'info');
+      const statusSpan = document.getElementById('blog-status');
+      statusSpan.className = 'status pending';
+      statusSpan.textContent = 'Testing...';
+      
+      let allPass = true;
+      
+      for (const post of blogPosts) {
+        const result = await testBlogLink(post);
+        if (!result) allPass = false;
+        await new Promise(resolve => setTimeout(resolve, 200)); // Small delay between requests
+      }
+      
+      if (allPass) {
+        statusSpan.className = 'status pass';
+        statusSpan.textContent = 'All Links Working';
+        log('blog-log', '✅ All blog links are working correctly!', 'success');
+      } else {
+        statusSpan.className = 'status fail';
+        statusSpan.textContent = 'Some Links Broken';
+        log('blog-log', '❌ Some blog links have issues. Check the logs above.', 'error');
+      }
+    }
+
+    // Contact form test
+    document.getElementById('test-form').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalText = submitBtn.textContent;
+      
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      log('form-log', 'Submitting test form to /api/contact...', 'info');
+      
+      const statusSpan = document.getElementById('form-status');
+      statusSpan.className = 'status pending';
+      statusSpan.textContent = 'Testing...';
+      
+      try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        log('form-log', `Data: ${JSON.stringify(data, null, 2)}`, 'info');
+        
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+        
+        log('form-log', `Response status: ${response.status}`, 'info');
+        
+        const responseText = await response.text();
+        log('form-log', `Response body: ${responseText}`, 'info');
+        
+        let responseData;
+        try {
+          responseData = JSON.parse(responseText);
+        } catch (e) {
+          responseData = { raw: responseText };
+        }
+        
+        if (response.ok) {
+          statusSpan.className = 'status pass';
+          statusSpan.textContent = 'Working';
+          log('form-log', `✅ Form submitted successfully!`, 'success');
+          log('form-log', `Message: ${responseData.message || 'Success'}`, 'success');
+          if (responseData.note) {
+            log('form-log', `Note: ${responseData.note}`, 'info');
+          }
+        } else {
+          statusSpan.className = 'status fail';
+          statusSpan.textContent = 'Error';
+          log('form-log', `❌ Form submission failed: ${response.status}`, 'error');
+          log('form-log', `Error: ${responseData.error || responseText}`, 'error');
+        }
+      } catch (error) {
+        statusSpan.className = 'status fail';
+        statusSpan.textContent = 'Error';
+        log('form-log', `❌ Network error: ${error.message}`, 'error');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalText;
+      }
+    });
+
+    // Auto-test on load
+    window.addEventListener('load', () => {
+      setTimeout(() => {
+        testFavicon();
+        testAllBlogLinks();
+      }, 500);
+    });
+  </script>
+</body>
+</html>
+
