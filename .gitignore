@@ -1,0 +1,36 @@
+# Marketing campaigns and sensitive data
+marketing/
+*.env
+.env.local
+.env.*.local
+
+# API credentials and tokens
+*_credentials.json
+*_token.json
+config/secrets/
+
+# Campaign data and reports
+campaign_data/
+reports/
+analytics/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
