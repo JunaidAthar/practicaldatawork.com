@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Form Test - Practical Data Work</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background: #f5f5f5;
+    }
+    .container {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    h1 {
+      color: #2563eb;
+      margin-bottom: 10px;
+    }
+    .status {
+      padding: 10px;
+      margin: 20px 0;
+      border-radius: 4px;
+      display: none;
+    }
+    .status.success {
+      background: #d1fae5;
+      color: #065f46;
+      border: 1px solid #10b981;
+    }
+    .status.error {
+      background: #fee2e2;
+      color: #991b1b;
+      border: 1px solid #ef4444;
+    }
+    .form-group {
+      margin-bottom: 15px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+      color: #333;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+    button {
+      background: #2563eb;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+      width: 100%;
+    }
+    button:hover {
+      background: #1d4ed8;
+    }
+    button:disabled {
+      background: #9ca3af;
+      cursor: not-allowed;
+    }
+    .note {
+      background: #fef3c7;
+      padding: 15px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      border-left: 4px solid #f59e0b;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Contact Form Test</h1>
+    <p>Test the contact form functionality before deploying.</p>
+    
+    <div class="note">
+      <strong>Note:</strong> This test sends a real email to junaid.athar@gmail.com
+    </div>
+    
+    <div id="status" class="status"></div>
+    
+    <form id="testForm">
+      <div class="form-group">
+        <label for="name">Full Name *</label>
+        <input type="text" id="name" name="name" required value="Test User">
+      </div>
+      
+      <div class="form-group">
+        <label for="email">Email *</label>
+        <input type="email" id="email" name="email" required value="test@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="company">Company</label>
+        <input type="text" id="company" name="company" value="Test Company Inc">
+      </div>
+      
+      <div class="form-group">
+        <label for="service">Service Interest</label>
+        <select id="service" name="service">
+          <option value="">Select a service</option>
+          <option value="data-engineering" selected>Data Engineering</option>
+          <option value="data-analytics">Data Analytics</option>
+          <option value="mlops">MLOps</option>
+          <option value="data-governance">Data Governance</option>
+          <option value="consulting">General Consulting</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="budget">Budget Range</label>
+        <select id="budget" name="budget">
+          <option value="">Select budget range</option>
+          <option value="under-5k">Under $5,000</option>
+          <option value="5k-10k" selected>$5,000 - $10,000</option>
+          <option value="10k-25k">$10,000 - $25,000</option>
+          <option value="25k-plus">$25,000+</option>
+        </select>
+      </div>
+      
+      <div class="form-group">
+        <label for="message">Message *</label>
+        <textarea id="message" name="message" rows="4" required>This is a test message from the contact form test page.</textarea>
+      </div>
+      
+      <button type="submit">Send Test Message</button>
+    </form>
+  </div>
+  
+  <script>
+    document.getElementById('testForm').addEventListener('submit', async function(e) {
+      e.preventDefault();
+      
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const statusDiv = document.getElementById('status');
+      
+      // Disable button and show loading
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      statusDiv.style.display = 'none';
+      
+      try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+        
+        const result = await response.json();
+        
+        if (response.ok) {
+          statusDiv.className = 'status success';
+          statusDiv.textContent = '✓ Success! Email sent to junaid.athar@gmail.com';
+          statusDiv.style.display = 'block';
+          form.reset();
+        } else {
+          throw new Error(result.error || 'Failed to send');
+        }
+      } catch (error) {
+        statusDiv.className = 'status error';
+        statusDiv.textContent = '✗ Error: ' + error.message;
+        statusDiv.style.display = 'block';
+        console.error('Error:', error);
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Send Test Message';
+      }
+    });
+  </script>
+</body>
+</html>
+

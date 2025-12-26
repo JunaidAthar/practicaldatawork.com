@@ -559,7 +559,14 @@
               <div class="contact-item__icon">📧</div>
               <div class="contact-item__content">
                 <h4>Email</h4>
-                <p>hello@practicaldatawork.com</p>
+                <p><a href="mailto:junaid.athar@gmail.com">junaid.athar@gmail.com</a></p>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-item__icon">📞</div>
+              <div class="contact-item__content">
+                <h4>Phone</h4>
+                <p><a href="tel:+18472248510">847-224-8510</a></p>
               </div>
             </div>
             <div class="contact-item">
@@ -579,7 +586,7 @@
           </div>
         </div>
         <div class="contact__form">
-          <form class="form" action="#" method="POST">
+          <form class="form" id="contact-form" action="/api/contact" method="POST">
             <div class="form__group">
               <label for="name" class="form__label">Full Name</label>
               <input type="text" id="name" name="name" class="form__input" required>
@@ -658,7 +665,8 @@
         <div class="footer__section">
           <h4 class="footer__title">Contact</h4>
           <ul class="footer__links">
-            <li><a href="mailto:hello@practicaldatawork.com">hello@practicaldatawork.com</a></li>
+            <li><a href="mailto:junaid.athar@gmail.com">junaid.athar@gmail.com</a></li>
+            <li><a href="tel:+18472248510">847-224-8510</a></li>
             <li><a href="#contact">Get Started</a></li>
             <li><a href="#pricing">Pricing</a></li>
           </ul>
@@ -695,9 +703,42 @@
     });
 
     // Form submission
-    document.querySelector('.form').addEventListener('submit', function(e) {
+    document.querySelector('.form').addEventListener('submit', async function(e) {
       e.preventDefault();
-      alert('Thank you for your message! We\'ll get back to you within 24 hours.');
+      
+      const form = e.target;
+      const submitBtn = form.querySelector('button[type="submit"]');
+      const originalBtnText = submitBtn.textContent;
+      
+      // Disable button and show loading state
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending...';
+      
+      try {
+        const formData = new FormData(form);
+        const data = Object.fromEntries(formData.entries());
+        
+        const response = await fetch('/api/contact', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify(data)
+        });
+        
+        if (response.ok) {
+          alert('Thank you for your message! I\'ll get back to you within 24 hours.');
+          form.reset();
+        } else {
+          throw new Error('Failed to send message');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        alert('Sorry, there was an error sending your message. Please email me directly at junaid.athar@gmail.com');
+      } finally {
+        submitBtn.disabled = false;
+        submitBtn.textContent = originalBtnText;
+      }
     });
 
     // Add scroll effect to header
