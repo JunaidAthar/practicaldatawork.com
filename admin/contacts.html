@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Contact Management - Practical Data Work</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      background: #f9fafb;
+      color: #111827;
+    }
+    
+    .header {
+      background: #2563eb;
+      color: white;
+      padding: 20px 30px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+    
+    .header h1 {
+      font-size: 24px;
+      margin-bottom: 5px;
+    }
+    
+    .header p {
+      opacity: 0.9;
+      font-size: 14px;
+    }
+    
+    .container {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+    
+    .login-container {
+      max-width: 400px;
+      margin: 100px auto;
+      background: white;
+      padding: 40px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    
+    .login-container h2 {
+      margin-bottom: 20px;
+      color: #2563eb;
+    }
+    
+    .login-container input {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      font-size: 14px;
+    }
+    
+    .login-container button {
+      width: 100%;
+      padding: 12px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+    
+    .login-container button:hover {
+      background: #1d4ed8;
+    }
+    
+    .error-message {
+      background: #fee2e2;
+      color: #991b1b;
+      padding: 12px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+    }
+    
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 30px;
+    }
+    
+    .stat-card {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    
+    .stat-card h3 {
+      font-size: 14px;
+      color: #6b7280;
+      margin-bottom: 8px;
+    }
+    
+    .stat-card .value {
+      font-size: 32px;
+      font-weight: bold;
+      color: #2563eb;
+    }
+    
+    .toolbar {
+      background: white;
+      padding: 20px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      display: flex;
+      gap: 15px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    
+    .toolbar input, .toolbar select {
+      padding: 10px 15px;
+      border: 1px solid #d1d5db;
+      border-radius: 4px;
+      font-size: 14px;
+    }
+    
+    .toolbar input[type="search"] {
+      flex: 1;
+      min-width: 250px;
+    }
+    
+    .toolbar button {
+      padding: 10px 20px;
+      background: #2563eb;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 14px;
+    }
+    
+    .toolbar button:hover {
+      background: #1d4ed8;
+    }
+    
+    .contacts-table {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      overflow: hidden;
+    }
+    
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    
+    th {
+      background: #f9fafb;
+      padding: 15px;
+      text-align: left;
+      font-weight: 600;
+      color: #374151;
+      font-size: 13px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 2px solid #e5e7eb;
+    }
+    
+    td {
+      padding: 15px;
+      border-bottom: 1px solid #f3f4f6;
+      font-size: 14px;
+    }
+    
+    tr:hover {
+      background: #f9fafb;
+    }
+    
+    .status-badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 12px;
+      font-size: 12px;
+      font-weight: 600;
+    }
+    
+    .status-new {
+      background: #dbeafe;
+      color: #1e40af;
+    }
+    
+    .status-contacted {
+      background: #fef3c7;
+      color: #92400e;
+    }
+    
+    .status-converted {
+      background: #d1fae5;
+      color: #065f46;
+    }
+    
+    .status-closed {
+      background: #f3f4f6;
+      color: #6b7280;
+    }
+    
+    .action-btn {
+      padding: 6px 12px;
+      margin: 0 4px;
+      background: #e5e7eb;
+      color: #374151;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 12px;
+    }
+    
+    .action-btn:hover {
+      background: #d1d5db;
+    }
+    
+    .action-btn.primary {
+      background: #2563eb;
+      color: white;
+    }
+    
+    .action-btn.primary:hover {
+      background: #1d4ed8;
+    }
+    
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+    
+    .modal.visible {
+      display: flex;
+    }
+    
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 8px;
+      max-width: 600px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+    
+    .modal-content h2 {
+      margin-bottom: 20px;
+      color: #1f2937;
+    }
+    
+    .modal-content .field {
+      margin-bottom: 15px;
+    }
+    
+    .modal-content .label {
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 5px;
+      display: block;
+    }
+    
+    .modal-content .value {
+      color: #6b7280;
+      line-height: 1.6;
+    }
+    
+    .modal-actions {
+      margin-top: 30px;
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+    }
+    
+    .loading {
+      text-align: center;
+      padding: 40px;
+      color: #6b7280;
+    }
+    
+    .empty-state {
+      text-align: center;
+      padding: 60px 20px;
+      color: #6b7280;
+    }
+    
+    .empty-state h3 {
+      margin-bottom: 10px;
+      color: #374151;
+    }
+    
+    .pagination {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-top: 20px;
+      padding: 20px;
+    }
+    
+    .pagination button {
+      padding: 8px 16px;
+      border: 1px solid #d1d5db;
+      background: white;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    
+    .pagination button:hover:not(:disabled) {
+      background: #f3f4f6;
+    }
+    
+    .pagination button:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+    
+    .pagination .current {
+      padding: 8px 16px;
+      color: #6b7280;
+    }
+    
+    @media (max-width: 768px) {
+      .container {
+        padding: 15px;
+      }
+      
+      .stats {
+        grid-template-columns: 1fr;
+      }
+      
+      .toolbar {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      
+      .toolbar input[type="search"] {
+        width: 100%;
+      }
+      
+      .contacts-table {
+        overflow-x: auto;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Login Screen -->
+  <div id="login-screen" class="login-container">
+    <h2>🔐 Admin Login</h2>
+    <div id="login-error" class="error-message" style="display: none;"></div>
+    <input type="password" id="password-input" placeholder="Enter admin password" />
+    <button onclick="login()">Login</button>
+    <p style="margin-top: 20px; font-size: 12px; color: #6b7280;">
+      Default password: <code>practicaldatawork2024</code><br>
+      (Change this in functions/api/contacts-list.js)
+    </p>
+  </div>
+
+  <!-- Main App (hidden until logged in) -->
+  <div id="main-app" style="display: none;">
+    <div class="header">
+      <h1>📋 Contact Management</h1>
+      <p>Practical Data Work - Admin Panel</p>
+    </div>
+
+    <div class="container">
+      <!-- Stats -->
+      <div class="stats">
+        <div class="stat-card">
+          <h3>Total Contacts</h3>
+          <div class="value" id="stat-total">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>New</h3>
+          <div class="value" id="stat-new">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>Contacted</h3>
+          <div class="value" id="stat-contacted">-</div>
+        </div>
+        <div class="stat-card">
+          <h3>Converted</h3>
+          <div class="value" id="stat-converted">-</div>
+        </div>
+      </div>
+
+      <!-- Toolbar -->
+      <div class="toolbar">
+        <input type="search" id="search-input" placeholder="Search contacts..." />
+        <select id="status-filter">
+          <option value="">All Status</option>
+          <option value="new">New</option>
+          <option value="contacted">Contacted</option>
+          <option value="converted">Converted</option>
+          <option value="closed">Closed</option>
+        </select>
+        <button onclick="loadContacts()">🔄 Refresh</button>
+        <button onclick="exportCSV()">📥 Export CSV</button>
+      </div>
+
+      <!-- Contacts Table -->
+      <div class="contacts-table">
+        <div id="loading" class="loading">
+          Loading contacts...
+        </div>
+        <div id="empty-state" class="empty-state" style="display: none;">
+          <h3>No contacts yet</h3>
+          <p>Contact form submissions will appear here</p>
+        </div>
+        <table id="contacts-table" style="display: none;">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Company</th>
+              <th>Service</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="contacts-tbody">
+          </tbody>
+        </table>
+        <div class="pagination" id="pagination" style="display: none;">
+          <button onclick="prevPage()" id="prev-btn">← Previous</button>
+          <span class="current" id="page-info">Page 1</span>
+          <button onclick="nextPage()" id="next-btn">Next →</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Contact Detail Modal -->
+  <div id="contact-modal" class="modal">
+    <div class="modal-content">
+      <h2>Contact Details</h2>
+      <div id="contact-details"></div>
+      <div class="modal-actions">
+        <button class="action-btn" onclick="closeModal()">Close</button>
+        <button class="action-btn primary" onclick="emailContact()">📧 Email</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let authToken = '';
+    let contacts = [];
+    let currentPage = 1;
+    let totalContacts = 0;
+    const perPage = 50;
+    let currentContact = null;
+
+    // Login
+    function login() {
+      const password = document.getElementById('password-input').value;
+      authToken = password;
+      
+      // Try to load contacts to verify password
+      loadContacts().then(success => {
+        if (success) {
+          document.getElementById('login-screen').style.display = 'none';
+          document.getElementById('main-app').style.display = 'block';
+          localStorage.setItem('adminToken', password);
+        } else {
+          document.getElementById('login-error').style.display = 'block';
+          document.getElementById('login-error').textContent = '❌ Invalid password';
+        }
+      });
+    }
+
+    // Check for saved token
+    window.addEventListener('load', () => {
+      const savedToken = localStorage.getItem('adminToken');
+      if (savedToken) {
+        authToken = savedToken;
+        document.getElementById('password-input').value = savedToken;
+        login();
+      }
+    });
+
+    // Load contacts
+    async function loadContacts() {
+      const search = document.getElementById('search-input')?.value || '';
+      const status = document.getElementById('status-filter')?.value || '';
+      
+      const params = new URLSearchParams({
+        limit: perPage,
+        offset: (currentPage - 1) * perPage,
+      });
+      
+      if (search) params.append('search', search);
+      if (status) params.append('status', status);
+      
+      try {
+        const response = await fetch(`/api/contacts-list?${params}`, {
+          headers: {
+            'Authorization': `Bearer ${authToken}`
+          }
+        });
+        
+        if (!response.ok) {
+          if (response.status === 401) {
+            return false;
+          }
+          throw new Error('Failed to load contacts');
+        }
+        
+        const data = await response.json();
+        contacts = data.contacts;
+        totalContacts = data.total;
+        
+        renderContacts();
+        updateStats();
+        return true;
+      } catch (error) {
+        console.error('Error loading contacts:', error);
+        return false;
+      }
+    }
+
+    // Render contacts table
+    function renderContacts() {
+      document.getElementById('loading').style.display = 'none';
+      
+      if (contacts.length === 0) {
+        document.getElementById('empty-state').style.display = 'block';
+        document.getElementById('contacts-table').style.display = 'none';
+        document.getElementById('pagination').style.display = 'none';
+        return;
+      }
+      
+      document.getElementById('empty-state').style.display = 'none';
+      document.getElementById('contacts-table').style.display = 'table';
+      document.getElementById('pagination').style.display = 'flex';
+      
+      const tbody = document.getElementById('contacts-tbody');
+      tbody.innerHTML = '';
+      
+      contacts.forEach(contact => {
+        const tr = document.createElement('tr');
+        const date = new Date(contact.created_at).toLocaleDateString('en-US', {
+          month: 'short',
+          day: 'numeric',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit'
+        });
+        
+        tr.innerHTML = `
+          <td>${date}</td>
+          <td><strong>${escapeHtml(contact.name)}</strong></td>
+          <td><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></td>
+          <td>${escapeHtml(contact.company || '-')}</td>
+          <td>${escapeHtml(contact.service || '-')}</td>
+          <td><span class="status-badge status-${contact.status}">${contact.status}</span></td>
+          <td>
+            <button class="action-btn primary" onclick="viewContact(${contact.id})">View</button>
+            <button class="action-btn" onclick="emailContact(${contact.id})">Email</button>
+          </td>
+        `;
+        
+        tbody.appendChild(tr);
+      });
+      
+      // Update pagination
+      const totalPages = Math.ceil(totalContacts / perPage);
+      document.getElementById('page-info').textContent = `Page ${currentPage} of ${totalPages}`;
+      document.getElementById('prev-btn').disabled = currentPage === 1;
+      document.getElementById('next-btn').disabled = currentPage >= totalPages;
+    }
+
+    // Update stats
+    async function updateStats() {
+      // Calculate from loaded contacts (simplified)
+      const stats = contacts.reduce((acc, c) => {
+        acc[c.status] = (acc[c.status] || 0) + 1;
+        return acc;
+      }, {});
+      
+      document.getElementById('stat-total').textContent = totalContacts;
+      document.getElementById('stat-new').textContent = stats.new || 0;
+      document.getElementById('stat-contacted').textContent = stats.contacted || 0;
+      document.getElementById('stat-converted').textContent = stats.converted || 0;
+    }
+
+    // View contact details
+    function viewContact(id) {
+      const contact = contacts.find(c => c.id === id);
+      if (!contact) return;
+      
+      currentContact = contact;
+      const date = new Date(contact.created_at).toLocaleString('en-US', {
+        dateStyle: 'full',
+        timeStyle: 'short'
+      });
+      
+      const details = `
+        <div class="field">
+          <div class="label">Name:</div>
+          <div class="value">${escapeHtml(contact.name)}</div>
+        </div>
+        <div class="field">
+          <div class="label">Email:</div>
+          <div class="value"><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></div>
+        </div>
+        <div class="field">
+          <div class="label">Company:</div>
+          <div class="value">${escapeHtml(contact.company || 'Not provided')}</div>
+        </div>
+        <div class="field">
+          <div class="label">Service Interest:</div>
+          <div class="value">${escapeHtml(contact.service || 'Not specified')}</div>
+        </div>
+        <div class="field">
+          <div class="label">Budget Range:</div>
+          <div class="value">${escapeHtml(contact.budget || 'Not specified')}</div>
+        </div>
+        <div class="field">
+          <div class="label">Message:</div>
+          <div class="value" style="white-space: pre-wrap;">${escapeHtml(contact.message)}</div>
+        </div>
+        <div class="field">
+          <div class="label">Submitted:</div>
+          <div class="value">${date}</div>
+        </div>
+        <div class="field">
+          <div class="label">IP Address:</div>
+          <div class="value">${escapeHtml(contact.ip_address || 'Unknown')}</div>
+        </div>
+      `;
+      
+      document.getElementById('contact-details').innerHTML = details;
+      document.getElementById('contact-modal').classList.add('visible');
+    }
+
+    // Close modal
+    function closeModal() {
+      document.getElementById('contact-modal').classList.remove('visible');
+    }
+
+    // Email contact
+    function emailContact(id) {
+      const contact = id ? contacts.find(c => c.id === id) : currentContact;
+      if (!contact) return;
+      
+      const subject = encodeURIComponent(`Re: Your inquiry about ${contact.service || 'our services'}`);
+      const body = encodeURIComponent(`Hi ${contact.name},\n\nThank you for reaching out through Practical Data Work.\n\n`);
+      window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
+    }
+
+    // Pagination
+    function prevPage() {
+      if (currentPage > 1) {
+        currentPage--;
+        loadContacts();
+      }
+    }
+
+    function nextPage() {
+      const totalPages = Math.ceil(totalContacts / perPage);
+      if (currentPage < totalPages) {
+        currentPage++;
+        loadContacts();
+      }
+    }
+
+    // Export to CSV
+    function exportCSV() {
+      const headers = ['Date', 'Name', 'Email', 'Company', 'Service', 'Budget', 'Status', 'Message'];
+      const rows = contacts.map(c => [
+        new Date(c.created_at).toLocaleString(),
+        c.name,
+        c.email,
+        c.company || '',
+        c.service || '',
+        c.budget || '',
+        c.status,
+        c.message.replace(/"/g, '""')
+      ]);
+      
+      const csv = [
+        headers.join(','),
+        ...rows.map(row => row.map(cell => `"${cell}"`).join(','))
+      ].join('\n');
+      
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `contacts-${new Date().toISOString().split('T')[0]}.csv`;
+      a.click();
+      URL.revokeObjectURL(url);
+    }
+
+    // Utility
+    function escapeHtml(text) {
+      const div = document.createElement('div');
+      div.textContent = text;
+      return div.innerHTML;
+    }
+
+    // Event listeners
+    document.getElementById('search-input')?.addEventListener('input', debounce(() => {
+      currentPage = 1;
+      loadContacts();
+    }, 500));
+
+    document.getElementById('status-filter')?.addEventListener('change', () => {
+      currentPage = 1;
+      loadContacts();
+    });
+
+    document.getElementById('password-input')?.addEventListener('keypress', (e) => {
+      if (e.key === 'Enter') login();
+    });
+
+    function debounce(func, wait) {
+      let timeout;
+      return function(...args) {
+        clearTimeout(timeout);
+        timeout = setTimeout(() => func.apply(this, args), wait);
+      };
+    }
+
+    // Close modal on outside click
+    document.getElementById('contact-modal').addEventListener('click', (e) => {
+      if (e.target.id === 'contact-modal') closeModal();
+    });
+  </script>
+</body>
+</html>
+
