@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <defs>
+    <linearGradient id="gradient1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2563eb;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#1d4ed8;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="100" cy="100" r="95" fill="url(#gradient1)"/>
+  
+  <!-- Data nodes network design -->
+  <!-- Large center node -->
+  <circle cx="100" cy="100" r="18" fill="white" opacity="0.9"/>
+  
+  <!-- Connecting lines -->
+  <line x1="100" y1="100" x2="65" y2="65" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="135" y2="65" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="65" y2="135" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="135" y2="135" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="100" y2="50" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="150" y2="100" stroke="white" stroke-width="3" opacity="0.6"/>
+  <line x1="100" y1="100" x2="50" y2="100" stroke="white" stroke-width="3" opacity="0.6"/>
+  
+  <!-- Outer nodes -->
+  <circle cx="65" cy="65" r="12" fill="white" opacity="0.8"/>
+  <circle cx="135" cy="65" r="12" fill="white" opacity="0.8"/>
+  <circle cx="65" cy="135" r="12" fill="white" opacity="0.8"/>
+  <circle cx="135" cy="135" r="12" fill="white" opacity="0.8"/>
+  <circle cx="100" cy="50" r="12" fill="white" opacity="0.8"/>
+  <circle cx="150" cy="100" r="12" fill="white" opacity="0.8"/>
+  <circle cx="50" cy="100" r="12" fill="white" opacity="0.8"/>
+  
+  <!-- P letter in center (subtle) -->
+  <text x="100" y="110" font-family="Arial, sans-serif" font-size="24" font-weight="bold" fill="#2563eb" text-anchor="middle">P</text>
+</svg>
+
