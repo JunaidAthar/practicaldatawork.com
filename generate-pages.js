@@ -253,7 +253,8 @@ const FAQS = {
 
 // ─── SHARED HTML COMPONENTS ─────────────────────────────────────────────────
 
-function head(title, description, keywords, cssDepth = '../') {
+function head(title, description, keywords, cssDepth = '../', canonical = '', extraSchema = '') {
+  const canonicalURL = canonical || '';
   return `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -263,9 +264,12 @@ function head(title, description, keywords, cssDepth = '../') {
   <meta name="description" content="${description}">
   <meta name="keywords" content="${keywords}">
   <meta name="robots" content="index, follow">
+  ${canonicalURL ? `<link rel="canonical" href="${canonicalURL}">` : ''}
   <meta property="og:title" content="${title} | Practical Data Work">
   <meta property="og:description" content="${description}">
+  <meta property="og:url" content="${canonicalURL}">
   <meta property="og:type" content="website">
+  <meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
   <link rel="icon" type="image/x-icon" href="${cssDepth}favicon.ico">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -279,10 +283,85 @@ function head(title, description, keywords, cssDepth = '../') {
     "name": "Practical Data Work",
     "url": "https://practicaldatawork.com",
     "description": "${description}",
-    "serviceType": "${title}"
+    "serviceType": "${title}",
+    "areaServed": "US",
+    "image": "https://practicaldatawork.com/images/og-image.jpg",
+    "priceRange": "$$$$"
   }
   </script>
+  ${extraSchema}
 </head>`;
+}
+
+function faqSchema(faqs) {
+  return `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      ${faqs.map(f => `{
+        "@type": "Question",
+        "name": ${JSON.stringify(f.q)},
+        "acceptedAnswer": { "@type": "Answer", "text": ${JSON.stringify(f.a)} }
+      }`).join(',\n      ')}
+    ]
+  }
+  </script>`;
+}
+
+function breadcrumbSchema(items) {
+  return `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      ${items.map((item, i) => `{
+        "@type": "ListItem",
+        "position": ${i + 1},
+        "name": ${JSON.stringify(item.name)},
+        "item": ${JSON.stringify(item.url)}
+      }`).join(',\n      ')}
+    ]
+  }
+  </script>`;
+}
+
+function localBusinessSchema(city, svcName) {
+  return `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    "name": "Practical Data Work",
+    "url": "https://practicaldatawork.com",
+    "image": "https://practicaldatawork.com/images/og-image.jpg",
+    "description": "${svcName} in ${city.name}, ${city.state}",
+    "areaServed": { "@type": "City", "name": "${city.name}" },
+    "serviceType": ${JSON.stringify(svcName)},
+    "priceRange": "$$$$",
+    "contactPoint": { "@type": "ContactPoint", "contactType": "sales", "url": "https://practicaldatawork.com/#contact" }
+  }
+  </script>`;
+}
+
+function articleSchema(title, description, dateISO, url) {
+  return `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": ${JSON.stringify(title)},
+    "description": ${JSON.stringify(description)},
+    "datePublished": "${dateISO}",
+    "dateModified": "${dateISO}",
+    "url": "${url}",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Practical Data Work",
+      "url": "https://practicaldatawork.com",
+      "logo": { "@type": "ImageObject", "url": "https://practicaldatawork.com/favicon.ico" }
+    },
+    "author": { "@type": "Organization", "name": "Practical Data Work" }
+  }
+  </script>`;
 }
 
 function nav(depth = '../') {
@@ -365,8 +444,17 @@ function servicePageHTML(svc) {
   const topIndustries = INDUSTRIES.slice(0, 8);
   const topCities = CITIES_DEDUPED.slice(0, 8);
   const faqs = FAQS.default;
+  const canonicalURL = `https://practicaldatawork.com/consulting/${svc.slug}.html`;
+  const extraSchema = [
+    faqSchema(faqs),
+    breadcrumbSchema([
+      { name: 'Home', url: 'https://practicaldatawork.com/' },
+      { name: 'Consulting', url: 'https://practicaldatawork.com/consulting/' },
+      { name: svc.name, url: canonicalURL },
+    ]),
+  ].join('\n  ');
 
-  return `${head(svc.name, `Expert ${svc.name} services for modern businesses. Get Fortune-50-grade data expertise tailored to your industry and scale. Free consultation available.`, `${svc.name.toLowerCase()}, ${svc.name.toLowerCase()} services, hire ${svc.name.toLowerCase()}, ${svc.name.toLowerCase()} firm`)}
+  return `${head(svc.name, `Expert ${svc.name} for modern businesses. Fortune 50 expertise, accelerated time-to-insight, reduced infrastructure costs. Free consultation.`, `${svc.name.toLowerCase()}, ${svc.name.toLowerCase()} services, hire ${svc.name.toLowerCase()}, ${svc.name.toLowerCase()} firm`, '../', canonicalURL, extraSchema)}
 ${nav()}
 <main>
   <section class="page-hero">
@@ -444,8 +532,15 @@ function industryPageHTML(svc, ind) {
   const relatedSvcs = SERVICES.filter(s => s.slug !== svc.slug).sort((a, b) => hashStr(ind.slug + a.slug) - hashStr(ind.slug + b.slug)).slice(0, 5);
   const relatedInds = INDUSTRIES.filter(i => i.slug !== ind.slug).sort((a, b) => hashStr(svc.slug + a.slug) - hashStr(svc.slug + b.slug)).slice(0, 5);
   const topCities = CITIES_DEDUPED.slice(0, 6);
+  const canonicalURL = `https://practicaldatawork.com/consulting/industries/${ind.slug}-${svc.slug}.html`;
+  const extraSchema = breadcrumbSchema([
+    { name: 'Home', url: 'https://practicaldatawork.com/' },
+    { name: 'Consulting', url: 'https://practicaldatawork.com/consulting/' },
+    { name: 'Industries', url: 'https://practicaldatawork.com/consulting/industries/' },
+    { name: `${svc.name} for ${ind.name}`, url: canonicalURL },
+  ]);
 
-  return `${head(`${svc.name} for ${ind.name}`, `Specialized ${svc.name} for the ${ind.name} industry. Navigate ${ind.regs} compliance while building scalable data capabilities. Trusted by ${ind.name.toLowerCase()} leaders.`, `${svc.name.toLowerCase()} ${ind.name.toLowerCase()}, ${ind.name.toLowerCase()} ${svc.name.toLowerCase()}, ${ind.name.toLowerCase()} data consulting`, '../../')}
+  return `${head(`${svc.name} for ${ind.name}`, `${svc.name} for ${ind.name} organizations. Navigate ${ind.regs} compliance while scaling analytics. Serving the ${ind.size} ${ind.name.toLowerCase()} market. Free consultation.`, `${svc.name.toLowerCase()} ${ind.name.toLowerCase()}, ${ind.name.toLowerCase()} ${svc.name.toLowerCase()}, ${ind.name.toLowerCase()} data consulting`, '../../', canonicalURL, extraSchema)}
 ${nav('../../')}
 <main>
   <section class="page-hero">
@@ -518,8 +613,18 @@ function locationPageHTML(svc, city) {
   const relatedCities = CITIES_DEDUPED.filter(c => c.slug !== city.slug).sort((a, b) => hashStr(city.slug + a.slug) - hashStr(city.slug + b.slug)).slice(0, 6);
   const relatedSvcs = SERVICES.filter(s => s.slug !== svc.slug).sort((a, b) => hashStr(city.slug + a.slug) - hashStr(city.slug + b.slug)).slice(0, 5);
   const topInds = INDUSTRIES.slice(0, 5);
+  const canonicalURL = `https://practicaldatawork.com/consulting/locations/${city.slug}-${svc.slug}.html`;
+  const extraSchema = [
+    breadcrumbSchema([
+      { name: 'Home', url: 'https://practicaldatawork.com/' },
+      { name: 'Consulting', url: 'https://practicaldatawork.com/consulting/' },
+      { name: 'Locations', url: 'https://practicaldatawork.com/consulting/locations/' },
+      { name: `${svc.name} in ${city.name}`, url: canonicalURL },
+    ]),
+    localBusinessSchema(city, svc.name),
+  ].join('\n  ');
 
-  return `${head(`${svc.name} in ${city.name}, ${city.state}`, `Expert ${svc.name} in ${city.name}, ${city.state}. Serving ${city.name}'s ${city.economy} sectors. Remote-first with local availability. Free consultation.`, `${svc.name.toLowerCase()} ${city.name.toLowerCase()}, ${city.name.toLowerCase()} ${svc.name.toLowerCase()}, data consultant ${city.name.toLowerCase()}`, '../../')}
+  return `${head(`${svc.name} in ${city.name}, ${city.state}`, `${svc.name} in ${city.name}, ${city.state}. Serving ${city.economy} sectors with Fortune 50 expertise. ${city.fortune500} Fortune 500 companies nearby. Free consultation.`, `${svc.name.toLowerCase()} ${city.name.toLowerCase()}, ${city.name.toLowerCase()} ${svc.name.toLowerCase()}, data consultant ${city.name.toLowerCase()}`, '../../', canonicalURL, extraSchema)}
 ${nav('../../')}
 <main>
   <section class="page-hero">
@@ -633,8 +738,17 @@ function blogPostHTML(post) {
 
   const body = bodies[post.topic] || bodies.default;
   const relatedPosts = BLOG_POSTS.filter(p => p.slug !== post.slug).sort((a, b) => hashStr(post.slug + a.slug) - hashStr(post.slug + b.slug)).slice(0, 4);
+  const canonicalURL = `https://practicaldatawork.com/blog/${post.slug}.html`;
+  const extraSchema = [
+    articleSchema(post.title, `${post.title} — Practical insights from Fortune-50-experienced data consultants.`, dateISO, canonicalURL),
+    breadcrumbSchema([
+      { name: 'Home', url: 'https://practicaldatawork.com/' },
+      { name: 'Blog', url: 'https://practicaldatawork.com/blog/' },
+      { name: post.title, url: canonicalURL },
+    ]),
+  ].join('\n  ');
 
-  return `${head(post.title, `${post.title} — Practical insights from Fortune-50-experienced data consultants. Read the full guide.`, `${post.topic} data consulting, ${post.slug.replace(/-/g, ' ')}`)}
+  return `${head(post.title, `${post.title} — Practical insights from Fortune-50-experienced data consultants. Read the full guide.`, `${post.topic} data consulting, ${post.slug.replace(/-/g, ' ')}`, '../', canonicalURL, extraSchema)}
 ${nav()}
 <main class="container">
   <article class="blog-post blog-post--full">
@@ -1062,19 +1176,25 @@ ${footer()}`;
 
 // ─── SITEMAP ─────────────────────────────────────────────────────────────────
 
-function buildSitemap(urls) {
-  const entries = urls.map(u => `  <url><loc>https://practicaldatawork.com/${u}</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>`).join('\n');
+function buildSitemap(entries) {
+  // entries: array of { url, priority, changefreq }
+  const lines = entries.map(e => `  <url><loc>https://practicaldatawork.com/${e.url}</loc><changefreq>${e.changefreq || 'monthly'}</changefreq><priority>${e.priority}</priority></url>`).join('\n');
   return `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${entries}
+${lines}
 </urlset>`;
 }
 
 // ─── MAIN ────────────────────────────────────────────────────────────────────
 
+// High-value service slugs for priority 0.9
+const TOP_SERVICES = new Set(['data-consulting','data-strategy-consulting','data-analytics-consulting','data-engineering-consulting','ai-consulting','machine-learning-consulting','digital-transformation-consulting','business-intelligence-consulting','data-science-consulting','predictive-analytics-consulting']);
+
 function main() {
-  const urls = [];
+  const urls = []; // array of {url, priority, changefreq}
   let count = 0;
+
+  const u = (url, priority = 0.7, changefreq = 'monthly') => urls.push({ url, priority, changefreq });
 
   console.log('🚀 Generating pages...\n');
 
@@ -1083,11 +1203,11 @@ function main() {
   for (const svc of SERVICES) {
     const p = path.join(BASE, 'consulting', `${svc.slug}.html`);
     write(p, servicePageHTML(svc));
-    urls.push(`consulting/${svc.slug}.html`);
+    u(`consulting/${svc.slug}.html`, TOP_SERVICES.has(svc.slug) ? 0.9 : 0.8);
     count++;
   }
   write(path.join(BASE, 'consulting', 'index.html'), consultingIndexHTML());
-  urls.push('consulting/');
+  u('consulting/', 0.9);
   console.log(`   ✓ ${SERVICES.length} service pages`);
 
   // 2. Industry × service pages
@@ -1097,7 +1217,7 @@ function main() {
     for (const svc of SERVICES) {
       const p = path.join(BASE, 'consulting', 'industries', `${ind.slug}-${svc.slug}.html`);
       write(p, industryPageHTML(svc, ind));
-      urls.push(`consulting/industries/${ind.slug}-${svc.slug}.html`);
+      u(`consulting/industries/${ind.slug}-${svc.slug}.html`, 0.7);
       count++;
       indCount++;
     }
@@ -1105,6 +1225,7 @@ function main() {
   // Industry index
   const indIndexHTML = `${head('Data Consulting by Industry', 'Find data consulting expertise for your specific industry. Healthcare, finance, retail, manufacturing, and more.', 'industry data consulting, sector data consulting')}${nav()}<main><section class="page-hero"><div class="container"><h1>Data Consulting by Industry</h1></div></section><div class="container" style="padding:3rem 0;"><div class="link-grid link-grid--wide">${INDUSTRIES.map(i => `<a href="./${i.slug}-data-consulting.html">Data Consulting for ${i.name}</a>`).join('')}</div></div></main>${footer()}`;
   write(path.join(BASE, 'consulting', 'industries', 'index.html'), indIndexHTML);
+  u('consulting/industries/', 0.8);
   console.log(`   ✓ ${indCount} industry pages`);
 
   // 3. Location × service pages
@@ -1114,7 +1235,7 @@ function main() {
     for (const svc of SERVICES) {
       const p = path.join(BASE, 'consulting', 'locations', `${city.slug}-${svc.slug}.html`);
       write(p, locationPageHTML(svc, city));
-      urls.push(`consulting/locations/${city.slug}-${svc.slug}.html`);
+      u(`consulting/locations/${city.slug}-${svc.slug}.html`, 0.6);
       count++;
       locCount++;
     }
@@ -1122,6 +1243,7 @@ function main() {
   // Locations index
   const locIndexHTML = `${head('Data Consulting by City', 'Find local data consulting expertise in your city. Serving all major US markets.', 'local data consulting, data consultant near me, city data consulting')}${nav()}<main><section class="page-hero"><div class="container"><h1>Data Consulting by Location</h1></div></section><div class="container" style="padding:3rem 0;"><div class="link-grid link-grid--wide">${CITIES_DEDUPED.map(c => `<a href="./${c.slug}-data-consulting.html">Data Consulting in ${c.name}</a>`).join('')}</div></div></main>${footer()}`;
   write(path.join(BASE, 'consulting', 'locations', 'index.html'), locIndexHTML);
+  u('consulting/locations/', 0.8);
   console.log(`   ✓ ${locCount} location pages`);
 
   // 4. Blog posts
@@ -1129,7 +1251,7 @@ function main() {
   for (const post of BLOG_POSTS) {
     const p = path.join(BASE, 'blog', `${post.slug}.html`);
     write(p, blogPostHTML(post));
-    urls.push(`blog/${post.slug}.html`);
+    u(`blog/${post.slug}.html`, 0.8);
     count++;
   }
   console.log(`   ✓ ${BLOG_POSTS.length} blog posts`);
@@ -1139,11 +1261,11 @@ function main() {
   for (const guide of GUIDES) {
     const p = path.join(BASE, 'guides', `${guide.slug}.html`);
     write(p, guideHTML(guide));
-    urls.push(`guides/${guide.slug}.html`);
+    u(`guides/${guide.slug}.html`, 0.8);
     count++;
   }
   write(path.join(BASE, 'guides', 'index.html'), guidesIndexHTML());
-  urls.push('guides/');
+  u('guides/', 0.8);
   console.log(`   ✓ ${GUIDES.length} guide pages`);
 
   // 6. Comparisons
@@ -1151,11 +1273,11 @@ function main() {
   for (const comp of COMPARISONS) {
     const p = path.join(BASE, 'compare', `${comp.slug}.html`);
     write(p, comparisonHTML(comp));
-    urls.push(`compare/${comp.slug}.html`);
+    u(`compare/${comp.slug}.html`, 0.8);
     count++;
   }
   write(path.join(BASE, 'compare', 'index.html'), compareIndexHTML());
-  urls.push('compare/');
+  u('compare/', 0.8);
   console.log(`   ✓ ${COMPARISONS.length} comparison pages`);
 
   // 7. Directory
@@ -1163,17 +1285,17 @@ function main() {
   for (const dir of DIRECTORIES) {
     const p = path.join(BASE, 'directory', `${dir.slug}.html`);
     write(p, directoryHTML(dir));
-    urls.push(`directory/${dir.slug}.html`);
+    u(`directory/${dir.slug}.html`, 0.9);
     count++;
   }
   write(path.join(BASE, 'directory', 'index.html'), directoryIndexHTML());
-  urls.push('directory/');
+  u('directory/', 0.9);
   console.log(`   ✓ ${DIRECTORIES.length} directory pages`);
 
   // 8. Media Kit
   console.log('📄 Generating media kit...');
   write(path.join(BASE, 'media-kit.html'), mediaKitHTML());
-  urls.push('media-kit.html');
+  u('media-kit.html', 0.9);
   count++;
 
   // 9. Sitemap
