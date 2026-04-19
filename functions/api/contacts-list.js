@@ -3,15 +3,13 @@
  * Used by the admin panel
  */
 
-// Simple authentication (you should change this password!)
-const ADMIN_PASSWORD = '***REDACTED***';
-
 export async function onRequestGet(context) {
   const { request, env } = context;
-  
+
   // Check authentication
+  const adminPassword = env.ADMIN_PASSWORD;
   const authHeader = request.headers.get('Authorization');
-  if (!authHeader || authHeader !== `Bearer ${ADMIN_PASSWORD}`) {
+  if (!adminPassword || !authHeader || authHeader !== `Bearer ${adminPassword}`) {
     return new Response(JSON.stringify({ 
       error: 'Unauthorized' 
     }), {
