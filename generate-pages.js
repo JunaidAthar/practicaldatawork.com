@@ -1198,6 +1198,10 @@ function main() {
 
   console.log('🚀 Generating pages...\n');
 
+  // 0. Homepage and core static pages
+  u('', 1.0, 'weekly');
+  u('privacy-policy.html', 0.3);
+
   // 1. Consulting service pages
   console.log('📄 Generating service pages...');
   for (const svc of SERVICES) {
