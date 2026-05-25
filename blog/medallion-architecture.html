@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medallion Architecture Explained: The Bronze-Silver-Gold Pattern | Practical Data Work</title>
+  <meta name="description" content="Medallion architecture organizes your data lakehouse into Bronze, Silver, and Gold layers. Here's how it works, when to use it, and how to implement it with dbt and Delta Lake.">
+  <meta name="keywords" content="medallion architecture, bronze silver gold data, data lakehouse architecture, delta lake medallion, dbt medallion architecture, data lakehouse layers">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://practicaldatawork.com/blog/medallion-architecture.html">
+  <meta property="og:title" content="Medallion Architecture Explained: The Bronze-Silver-Gold Pattern | Practical Data Work">
+  <meta property="og:description" content="Medallion architecture organizes your data lakehouse into Bronze, Silver, and Gold layers. Here's how it works, when to use it, and how to implement it.">
+  <meta property="og:url" content="https://practicaldatawork.com/blog/medallion-architecture.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Geist:wght@300..800&family=Geist+Mono:wght@300..600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../consulting.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0D95QHB9M"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S0D95QHB9M');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Medallion Architecture Explained: The Bronze-Silver-Gold Pattern",
+    "description": "Medallion architecture organizes your data lakehouse into Bronze, Silver, and Gold layers. Here's how it works, when to use it, and how to implement it.",
+    "datePublished": "2025-04-10",
+    "dateModified": "2025-04-10",
+    "url": "https://practicaldatawork.com/blog/medallion-architecture.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Practical Data Work",
+      "url": "https://practicaldatawork.com",
+      "logo": { "@type": "ImageObject", "url": "https://practicaldatawork.com/favicon.ico" }
+    },
+    "author": { "@type": "Organization", "name": "Practical Data Work" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://practicaldatawork.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://practicaldatawork.com/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "Medallion Architecture Explained", "item": "https://practicaldatawork.com/blog/medallion-architecture.html" }
+    ]
+  }
+  </script>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-wordmark" aria-label="Practical Data Work — home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="27" height="27" fill="var(--ink)"/>
+        <rect x="4" y="4" width="8" height="8" fill="var(--bg)"/>
+        <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+        <rect x="20" y="4" width="4" height="4" fill="var(--bg)"/>
+        <rect x="14" y="10" width="10" height="2" fill="var(--bg)"/>
+        <rect x="4" y="14" width="20" height="2" fill="var(--bg)"/>
+        <rect x="4" y="18" width="6" height="6" fill="var(--bg)"/>
+        <rect x="12" y="18" width="2" height="6" fill="var(--bg)"/>
+        <rect x="16" y="18" width="8" height="2" fill="var(--bg)"/>
+        <rect x="16" y="22" width="4" height="2" fill="var(--bg)"/>
+      </svg>
+      Practical<span class="nav-dot">·</span>Data<span class="nav-dot">·</span>Work
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="../index.html#services">Services</a>
+      <a href="../index.html#about">About</a>
+      <a href="index.html">Blog</a>
+      <a href="../consulting/">Consulting</a>
+      <a href="../index.html#contact" class="btn btn--sm">Start a project
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+      </a>
+    </nav>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="../index.html#services">Services</a>
+  <a href="../index.html#about">About</a>
+  <a href="index.html">Blog</a>
+  <a href="../consulting/">Consulting</a>
+  <a href="../index.html#contact" class="btn" style="margin-top:24px;justify-content:center;">Start a project
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+  </a>
+</div>
+<main class="container">
+  <article class="blog-post blog-post--full">
+    <div class="breadcrumb"><a href="../index.html">Home</a> › <a href="../blog/index.html">Blog</a> › Medallion Architecture Explained</div>
+    <h1>Medallion Architecture Explained: The Bronze-Silver-Gold Pattern for Data Lakehouses</h1>
+    <div class="blog-post__meta">
+      <time datetime="2025-04-10">April 10, 2025</time> · <span>2,100 words</span> · <a href="../media-kit.html">Advertise</a>
+    </div>
+
+    <div class="ad-zone ad-zone--inline ad-zone--728x90">
+      <div class="ad-zone__inner ad-zone__inner--horizontal">
+        <p class="ad-zone__label">Sponsored</p>
+        <p class="ad-zone__cta">Connect with 50,000+ businesses seeking data consulting services — <a href="../media-kit.html">See advertising options</a></p>
+      </div>
+    </div>
+
+    <div class="blog-post__content">
+      <p>Medallion architecture is a data design pattern that organizes a data lakehouse into three progressively refined layers: Bronze (raw), Silver (cleansed), and Gold (business-ready). Originally formalized by Databricks for Delta Lake environments, it has since become the dominant organizing pattern for modern data platforms regardless of the underlying storage technology.</p>
+
+      <p>The pattern solves a problem that data teams have wrestled with since the earliest data warehouses: how do you maintain a trustworthy, auditable record of raw data while simultaneously providing clean, fast, business-ready datasets to downstream consumers? Medallion architecture answers that question with a clear separation of concerns — each layer has a single, well-defined purpose, and data flows directionally from one layer to the next.</p>
+
+      <h2>The Bronze Layer: Raw Data, Untouched</h2>
+      <p>The Bronze layer is your system of record. It contains data exactly as it arrived from source systems — no transformation, no filtering, no deduplication. The only processing that happens in Bronze is the mechanics of landing data: parsing file formats, writing to the storage layer, and recording ingestion metadata (arrival timestamp, source system, file name, batch ID).</p>
+
+      <p>Why preserve raw data with no changes? Three reasons:</p>
+      <ul>
+        <li><strong>Auditability.</strong> When a data quality issue surfaces six months from now, you need to be able to prove exactly what your system received and when. Transformed data cannot do this.</li>
+        <li><strong>Reprocessability.</strong> If your Silver or Gold logic changes — because of a bug fix, a business rule change, or a new analytical requirement — you need a stable foundation to reprocess from. Bronze is that foundation.</li>
+        <li><strong>Schema evolution tolerance.</strong> Source systems change their schemas. If you transform on the way in, schema changes break your pipeline. If you land raw first, you can handle schema evolution in the transformation layer where it's easier to manage.</li>
+      </ul>
+
+      <p>In practice, Bronze tables often have messy schemas: columns that are typed as strings because the source sends mixed types, nullable fields everywhere, duplicate rows, records with missing required fields. That's fine. Bronze's job is not to be clean — it's to be complete and accurate.</p>
+
+      <p><strong>Technical implementation:</strong> Bronze data is typically stored as Parquet or Delta files in cloud object storage (S3, ADLS, GCS), partitioned by ingestion date. For streaming sources, Bronze tables are often append-only. For CDC sources, you may include both insert and delete records, handling deduplication downstream in Silver.</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>-- Bronze: land exactly what arrived
+CREATE TABLE bronze.orders_raw (
+  _ingested_at     TIMESTAMP,
+  _source_file     STRING,
+  order_id         STRING,   -- string, not int — source sends both
+  customer_id      STRING,
+  order_total      STRING,   -- sometimes "$12.50", sometimes "12.50"
+  status           STRING,
+  created_at       STRING    -- ISO string, timezone inconsistent
+)
+USING DELTA
+PARTITIONED BY (DATE(_ingested_at));</code></pre>
+
+      <h2>The Silver Layer: Cleansed, Conformed, Enriched</h2>
+      <p>Silver is where the real data engineering work happens. The Silver layer takes Bronze data and applies the transformations that make it reliable and consistent: type casting, deduplication, null handling, business rule application, and joins that conform data from multiple source systems into a unified model.</p>
+
+      <p>A Silver table for orders might:</p>
+      <ul>
+        <li>Cast <code>order_total</code> from string to decimal, stripping currency symbols</li>
+        <li>Parse <code>created_at</code> into a proper timestamp with a consistent timezone (UTC)</li>
+        <li>Deduplicate records using <code>order_id</code> as the primary key, keeping the latest version</li>
+        <li>Enrich with customer data joined from the <code>silver.customers</code> table</li>
+        <li>Apply validity flags for records that fail business rules (negative order totals, invalid status codes)</li>
+      </ul>
+
+      <p>Silver tables should be normalized, not aggregated. They represent entities and events in their cleansed form, not yet shaped for any specific business question. This is important: the moment you start building Silver tables for a specific use case, you've started building Gold, and you'll eventually have a mess of purpose-built tables that can't be reused.</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>-- Silver: clean, typed, deduplicated
+-- dbt model: models/silver/orders.sql
+WITH ranked AS (
+  SELECT
+    CAST(order_id AS BIGINT)                              AS order_id,
+    CAST(customer_id AS BIGINT)                          AS customer_id,
+    CAST(REPLACE(order_total, '$', '') AS DECIMAL(12,2)) AS order_total_usd,
+    CAST(status AS STRING)                               AS status,
+    TO_UTC_TIMESTAMP(created_at, 'America/Chicago')      AS created_at_utc,
+    _ingested_at,
+    ROW_NUMBER() OVER (
+      PARTITION BY order_id ORDER BY _ingested_at DESC
+    ) AS rn
+  FROM {{ source('bronze', 'orders_raw') }}
+  WHERE order_id IS NOT NULL
+)
+SELECT * EXCEPT (rn)
+FROM ranked
+WHERE rn = 1</code></pre>
+
+      <p><strong>Silver is the layer that most data consumers should never see.</strong> It exists to serve the Gold layer, not BI tools or ad hoc analysts. If you find analysts querying Silver tables directly, it's usually a sign that your Gold layer is incomplete — they've given up waiting and gone to the raw data themselves.</p>
+
+      <h2>The Gold Layer: Business-Ready, Aggregated, Consumer-Facing</h2>
+      <p>Gold tables are purpose-built for consumption. They answer specific business questions, are optimized for query performance, and use business terminology — not engineering terminology. Where Silver has a <code>orders</code> table, Gold might have <code>daily_revenue_by_channel</code>, <code>customer_lifetime_value</code>, and <code>product_return_rate</code>.</p>
+
+      <p>Gold tables are typically denormalized. Joins are expensive for analysts and BI tools, so Gold tables pre-join the data into wide, flat tables that can be sliced and filtered without additional logic. A Gold table might contain 50 columns that span what are technically three or four normalized entities in Silver.</p>
+
+      <p>Gold tables are often organized by domain:</p>
+      <ul>
+        <li><code>gold.finance</code> — revenue, margins, payment reconciliation</li>
+        <li><code>gold.marketing</code> — campaign performance, customer acquisition, attribution</li>
+        <li><code>gold.operations</code> — fulfillment rates, SLAs, inventory turns</li>
+        <li><code>gold.executive</code> — company-level KPIs, board metrics</li>
+      </ul>
+
+      <p>There can be multiple Gold tables serving the same underlying Silver data. A single <code>silver.orders</code> table might power three different Gold tables: one for the finance team (focused on revenue recognition), one for operations (focused on fulfillment and returns), and one for the executive dashboard (focused on GMV and growth rate). This is correct behavior — Gold is where you optimize for consumer needs, not for data normalization.</p>
+
+      <h2>Implementing Medallion Architecture with dbt</h2>
+      <p>dbt is the most natural implementation tool for the transformation layers (Silver and Gold) because its model-based approach maps directly to the medallion pattern. A well-structured dbt project for medallion looks like this:</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>models/
+  bronze/           # sources only — no models, just source.yml declarations
+  silver/           # cleansing and conforming models
+    orders.sql
+    customers.sql
+    products.sql
+  gold/
+    finance/
+      daily_revenue.sql
+      order_margins.sql
+    marketing/
+      customer_acquisition.sql
+      campaign_performance.sql</code></pre>
+
+      <p>A few implementation choices that matter:</p>
+      <ul>
+        <li><strong>Materialize Silver as tables, not views.</strong> Views recompute on every query, which is expensive at the scale Silver operates at. Incremental tables (using dbt's incremental materialization) process only new records, which reduces compute cost dramatically.</li>
+        <li><strong>Use <code>unique_key</code> in incremental models.</strong> Incremental models without a unique key will produce duplicates when records are updated at the source. Define your unique key and use <code>merge</code> or <code>delete+insert</code> strategy explicitly.</li>
+        <li><strong>Add dbt tests at the Silver boundary.</strong> Primary key uniqueness, not-null constraints on required fields, and referential integrity checks should all run on Silver models. Catching bad data at Silver prevents it from poisoning Gold.</li>
+      </ul>
+
+      <h2>When Medallion Architecture Is the Right Choice</h2>
+      <p>Medallion architecture is well-suited to organizations that:</p>
+      <ul>
+        <li>Have multiple source systems that need to be unified into a consistent data model</li>
+        <li>Need to support both operational reporting (relatively fresh data) and analytical workloads (historical aggregations)</li>
+        <li>Have compliance or audit requirements that demand a raw data archive</li>
+        <li>Are operating at scale where rebuilding from source on every run is not feasible</li>
+        <li>Use or are migrating to a data lakehouse platform (Databricks, Delta Lake, Apache Iceberg, Hudi)</li>
+      </ul>
+
+      <h2>When Medallion Architecture Is Overkill</h2>
+      <p>Not every data problem needs three layers. Teams that are over-engineering their stack often do so by applying medallion architecture to situations that don't warrant it:</p>
+      <ul>
+        <li><strong>Single source, simple use case.</strong> If you have one Postgres database and you want dashboards, a staging + marts pattern in dbt is sufficient. Adding Bronze and Silver layers adds operational complexity without meaningful benefit.</li>
+        <li><strong>Small data volumes.</strong> If your entire dataset fits comfortably in a SQL warehouse and query performance isn't a concern, the separation of Gold and Silver is unnecessary overhead.</li>
+        <li><strong>Startup pre-product-market fit.</strong> The cost of maintaining three layers is unjustified before you know what questions you'll be asking of your data. Build the minimum viable data layer first.</li>
+      </ul>
+
+      <h2>Common Mistakes in Medallion Implementations</h2>
+      <p>These are the failure modes we see most often when teams adopt medallion architecture:</p>
+
+      <p><strong>Skipping Bronze.</strong> It seems wasteful to store raw data when you know you'll transform it. But teams that skip Bronze always regret it the first time they need to audit a data discrepancy, reprocess historical data with new logic, or recover from a transformation bug. Bronze is cheap insurance.</p>
+
+      <p><strong>Putting business logic in Bronze.</strong> Any transformation — even something that seems trivial, like filtering out test records — belongs in Silver, not Bronze. The moment you apply business logic in Bronze, you've lost the raw archive you were trying to preserve.</p>
+
+      <p><strong>Building Gold tables that only one person uses.</strong> Gold tables require maintenance. If a Gold table is only ever queried by one analyst's dashboard, the operational cost of maintaining it may exceed the benefit. Consolidate Gold where possible, and deprecate unused tables aggressively.</p>
+
+      <p><strong>Not versioning schema changes.</strong> When a Silver or Gold table schema changes, downstream consumers break. Use a schema registry or at minimum maintain a changelog, and communicate breaking changes before they hit production.</p>
+
+      <h2>Medallion Architecture and the Modern Data Stack</h2>
+      <p>Medallion architecture fits naturally into the modern data stack. Bronze ingestion is handled by tools like Fivetran, Airbyte, or custom Spark jobs. Silver and Gold transformations run in dbt on top of Snowflake, BigQuery, Databricks, or Redshift. Orchestration runs in Airflow or Dagster. Observability tools like Monte Carlo or Soda monitor data quality at the Silver boundary.</p>
+
+      <p>One nuance worth calling out: Databricks' implementation uses Delta Lake tables throughout all three layers, which enables features like time travel (querying a table as it existed at a previous point in time) and ACID transactions across layers. If you're in a Databricks environment, these features make medallion architecture even more powerful — time travel alone eliminates many of the reprocessing headaches that simpler architectures face.</p>
+
+      <p>Outside of Databricks, Apache Iceberg has emerged as the strongest open-source alternative for lakehouse table formats, and its adoption is accelerating across AWS (S3 Tables), Snowflake (Iceberg tables), and standalone deployments.</p>
+    </div>
+
+    <div class="post-footer">
+      <h2>Related Articles</h2>
+      <div class="link-grid">
+        <a href="how-to-build-a-data-pipeline.html">How to Build a Data Pipeline: A Step-by-Step Guide</a>
+        <a href="dbt-for-business.html">dbt for Business: What It Is and Why It Matters</a>
+        <a href="snowflake-vs-databricks.html">Snowflake vs. Databricks: Which Should You Choose?</a>
+        <a href="modern-data-stack-guide.html">The Modern Data Stack: A Practical Guide</a>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h2>Designing Your Data Architecture?</h2>
+      <p>Practical Data Work helps companies design and implement modern data architectures — from initial platform selection through production deployment. Free architecture review, no obligation.</p>
+      <a href="../index.html#contact" class="btn btn--primary">Get a Free Architecture Review</a>
+    </div>
+
+    <aside class="ad-sidebar ad-sidebar--inline">
+      <div class="ad-zone ad-zone--300x250">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Advertisement</p>
+          <p class="ad-zone__cta">Reach 50,000+ data &amp; consulting professionals monthly</p>
+          <a href="../media-kit.html" class="ad-zone__link">View Media Kit →</a>
+        </div>
+      </div>
+      <div class="ad-zone ad-zone--300x600" style="margin-top:1.5rem;">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Sponsored</p>
+          <p class="ad-zone__cta">Your consulting firm in front of decision-makers</p>
+          <a href="../media-kit.html" class="ad-zone__link">Advertise Here →</a>
+        </div>
+      </div>
+    </aside>
+  </article>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div style="display:grid;gap:clamp(28px,4vw,48px);padding-bottom:clamp(60px,8vw,110px);border-bottom:1px solid color-mix(in oklab,var(--bg) 18%,transparent);">
+      <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:color-mix(in oklab,var(--bg) 70%,transparent);display:flex;gap:12px;align-items:center;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#7fc28a;flex-shrink:0;"></span>
+        Currently accepting new engagements
+      </div>
+      <h2 style="font-size:var(--step-5);line-height:0.95;margin:0;letter-spacing:-0.02em;max-width:15ch;color:var(--bg);">Let's build something <em style="color:color-mix(in oklab,var(--accent) 80%,var(--bg));font-style:italic;">practical</em>.</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <a href="../index.html#contact" class="btn btn--white">Start a project
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+        </a>
+        <a href="mailto:junaid.athar@gmail.com" style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--bg);border-bottom:1px solid color-mix(in oklab,var(--bg) 40%,transparent);padding-bottom:4px;">junaid.athar@gmail.com</a>
+      </div>
+    </div>
+    <div style="display:grid;gap:clamp(36px,5vw,60px);grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding-top:clamp(40px,5vw,60px);">
+      <div>
+        <svg width="36" height="36" viewBox="0 0 28 28" aria-hidden="true" style="margin-bottom:20px;">
+          <rect x="0.5" y="0.5" width="27" height="27" fill="var(--bg)"/>
+          <rect x="4" y="4" width="8" height="8" fill="var(--ink)"/>
+          <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+          <rect x="20" y="4" width="4" height="4" fill="var(--ink)"/>
+          <rect x="14" y="10" width="10" height="2" fill="var(--ink)"/>
+          <rect x="4" y="14" width="20" height="2" fill="var(--ink)"/>
+          <rect x="4" y="18" width="6" height="6" fill="var(--ink)"/>
+          <rect x="12" y="18" width="2" height="6" fill="var(--ink)"/>
+          <rect x="16" y="18" width="8" height="2" fill="var(--ink)"/>
+          <rect x="16" y="22" width="4" height="2" fill="var(--ink)"/>
+        </svg>
+        <p style="max-width:30ch;color:color-mix(in oklab,var(--bg) 70%,transparent);font-size:var(--step--1);">Enterprise-grade data engineering for businesses of every size. Veterans of Facebook, BP, and Comcast.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Services</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../consulting/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Consulting</a></li>
+          <li><a href="../consulting/data-engineering-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Engineering</a></li>
+          <li><a href="../consulting/data-analytics-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Analytics</a></li>
+          <li><a href="../consulting/mlops-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">MLOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Resources</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../blog/index.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Blog</a></li>
+          <li><a href="../guides/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Guides</a></li>
+          <li><a href="../directory/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Directory</a></li>
+          <li><a href="../media-kit.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Advertise</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Contact</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="mailto:junaid.athar@gmail.com" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">junaid.athar@gmail.com</a></li>
+          <li><a href="tel:+18472248510" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">847-224-8510</a></li>
+          <li><a href="../index.html#contact" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Get started</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:clamp(60px,8vw,100px);padding-top:24px;border-top:1px solid color-mix(in oklab,var(--bg) 18%,transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:calc(var(--step--1) - 1px);color:color-mix(in oklab,var(--bg) 55%,transparent);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em;">
+      <div>© 2025 Practical Data Work, LLC</div>
+      <div>Chicago · Remote</div>
+      <div><a href="../privacy-policy.html" style="color:inherit;">Privacy</a></div>
+    </div>
+  </div>
+</footer>
+<script>
+  const navEl = document.getElementById('nav');
+  if (navEl) {
+    function updateNav() { navEl.classList.toggle('scrolled', window.scrollY > 12); }
+    updateNav();
+    window.addEventListener('scroll', updateNav, { passive: true });
+  }
+  const toggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', false);
+        mobileMenu.setAttribute('aria-hidden', true);
+      });
+    });
+  }
+</script>
+</body>
+</html>

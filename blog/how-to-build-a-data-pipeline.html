@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Build a Data Pipeline: A Step-by-Step Guide | Practical Data Work</title>
+  <meta name="description" content="A practical, engineer-tested guide to building data pipelines — from ingestion through transformation, orchestration, and monitoring. No fluff, just what works.">
+  <meta name="keywords" content="how to build a data pipeline, data pipeline tutorial, data pipeline guide, build data pipeline python, data pipeline architecture">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://practicaldatawork.com/blog/how-to-build-a-data-pipeline.html">
+  <meta property="og:title" content="How to Build a Data Pipeline: A Step-by-Step Guide | Practical Data Work">
+  <meta property="og:description" content="A practical, engineer-tested guide to building data pipelines — from ingestion through transformation, orchestration, and monitoring. No fluff, just what works.">
+  <meta property="og:url" content="https://practicaldatawork.com/blog/how-to-build-a-data-pipeline.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Geist:wght@300..800&family=Geist+Mono:wght@300..600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../consulting.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0D95QHB9M"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S0D95QHB9M');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Build a Data Pipeline: A Step-by-Step Guide",
+    "description": "A practical, engineer-tested guide to building data pipelines — from ingestion through transformation, orchestration, and monitoring.",
+    "datePublished": "2025-05-01",
+    "dateModified": "2025-05-01",
+    "url": "https://practicaldatawork.com/blog/how-to-build-a-data-pipeline.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Practical Data Work",
+      "url": "https://practicaldatawork.com",
+      "logo": { "@type": "ImageObject", "url": "https://practicaldatawork.com/favicon.ico" }
+    },
+    "author": { "@type": "Organization", "name": "Practical Data Work" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://practicaldatawork.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://practicaldatawork.com/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "How to Build a Data Pipeline", "item": "https://practicaldatawork.com/blog/how-to-build-a-data-pipeline.html" }
+    ]
+  }
+  </script>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-wordmark" aria-label="Practical Data Work — home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="27" height="27" fill="var(--ink)"/>
+        <rect x="4" y="4" width="8" height="8" fill="var(--bg)"/>
+        <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+        <rect x="20" y="4" width="4" height="4" fill="var(--bg)"/>
+        <rect x="14" y="10" width="10" height="2" fill="var(--bg)"/>
+        <rect x="4" y="14" width="20" height="2" fill="var(--bg)"/>
+        <rect x="4" y="18" width="6" height="6" fill="var(--bg)"/>
+        <rect x="12" y="18" width="2" height="6" fill="var(--bg)"/>
+        <rect x="16" y="18" width="8" height="2" fill="var(--bg)"/>
+        <rect x="16" y="22" width="4" height="2" fill="var(--bg)"/>
+      </svg>
+      Practical<span class="nav-dot">·</span>Data<span class="nav-dot">·</span>Work
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="../index.html#services">Services</a>
+      <a href="../index.html#about">About</a>
+      <a href="index.html">Blog</a>
+      <a href="../consulting/">Consulting</a>
+      <a href="../index.html#contact" class="btn btn--sm">Start a project
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+      </a>
+    </nav>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="../index.html#services">Services</a>
+  <a href="../index.html#about">About</a>
+  <a href="index.html">Blog</a>
+  <a href="../consulting/">Consulting</a>
+  <a href="../index.html#contact" class="btn" style="margin-top:24px;justify-content:center;">Start a project
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+  </a>
+</div>
+<main class="container">
+  <article class="blog-post blog-post--full">
+    <div class="breadcrumb"><a href="../index.html">Home</a> › <a href="../blog/index.html">Blog</a> › How to Build a Data Pipeline</div>
+    <h1>How to Build a Data Pipeline: A Step-by-Step Guide</h1>
+    <div class="blog-post__meta">
+      <time datetime="2025-05-01">May 1, 2025</time> · <span>2,400 words</span> · <a href="../media-kit.html">Advertise</a>
+    </div>
+
+    <div class="ad-zone ad-zone--inline ad-zone--728x90">
+      <div class="ad-zone__inner ad-zone__inner--horizontal">
+        <p class="ad-zone__label">Sponsored</p>
+        <p class="ad-zone__cta">Connect with 50,000+ businesses seeking data consulting services — <a href="../media-kit.html">See advertising options</a></p>
+      </div>
+    </div>
+
+    <div class="blog-post__content">
+      <p>A data pipeline is the set of processes that move data from where it's generated to where it's used — reliably, consistently, and at whatever scale your business demands. Building one well is one of the highest-leverage investments a data team can make. Building one poorly creates a fragile, undocumented system that breaks at the worst possible times and that no one fully understands.</p>
+
+      <p>This guide covers the six stages of a production-grade data pipeline: ingestion, transformation, storage, orchestration, monitoring, and documentation. It's written for data engineers and technical leads who need a practical framework, not a vendor pitch.</p>
+
+      <h2>Stage 1: Define Your Sources and Destination Before Writing a Line of Code</h2>
+      <p>The most expensive mistake in pipeline engineering is starting to build before you fully understand your data. Before writing any code, document the following for every source system:</p>
+      <ul>
+        <li><strong>Schema and data types</strong> — What fields exist, what type are they, and which are nullable? Are enums stable or do they drift?</li>
+        <li><strong>Volume and velocity</strong> — How many records per day? Are there peak periods? What's the max payload size?</li>
+        <li><strong>Change patterns</strong> — Does the source support change data capture (CDC)? Are records ever updated or deleted, or only appended?</li>
+        <li><strong>Reliability SLA</strong> — Does the source system have maintenance windows? Is it a third-party API with rate limits?</li>
+        <li><strong>Access method</strong> — REST API, JDBC, SFTP drop, Kafka topic, webhook?</li>
+      </ul>
+      <p>For the destination, define your target schema before you build toward it. Schema drift downstream is one of the most common causes of pipeline failures in production — and it almost always traces back to an under-specified destination contract.</p>
+
+      <h2>Stage 2: Choose Your Ingestion Pattern</h2>
+      <p>There are two fundamental ingestion patterns, and choosing the wrong one for your use case creates problems that compound over time.</p>
+
+      <p><strong>Batch ingestion</strong> moves data in discrete intervals — hourly, daily, or on some other schedule. It's simpler to build, easier to debug, and sufficient for the vast majority of business use cases. If your stakeholders are looking at yesterday's data in their dashboards, batch is the right answer. Common tools: Fivetran, Airbyte, custom Python scripts, AWS Glue.</p>
+
+      <p><strong>Streaming ingestion</strong> moves data continuously, with latency measured in seconds or milliseconds. It's genuinely necessary for fraud detection, real-time pricing, live inventory management, and similar use cases — but it introduces significant operational complexity. If you're not sure whether you need streaming, you probably don't. Common tools: Apache Kafka, AWS Kinesis, Google Pub/Sub, Confluent.</p>
+
+      <p>A pattern that works well in practice: start with batch ingestion into a raw storage layer, then evaluate whether any specific downstream use cases require streaming. This avoids the cost and complexity of a streaming architecture before you've validated the business need.</p>
+
+      <h2>Stage 3: Design Your Transformation Layer</h2>
+      <p>Raw data is rarely useful data. Transformation is the process of cleaning, conforming, enriching, and aggregating raw records into the shapes your consumers need. This stage is where the most business logic lives — and where the most technical debt accumulates if you're not deliberate about it.</p>
+
+      <p>The most important architectural decision here is <strong>where transformations run</strong>: in the pipeline itself (before the data lands) or in the warehouse (after it lands). The modern consensus, and what we recommend for most teams, is ELT — Extract, Load, Transform — where you land raw data first and transform it inside the warehouse using SQL. This makes transformations auditable, rerunnable, and testable without reprocessing the source.</p>
+
+      <p><strong>dbt (data build tool)</strong> has become the de facto standard for the transformation layer in ELT architectures. It turns SQL SELECT statements into transformation models, handles dependency resolution automatically, and generates documentation and lineage graphs. A well-structured dbt project looks like this:</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>models/
+  staging/          # one-to-one with source tables, minimal transforms
+    stg_orders.sql
+    stg_customers.sql
+  intermediate/     # joins and business logic
+    int_orders_with_customer.sql
+  marts/            # final, business-ready tables
+    orders.sql
+    customer_ltv.sql</code></pre>
+
+      <p>Staging models should do nothing but rename columns, cast types, and apply basic filters. Business logic belongs in intermediate and mart models. This separation makes debugging dramatically faster — you always know which layer introduced a problem.</p>
+
+      <p>For transformations that are genuinely too expensive for SQL — complex NLP, large-scale ML feature engineering, custom aggregations across billions of rows — Apache Spark remains the best option. PySpark jobs running on EMR, Databricks, or Dataproc can handle workloads that would time out or blow memory in a SQL warehouse.</p>
+
+      <h2>Stage 4: Choose Your Orchestration Tool</h2>
+      <p>Orchestration is what turns a collection of scripts into a reliable system. It handles scheduling, dependency management, retries, alerting, and run history. Without it, you have a set of cron jobs that no one fully trusts.</p>
+
+      <p>The three tools worth evaluating in 2025:</p>
+
+      <p><strong>Apache Airflow</strong> is the most widely deployed orchestration platform in the industry. It has the largest ecosystem, the most community knowledge, and runs at every scale from startup to hyperscaler. The tradeoff is operational complexity — running Airflow well requires attention to the scheduler, workers, metadata database, and executor configuration. Use managed Airflow (MWAA on AWS, Cloud Composer on GCP, Astronomer) unless you have a strong reason to self-host.</p>
+
+      <p><strong>Prefect</strong> is a modern alternative that's significantly easier to get started with. Its Python-native API feels natural to engineers, and Prefect Cloud handles the infrastructure so you can focus on flows. It's a better choice for teams that find Airflow's XML-based DAG model frustrating or that want to move fast without a dedicated platform engineer.</p>
+
+      <p><strong>Dagster</strong> is built around the concept of software-defined assets — rather than defining tasks, you define the data assets you want to produce and Dagster handles the execution graph. If your team thinks in terms of datasets rather than jobs, Dagster's model aligns much more naturally. Its observability tooling is also the best of the three.</p>
+
+      <p>For small teams and simple pipelines, don't underestimate simpler options: dbt Cloud's native scheduler handles most SQL transformation workloads without any additional orchestration layer, and GitHub Actions or AWS EventBridge can trigger scripts reliably for basic use cases.</p>
+
+      <h2>Stage 5: Implement Monitoring and Alerting Before You Launch</h2>
+      <p>A pipeline that runs without monitoring is a pipeline that fails silently. The most damaging data incidents aren't the ones that crash loudly — they're the ones that quietly produce wrong data for weeks before anyone notices.</p>
+
+      <p>There are three layers of monitoring every production pipeline needs:</p>
+
+      <p><strong>Infrastructure monitoring</strong> — Is the pipeline running? Did it complete within its SLA window? Are there executor resource constraints? This is handled by your orchestration tool's built-in alerting (Airflow SLAs, Prefect notifications) or by a separate tool like Datadog or CloudWatch.</p>
+
+      <p><strong>Data quality monitoring</strong> — Is the data that arrived what you expected? Common checks include: row count within expected range, null rate on critical fields below threshold, no duplicate primary keys, referential integrity between tables. dbt tests handle many of these at the transformation layer. For continuous monitoring on live tables, tools like Great Expectations, Soda, or Monte Carlo provide more comprehensive coverage.</p>
+
+      <p><strong>Business metric monitoring</strong> — Are downstream metrics behaving as expected? A 40% drop in orders processed is a signal regardless of whether any pipeline alert fired. Setting up anomaly detection on your key business metrics (revenue, events, signups) catches data issues that technical monitoring misses.</p>
+
+      <p>Route alerts to the right people. Infrastructure failures should page the on-call engineer. Data quality failures should notify the data team and the downstream consumer. Business metric anomalies should escalate to business stakeholders. A single Slack channel that receives every alert from every system is noise that trains people to ignore it.</p>
+
+      <h2>Stage 6: Document and Version-Control Everything</h2>
+      <p>A pipeline is only as durable as its documentation. Teams that skip this step create systems that are functionally unmaintainable — where no one wants to touch anything because no one understands what it does or why.</p>
+
+      <p>Minimum viable documentation for every pipeline:</p>
+      <ul>
+        <li><strong>Source-to-destination lineage</strong> — What feeds this pipeline and what does it feed downstream?</li>
+        <li><strong>Business logic decisions</strong> — Why is this field calculated this way? What edge cases are handled and how?</li>
+        <li><strong>Failure runbook</strong> — When this pipeline fails, what do you check first? What's the rollback procedure?</li>
+        <li><strong>SLA and ownership</strong> — What's the expected freshness? Who is responsible for this pipeline?</li>
+      </ul>
+
+      <p>All pipeline code should live in version control (Git), with meaningful commit messages and pull request reviews before any changes reach production. Data pipelines that exist only in a UI — in Fivetran, in Talend, in some on-premise ETL tool — are fragile because they have no history, no diff capability, and no code review process.</p>
+
+      <p>dbt's <code>schema.yml</code> files are the right place to document transformation models inline. Most dbt documentation survives longer than separate wikis because it lives next to the code it describes.</p>
+
+      <h2>Common Mistakes That Break Pipelines in Production</h2>
+      <p>After building data pipelines at organizations ranging from 10-person startups to Fortune 50 enterprises, these are the failure modes we see repeatedly:</p>
+
+      <ul>
+        <li><strong>No idempotency.</strong> If your pipeline can't be safely rerun from any point without producing duplicates or gaps, it will cause incidents. Every stage should be idempotent — running it twice should produce the same result as running it once.</li>
+        <li><strong>Ignoring late-arriving data.</strong> Event timestamps and arrival timestamps are not the same thing. Pipelines that process data by arrival time without accounting for late arrivals produce incorrect aggregations. Design your partitioning and processing windows with late data in mind.</li>
+        <li><strong>Hard-coding credentials.</strong> Database passwords, API keys, and connection strings do not belong in pipeline code. Use your cloud provider's secrets manager or environment variables, and rotate credentials on a schedule.</li>
+        <li><strong>No backfill strategy.</strong> Eventually you will need to reprocess historical data — because of a bug fix, a schema change, or new business logic. If your pipeline has no backfill mechanism, that reprocessing will be a manual, error-prone emergency. Build backfill support in from the start.</li>
+        <li><strong>Monolithic pipelines.</strong> A single script that does everything — pulls from the source, transforms, validates, and loads — is hard to test, hard to debug, and impossible to partially rerun. Separate ingestion, transformation, and loading into distinct, independently runnable stages.</li>
+      </ul>
+
+      <h2>How Long Does It Take to Build a Data Pipeline?</h2>
+      <p>It depends heavily on the complexity of the source systems, the maturity of your infrastructure, and the experience of your team. A rough guide:</p>
+      <ul>
+        <li><strong>Simple batch pipeline</strong> (one source, one destination, no complex transforms): 1–2 weeks for a senior engineer</li>
+        <li><strong>Multi-source pipeline with significant transformation logic</strong>: 4–8 weeks</li>
+        <li><strong>Streaming pipeline with sub-minute latency requirements</strong>: 8–16 weeks, including testing and hardening</li>
+        <li><strong>Enterprise data platform with multiple pipelines, full orchestration, and observability</strong>: 3–6 months for a dedicated team</li>
+      </ul>
+      <p>These estimates assume experienced engineers. Teams building their first data pipelines should add 50–100% to account for the learning curve on tools, infrastructure setup, and the inevitable surprises in source system behavior.</p>
+
+      <h2>When to Bring in Outside Help</h2>
+      <p>Building data pipelines is core engineering work, and most teams with sufficient data engineering capacity should build them in-house. The cases where external expertise delivers clear ROI:</p>
+      <ul>
+        <li>You're building your first data infrastructure and don't have a template to work from</li>
+        <li>You're migrating from a legacy ETL system (Informatica, SSIS, Talend) to a modern stack</li>
+        <li>You have a hard deadline and insufficient internal bandwidth</li>
+        <li>You need architectural review before committing to a direction at scale</li>
+      </ul>
+      <p>In those situations, the right consultant can compress months of trial-and-error into weeks of deliberate implementation. The key is finding someone with hands-on experience building production pipelines at scale, not someone who will hand you a PowerPoint and call it a data strategy.</p>
+    </div>
+
+    <div class="post-footer">
+      <h2>Related Articles</h2>
+      <div class="link-grid">
+        <a href="medallion-architecture.html">Medallion Architecture: The Bronze-Silver-Gold Pattern Explained</a>
+        <a href="dbt-for-business.html">dbt for Business: What It Is and Why It Matters</a>
+        <a href="modern-data-stack-guide.html">The Modern Data Stack: A Practical Guide</a>
+        <a href="data-engineering-2024.html">Data Engineering Trends to Watch</a>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h2>Need Help Building a Data Pipeline?</h2>
+      <p>Practical Data Work designs and builds production data pipelines for companies at every stage — from first-time data infrastructure to enterprise-scale migrations. Free consultation, no obligation.</p>
+      <a href="../index.html#contact" class="btn btn--primary">Talk to a Data Engineer</a>
+    </div>
+
+    <aside class="ad-sidebar ad-sidebar--inline">
+      <div class="ad-zone ad-zone--300x250">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Advertisement</p>
+          <p class="ad-zone__cta">Reach 50,000+ data &amp; consulting professionals monthly</p>
+          <a href="../media-kit.html" class="ad-zone__link">View Media Kit →</a>
+        </div>
+      </div>
+      <div class="ad-zone ad-zone--300x600" style="margin-top:1.5rem;">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Sponsored</p>
+          <p class="ad-zone__cta">Your consulting firm in front of decision-makers</p>
+          <a href="../media-kit.html" class="ad-zone__link">Advertise Here →</a>
+        </div>
+      </div>
+    </aside>
+  </article>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div style="display:grid;gap:clamp(28px,4vw,48px);padding-bottom:clamp(60px,8vw,110px);border-bottom:1px solid color-mix(in oklab,var(--bg) 18%,transparent);">
+      <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:color-mix(in oklab,var(--bg) 70%,transparent);display:flex;gap:12px;align-items:center;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#7fc28a;flex-shrink:0;"></span>
+        Currently accepting new engagements
+      </div>
+      <h2 style="font-size:var(--step-5);line-height:0.95;margin:0;letter-spacing:-0.02em;max-width:15ch;color:var(--bg);">Let's build something <em style="color:color-mix(in oklab,var(--accent) 80%,var(--bg));font-style:italic;">practical</em>.</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <a href="../index.html#contact" class="btn btn--white">Start a project
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+        </a>
+        <a href="mailto:junaid.athar@gmail.com" style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--bg);border-bottom:1px solid color-mix(in oklab,var(--bg) 40%,transparent);padding-bottom:4px;">junaid.athar@gmail.com</a>
+      </div>
+    </div>
+    <div style="display:grid;gap:clamp(36px,5vw,60px);grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding-top:clamp(40px,5vw,60px);">
+      <div>
+        <svg width="36" height="36" viewBox="0 0 28 28" aria-hidden="true" style="margin-bottom:20px;">
+          <rect x="0.5" y="0.5" width="27" height="27" fill="var(--bg)"/>
+          <rect x="4" y="4" width="8" height="8" fill="var(--ink)"/>
+          <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+          <rect x="20" y="4" width="4" height="4" fill="var(--ink)"/>
+          <rect x="14" y="10" width="10" height="2" fill="var(--ink)"/>
+          <rect x="4" y="14" width="20" height="2" fill="var(--ink)"/>
+          <rect x="4" y="18" width="6" height="6" fill="var(--ink)"/>
+          <rect x="12" y="18" width="2" height="6" fill="var(--ink)"/>
+          <rect x="16" y="18" width="8" height="2" fill="var(--ink)"/>
+          <rect x="16" y="22" width="4" height="2" fill="var(--ink)"/>
+        </svg>
+        <p style="max-width:30ch;color:color-mix(in oklab,var(--bg) 70%,transparent);font-size:var(--step--1);">Enterprise-grade data engineering for businesses of every size. Veterans of Facebook, BP, and Comcast.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Services</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../consulting/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Consulting</a></li>
+          <li><a href="../consulting/data-engineering-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Engineering</a></li>
+          <li><a href="../consulting/data-analytics-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Analytics</a></li>
+          <li><a href="../consulting/mlops-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">MLOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Resources</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../blog/index.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Blog</a></li>
+          <li><a href="../guides/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Guides</a></li>
+          <li><a href="../directory/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Directory</a></li>
+          <li><a href="../media-kit.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Advertise</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Contact</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="mailto:junaid.athar@gmail.com" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">junaid.athar@gmail.com</a></li>
+          <li><a href="tel:+18472248510" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">847-224-8510</a></li>
+          <li><a href="../index.html#contact" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Get started</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:clamp(60px,8vw,100px);padding-top:24px;border-top:1px solid color-mix(in oklab,var(--bg) 18%,transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:calc(var(--step--1) - 1px);color:color-mix(in oklab,var(--bg) 55%,transparent);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em;">
+      <div>© 2025 Practical Data Work, LLC</div>
+      <div>Chicago · Remote</div>
+      <div><a href="../privacy-policy.html" style="color:inherit;">Privacy</a></div>
+    </div>
+  </div>
+</footer>
+<script>
+  const navEl = document.getElementById('nav');
+  if (navEl) {
+    function updateNav() { navEl.classList.toggle('scrolled', window.scrollY > 12); }
+    updateNav();
+    window.addEventListener('scroll', updateNav, { passive: true });
+  }
+  const toggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', false);
+        mobileMenu.setAttribute('aria-hidden', true);
+      });
+    });
+  }
+</script>
+</body>
+</html>

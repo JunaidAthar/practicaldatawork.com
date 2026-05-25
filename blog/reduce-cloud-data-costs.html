@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Reduce Cloud Data Costs: A Practical Playbook | Practical Data Work</title>
+  <meta name="description" content="Cloud data bills spiral fast. Here's a concrete, lever-by-lever playbook for cutting Snowflake, BigQuery, Databricks, and Redshift costs — often by 30–50% — without sacrificing performance.">
+  <meta name="keywords" content="reduce cloud data costs, snowflake cost optimization, bigquery cost reduction, databricks cost optimization, cloud data warehouse costs, reduce data infrastructure costs">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://practicaldatawork.com/blog/reduce-cloud-data-costs.html">
+  <meta property="og:title" content="How to Reduce Cloud Data Costs: A Practical Playbook | Practical Data Work">
+  <meta property="og:description" content="Cloud data bills spiral fast. Here's a concrete, lever-by-lever playbook for cutting Snowflake, BigQuery, Databricks, and Redshift costs — often by 30–50%.</p>">
+  <meta property="og:url" content="https://practicaldatawork.com/blog/reduce-cloud-data-costs.html">
+  <meta property="og:type" content="article">
+  <meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
+  <link rel="icon" type="image/x-icon" href="../favicon.ico">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Geist:wght@300..800&family=Geist+Mono:wght@300..600&display=swap">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="../consulting.css">
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-S0D95QHB9M"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-S0D95QHB9M');</script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Reduce Cloud Data Costs: A Practical Playbook",
+    "description": "Cloud data bills spiral fast. Here's a concrete, lever-by-lever playbook for cutting Snowflake, BigQuery, Databricks, and Redshift costs — often by 30–50%.",
+    "datePublished": "2025-03-18",
+    "dateModified": "2025-03-18",
+    "url": "https://practicaldatawork.com/blog/reduce-cloud-data-costs.html",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Practical Data Work",
+      "url": "https://practicaldatawork.com",
+      "logo": { "@type": "ImageObject", "url": "https://practicaldatawork.com/favicon.ico" }
+    },
+    "author": { "@type": "Organization", "name": "Practical Data Work" }
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    "itemListElement": [
+      { "@type": "ListItem", "position": 1, "name": "Home", "item": "https://practicaldatawork.com/" },
+      { "@type": "ListItem", "position": 2, "name": "Blog", "item": "https://practicaldatawork.com/blog/" },
+      { "@type": "ListItem", "position": 3, "name": "How to Reduce Cloud Data Costs", "item": "https://practicaldatawork.com/blog/reduce-cloud-data-costs.html" }
+    ]
+  }
+  </script>
+</head>
+<body>
+<header class="nav" id="nav">
+  <div class="nav-inner">
+    <a href="../index.html" class="nav-wordmark" aria-label="Practical Data Work — home">
+      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
+        <rect x="0.5" y="0.5" width="27" height="27" fill="var(--ink)"/>
+        <rect x="4" y="4" width="8" height="8" fill="var(--bg)"/>
+        <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+        <rect x="20" y="4" width="4" height="4" fill="var(--bg)"/>
+        <rect x="14" y="10" width="10" height="2" fill="var(--bg)"/>
+        <rect x="4" y="14" width="20" height="2" fill="var(--bg)"/>
+        <rect x="4" y="18" width="6" height="6" fill="var(--bg)"/>
+        <rect x="12" y="18" width="2" height="6" fill="var(--bg)"/>
+        <rect x="16" y="18" width="8" height="2" fill="var(--bg)"/>
+        <rect x="16" y="22" width="4" height="2" fill="var(--bg)"/>
+      </svg>
+      Practical<span class="nav-dot">·</span>Data<span class="nav-dot">·</span>Work
+    </a>
+    <nav class="nav-links" aria-label="Main navigation">
+      <a href="../index.html#services">Services</a>
+      <a href="../index.html#about">About</a>
+      <a href="index.html">Blog</a>
+      <a href="../consulting/">Consulting</a>
+      <a href="../index.html#contact" class="btn btn--sm">Start a project
+        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+      </a>
+    </nav>
+    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</header>
+<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="../index.html#services">Services</a>
+  <a href="../index.html#about">About</a>
+  <a href="index.html">Blog</a>
+  <a href="../consulting/">Consulting</a>
+  <a href="../index.html#contact" class="btn" style="margin-top:24px;justify-content:center;">Start a project
+    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+  </a>
+</div>
+<main class="container">
+  <article class="blog-post blog-post--full">
+    <div class="breadcrumb"><a href="../index.html">Home</a> › <a href="../blog/index.html">Blog</a> › How to Reduce Cloud Data Costs</div>
+    <h1>How to Reduce Cloud Data Costs: A Practical Playbook for Data Teams</h1>
+    <div class="blog-post__meta">
+      <time datetime="2025-03-18">March 18, 2025</time> · <span>2,300 words</span> · <a href="../media-kit.html">Advertise</a>
+    </div>
+
+    <div class="ad-zone ad-zone--inline ad-zone--728x90">
+      <div class="ad-zone__inner ad-zone__inner--horizontal">
+        <p class="ad-zone__label">Sponsored</p>
+        <p class="ad-zone__cta">Connect with 50,000+ businesses seeking data consulting services — <a href="../media-kit.html">See advertising options</a></p>
+      </div>
+    </div>
+
+    <div class="blog-post__content">
+      <p>Cloud data costs have a way of sneaking up on organizations. In the early days, the bill is manageable and the ease of scaling feels like pure upside. Then the data team grows, more pipelines get added, more analysts run more queries, and suddenly you're staring at a $40,000/month Snowflake bill and no one is quite sure how it got there.</p>
+
+      <p>This is not a failure of cloud economics — it's a failure of cost architecture. The same scalability that makes cloud data platforms powerful also makes them easy to over-provision and inefficient to run without deliberate cost controls. The good news is that most organizations can cut their cloud data spend by 30–50% without touching query performance, using the levers in this guide.</p>
+
+      <h2>Lever 1: Audit Who Is Spending What — Before You Optimize Anything</h2>
+      <p>You cannot optimize what you don't measure. Before changing any configurations, run a query cost attribution report and find out which queries, users, and workloads are driving your bill. The distribution is almost always heavily skewed: 10–20% of queries typically account for 60–80% of compute spend.</p>
+
+      <p>In Snowflake, query history is in <code>SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY</code>:</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>SELECT
+  user_name,
+  warehouse_name,
+  COUNT(*)                                    AS query_count,
+  SUM(credits_used_cloud_services)           AS total_credits,
+  AVG(execution_time) / 1000                 AS avg_seconds,
+  SUM(bytes_scanned) / 1e9                   AS gb_scanned
+FROM SNOWFLAKE.ACCOUNT_USAGE.QUERY_HISTORY
+WHERE start_time >= DATEADD(day, -30, CURRENT_TIMESTAMP())
+GROUP BY 1, 2
+ORDER BY total_credits DESC
+LIMIT 50;</code></pre>
+
+      <p>In BigQuery, query costs are in <code>INFORMATION_SCHEMA.JOBS_BY_PROJECT</code>. In Redshift, use <code>STL_QUERY</code> joined with <code>SVL_QUERY_METRICS</code>.</p>
+
+      <p>What you're looking for: expensive queries running frequently, full-table scans on large tables, warehouse clusters idling between jobs, unused scheduled reports, and ad hoc analysts running unoptimized exploratory queries against production data.</p>
+
+      <h2>Lever 2: Implement Auto-Suspend on Every Warehouse</h2>
+      <p>This is the highest-ROI change most Snowflake customers can make, and it costs nothing in performance. By default, Snowflake warehouses remain running for 10 minutes after the last query completes. If your warehouse runs queries for 2 minutes per hour but is up for 60 minutes, you're paying for 58 minutes of idle compute.</p>
+
+      <p>Set auto-suspend to 60 seconds for development and ad hoc warehouses, and 5 minutes for production warehouses that have high query volume and benefit from keeping the cache warm:</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>ALTER WAREHOUSE dev_wh SET AUTO_SUSPEND = 60;       -- 1 minute
+ALTER WAREHOUSE analytics_wh SET AUTO_SUSPEND = 300; -- 5 minutes
+ALTER WAREHOUSE etl_wh SET AUTO_SUSPEND = 120;       -- 2 minutes</code></pre>
+
+      <p>Combine this with appropriately sized warehouses. Most analytical queries that take 30+ seconds on an X-Small warehouse will complete in 5–10 seconds on a Small — but a Small costs 2× as much per credit. The crossover depends on your query concurrency and complexity. Run a benchmark before assuming bigger is cheaper.</p>
+
+      <p>In Redshift, the equivalent is pause/resume scheduling for clusters that only run during business hours. A cluster that runs 12 hours/day instead of 24 cuts its cost in half.</p>
+
+      <h2>Lever 3: Partition and Cluster Your Tables</h2>
+      <p>Cloud data warehouses charge for the amount of data scanned per query. A query that scans 10 TB costs roughly 100× more than one that scans 100 GB to answer the same question. Partitioning and clustering reduce scanned bytes by allowing the engine to skip irrelevant data entirely.</p>
+
+      <p><strong>Partitioning</strong> divides a table into physical segments based on a column value — almost always a date or timestamp. Queries that filter on the partition column only scan the relevant partitions. If you have a 10 TB events table and most queries filter on the last 7 days, partitioning by date means those queries scan 7/365 of the data they would otherwise scan.</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>-- BigQuery: partition by event date
+CREATE TABLE analytics.events
+PARTITION BY DATE(event_timestamp)
+CLUSTER BY user_id, event_type
+AS SELECT * FROM analytics.events_raw;
+
+-- Snowflake: cluster key on frequently filtered columns
+ALTER TABLE analytics.events
+  CLUSTER BY (event_date, user_id);</code></pre>
+
+      <p><strong>Clustering</strong> (Snowflake) and <strong>cluster BY</strong> (BigQuery) co-locate rows with the same values for a column on the same micro-partitions. Queries filtering on clustered columns skip entire micro-partitions without scanning them. This is most effective on columns with high cardinality that appear frequently in WHERE clauses — user_id, product_id, geography.</p>
+
+      <p>Typical impact: queries on well-partitioned and clustered tables scan 80–95% less data than on unoptimized tables. At BigQuery's $6.25/TB pricing, this translates directly to dollars.</p>
+
+      <h2>Lever 4: Separate Your Workloads by Warehouse</h2>
+      <p>Running all workloads on a single warehouse is convenient but expensive. ETL pipelines, analyst ad hoc queries, and BI tool refreshes have very different performance profiles and scheduling patterns — mixing them causes resource contention, forces larger warehouse sizes than any single workload needs, and makes it impossible to set appropriate auto-suspend policies.</p>
+
+      <p>A typical workload segmentation for a mid-size data team:</p>
+      <ul>
+        <li><strong>etl_wh (Medium)</strong> — dbt runs, Fivetran syncs, pipeline jobs. Runs on a schedule, auto-suspend 2 minutes.</li>
+        <li><strong>analytics_wh (Small)</strong> — BI tool connections (Looker, Tableau, Mode). Always-on during business hours, suspended overnight and weekends.</li>
+        <li><strong>dev_wh (X-Small)</strong> — Individual analyst queries, notebook exploration. Auto-suspend 1 minute. Each analyst has their own virtual warehouse or shares this one.</li>
+        <li><strong>reporting_wh (Small)</strong> — Scheduled reports and dashboards. Runs during early morning refresh windows only.</li>
+      </ul>
+
+      <p>This segmentation means you're right-sizing each workload rather than over-provisioning a single large warehouse to handle the worst-case scenario. In practice, moving from one Large shared warehouse to four appropriately sized segmented warehouses often cuts compute costs by 40–60%.</p>
+
+      <h2>Lever 5: Kill Unused Pipelines and Dashboards</h2>
+      <p>Every data organization has pipelines running that no one is using. They might be feeding dashboards that stakeholders stopped looking at six months ago. They might be populating tables that were created for a project that was canceled. They run every day, consuming compute and storage, and no one notices because the cost is diluted across the overall bill.</p>
+
+      <p>Run a usage audit:</p>
+      <ul>
+        <li>Pull dashboard view counts from your BI tool. Any dashboard not viewed in 60 days is a candidate for deprecation.</li>
+        <li>Pull table access logs from your warehouse. Any table not queried in 90 days is a candidate for archiving.</li>
+        <li>Pull pipeline run history from your orchestrator. Any pipeline that hasn't been accessed by a downstream consumer in 60 days should be evaluated.</li>
+      </ul>
+
+      <p>Don't delete immediately — archive first. Move unused tables to cold storage tiers (Snowflake's STORAGE_INTEGRATION with S3 Glacier, BigQuery's long-term storage pricing). Pause unused pipelines rather than deleting them, in case someone complains. After 30 days of no complaints, delete.</p>
+
+      <p>In our experience working across dozens of data teams, deprecating unused infrastructure typically reduces storage costs by 20–35% and pipeline compute costs by 15–25%.</p>
+
+      <h2>Lever 6: Use Incremental Processing Instead of Full Table Refreshes</h2>
+      <p>Many data pipelines are written to process their entire dataset on every run: <code>DROP TABLE; CREATE TABLE AS SELECT ... FROM source</code>. This is simple to write and easy to reason about — and it gets exponentially more expensive as your data grows.</p>
+
+      <p>Incremental processing — where you only process new or changed records — reduces both compute time and cost by orders of magnitude once your tables reach meaningful scale. The mechanics differ by platform:</p>
+
+      <ul>
+        <li><strong>dbt incremental models</strong> — Use <code>is_incremental()</code> to filter only new records. The merge strategy handles upserts automatically.</li>
+        <li><strong>Delta Lake MERGE</strong> — Supports upserts natively, updating existing rows and inserting new ones in a single atomic operation.</li>
+        <li><strong>BigQuery DML MERGE</strong> — Same concept in BigQuery's syntax, with partitioned tables to reduce scan cost.</li>
+      </ul>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>-- dbt incremental model
+{{ config(materialized='incremental', unique_key='order_id') }}
+
+SELECT order_id, customer_id, total, status, updated_at
+FROM {{ source('raw', 'orders') }}
+
+{% if is_incremental() %}
+  WHERE updated_at > (SELECT MAX(updated_at) FROM {{ this }})
+{% endif %}</code></pre>
+
+      <p>For a 1 billion row table, switching from a full refresh to an incremental load that processes 500,000 new records per day reduces the compute per run by roughly 99.95%. At scale, this is often the single highest-impact optimization available.</p>
+
+      <h2>Lever 7: Implement Query Cost Controls and Spend Alerts</h2>
+      <p>Reactive cost management — noticing the bill is high after the fact — is expensive. Proactive cost controls prevent overruns before they happen.</p>
+
+      <p><strong>In Snowflake:</strong> Use resource monitors to set credit quotas per warehouse, per day or per month. When a warehouse hits its quota, queries are suspended automatically (or you receive an alert, depending on your configuration). This is especially important for development warehouses where individual analysts can accidentally run expensive full-table scans.</p>
+
+      <pre style="background:var(--surface,#f5f5f5);padding:1.25rem;border-radius:6px;overflow-x:auto;font-family:var(--font-mono);font-size:0.85em;line-height:1.6;"><code>CREATE RESOURCE MONITOR dev_monthly_cap
+  WITH CREDIT_QUOTA = 100
+  FREQUENCY = MONTHLY
+  START_TIMESTAMP = IMMEDIATELY
+  TRIGGERS
+    ON 75 PERCENT DO NOTIFY
+    ON 100 PERCENT DO SUSPEND_IMMEDIATE;</code></pre>
+
+      <p><strong>In BigQuery:</strong> Set per-user and per-project byte quotas in IAM to cap how much any individual query can scan. Use BigQuery's cost controls in the project settings to set daily spend caps that halt queries when exceeded.</p>
+
+      <p><strong>In Databricks:</strong> Use cluster policies to enforce auto-termination, restrict instance types, and set maximum runtime limits on job clusters. Use budgets in the Databricks account console to alert when monthly spend exceeds thresholds.</p>
+
+      <p>In all platforms, set up billing alerts at 50%, 75%, and 100% of your monthly budget so you have early warning before you exceed targets. Cloud provider billing alerts (AWS Budgets, GCP Budget Alerts, Azure Cost Management) provide a second layer of protection independent of the warehouse platform.</p>
+
+      <h2>Lever 8: Right-Size Your Storage Tier</h2>
+      <p>Storage is cheap relative to compute, but it's not free — and the way you store data affects your compute costs significantly. A few storage optimizations worth implementing:</p>
+
+      <ul>
+        <li><strong>Use columnar formats.</strong> Parquet and ORC store data column-by-column rather than row-by-row. Analytical queries that only touch 5 of 50 columns scan roughly 10% of the data that row-format storage would require. If you're still storing raw data in CSV or JSON in S3, converting to Parquet can cut query costs by 60–80%.</li>
+        <li><strong>Apply lifecycle policies to cold data.</strong> Data older than 90 days is rarely queried interactively. Move it to cheaper storage tiers automatically: S3 Glacier Instant Retrieval, Azure Cool storage, GCS Nearline. For data you need to keep but almost never query, S3 Glacier Deep Archive costs roughly $0.00099/GB/month — about 23× cheaper than S3 Standard.</li>
+        <li><strong>Drop redundant copies.</strong> Data teams often have the same data in multiple places: in the source system, in an S3 raw layer, in a Bronze table, in a Silver table, in a legacy data mart, and in a BI tool's extract. Audit your data copies and consolidate where the duplicate doesn't serve a distinct purpose.</li>
+      </ul>
+
+      <h2>What 30–50% Savings Actually Looks Like</h2>
+      <p>Across the organizations we've worked with, applying the levers above typically yields:</p>
+      <ul>
+        <li>Auto-suspend configuration: 15–25% reduction in compute</li>
+        <li>Workload segmentation and right-sizing: 20–40% reduction in compute</li>
+        <li>Incremental processing: 30–70% reduction in pipeline compute for mature datasets</li>
+        <li>Partition and cluster optimization: 40–80% reduction in query compute for large tables</li>
+        <li>Unused pipeline and dashboard deprecation: 15–30% reduction in overall spend</li>
+      </ul>
+
+      <p>These savings are not additive — they overlap and interact. But the compounding effect of implementing several levers simultaneously consistently produces 30–50% overall reductions. For a team spending $20K/month, that's $6K–$10K/month recovered, which more than funds additional engineering capacity to do more with the savings.</p>
+
+      <h2>When to Call in Outside Help</h2>
+      <p>FinOps for data infrastructure is a specialized skill. The organizations that get the most out of these optimizations are those with a clear picture of their full cost topology — which workloads run when, which queries are most expensive, which pipelines have real downstream consumers versus which are orphaned. Building that picture takes time and experience.</p>
+
+      <p>If your data costs have grown faster than your data team's capacity to manage them — or if you've tried some of these levers and aren't seeing the expected results — an external architecture review can identify the highest-impact opportunities quickly. Our typical cost optimization engagement pays for itself in the first month of savings.</p>
+    </div>
+
+    <div class="post-footer">
+      <h2>Related Articles</h2>
+      <div class="link-grid">
+        <a href="how-to-build-a-data-pipeline.html">How to Build a Data Pipeline: A Step-by-Step Guide</a>
+        <a href="medallion-architecture.html">Medallion Architecture: The Bronze-Silver-Gold Pattern Explained</a>
+        <a href="snowflake-vs-databricks.html">Snowflake vs. Databricks: Which Should You Choose?</a>
+        <a href="data-architecture.html">Data Architecture Patterns and When to Use Them</a>
+      </div>
+    </div>
+
+    <div class="cta-block">
+      <h2>Spending Too Much on Cloud Data Infrastructure?</h2>
+      <p>Practical Data Work has helped companies reduce cloud data costs by 30–50% without sacrificing performance. Free cost audit — we'll identify your highest-impact opportunities in the first conversation.</p>
+      <a href="../index.html#contact" class="btn btn--primary">Get a Free Cost Audit</a>
+    </div>
+
+    <aside class="ad-sidebar ad-sidebar--inline">
+      <div class="ad-zone ad-zone--300x250">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Advertisement</p>
+          <p class="ad-zone__cta">Reach 50,000+ data &amp; consulting professionals monthly</p>
+          <a href="../media-kit.html" class="ad-zone__link">View Media Kit →</a>
+        </div>
+      </div>
+      <div class="ad-zone ad-zone--300x600" style="margin-top:1.5rem;">
+        <div class="ad-zone__inner">
+          <p class="ad-zone__label">Sponsored</p>
+          <p class="ad-zone__cta">Your consulting firm in front of decision-makers</p>
+          <a href="../media-kit.html" class="ad-zone__link">Advertise Here →</a>
+        </div>
+      </div>
+    </aside>
+  </article>
+</main>
+<footer class="footer">
+  <div class="container">
+    <div style="display:grid;gap:clamp(28px,4vw,48px);padding-bottom:clamp(60px,8vw,110px);border-bottom:1px solid color-mix(in oklab,var(--bg) 18%,transparent);">
+      <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:color-mix(in oklab,var(--bg) 70%,transparent);display:flex;gap:12px;align-items:center;">
+        <span style="width:8px;height:8px;border-radius:50%;background:#7fc28a;flex-shrink:0;"></span>
+        Currently accepting new engagements
+      </div>
+      <h2 style="font-size:var(--step-5);line-height:0.95;margin:0;letter-spacing:-0.02em;max-width:15ch;color:var(--bg);">Let's build something <em style="color:color-mix(in oklab,var(--accent) 80%,var(--bg));font-style:italic;">practical</em>.</h2>
+      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
+        <a href="../index.html#contact" class="btn btn--white">Start a project
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
+        </a>
+        <a href="mailto:junaid.athar@gmail.com" style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--bg);border-bottom:1px solid color-mix(in oklab,var(--bg) 40%,transparent);padding-bottom:4px;">junaid.athar@gmail.com</a>
+      </div>
+    </div>
+    <div style="display:grid;gap:clamp(36px,5vw,60px);grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding-top:clamp(40px,5vw,60px);">
+      <div>
+        <svg width="36" height="36" viewBox="0 0 28 28" aria-hidden="true" style="margin-bottom:20px;">
+          <rect x="0.5" y="0.5" width="27" height="27" fill="var(--bg)"/>
+          <rect x="4" y="4" width="8" height="8" fill="var(--ink)"/>
+          <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
+          <rect x="20" y="4" width="4" height="4" fill="var(--ink)"/>
+          <rect x="14" y="10" width="10" height="2" fill="var(--ink)"/>
+          <rect x="4" y="14" width="20" height="2" fill="var(--ink)"/>
+          <rect x="4" y="18" width="6" height="6" fill="var(--ink)"/>
+          <rect x="12" y="18" width="2" height="6" fill="var(--ink)"/>
+          <rect x="16" y="18" width="8" height="2" fill="var(--ink)"/>
+          <rect x="16" y="22" width="4" height="2" fill="var(--ink)"/>
+        </svg>
+        <p style="max-width:30ch;color:color-mix(in oklab,var(--bg) 70%,transparent);font-size:var(--step--1);">Enterprise-grade data engineering for businesses of every size. Veterans of Facebook, BP, and Comcast.</p>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Services</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../consulting/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Consulting</a></li>
+          <li><a href="../consulting/data-engineering-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Engineering</a></li>
+          <li><a href="../consulting/data-analytics-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Analytics</a></li>
+          <li><a href="../consulting/mlops-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">MLOps</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Resources</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="../blog/index.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Blog</a></li>
+          <li><a href="../guides/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Guides</a></li>
+          <li><a href="../directory/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Directory</a></li>
+          <li><a href="../media-kit.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Advertise</a></li>
+        </ul>
+      </div>
+      <div>
+        <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Contact</div>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
+          <li><a href="mailto:junaid.athar@gmail.com" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">junaid.athar@gmail.com</a></li>
+          <li><a href="tel:+18472248510" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">847-224-8510</a></li>
+          <li><a href="../index.html#contact" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Get started</a></li>
+        </ul>
+      </div>
+    </div>
+    <div style="margin-top:clamp(60px,8vw,100px);padding-top:24px;border-top:1px solid color-mix(in oklab,var(--bg) 18%,transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:calc(var(--step--1) - 1px);color:color-mix(in oklab,var(--bg) 55%,transparent);font-family:var(--font-mono);text-transform:uppercase;letter-spacing:0.1em;">
+      <div>© 2025 Practical Data Work, LLC</div>
+      <div>Chicago · Remote</div>
+      <div><a href="../privacy-policy.html" style="color:inherit;">Privacy</a></div>
+    </div>
+  </div>
+</footer>
+<script>
+  const navEl = document.getElementById('nav');
+  if (navEl) {
+    function updateNav() { navEl.classList.toggle('scrolled', window.scrollY > 12); }
+    updateNav();
+    window.addEventListener('scroll', updateNav, { passive: true });
+  }
+  const toggle = document.getElementById('mobile-toggle');
+  const mobileMenu = document.getElementById('mobile-menu');
+  if (toggle && mobileMenu) {
+    toggle.addEventListener('click', () => {
+      const isOpen = mobileMenu.classList.toggle('open');
+      toggle.classList.toggle('open', isOpen);
+      toggle.setAttribute('aria-expanded', isOpen);
+      mobileMenu.setAttribute('aria-hidden', !isOpen);
+    });
+    mobileMenu.querySelectorAll('a').forEach(a => {
+      a.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        toggle.classList.remove('open');
+        toggle.setAttribute('aria-expanded', false);
+        mobileMenu.setAttribute('aria-hidden', true);
+      });
+    });
+  }
+</script>
+</body>
+</html>
