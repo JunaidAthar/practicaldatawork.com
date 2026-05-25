@@ -253,7 +253,7 @@ const FAQS = {
 
 // ─── SHARED HTML COMPONENTS ─────────────────────────────────────────────────
 
-function head(title, description, keywords, cssDepth = '../', canonical = '', extraSchema = '') {
+function head(title, description, keywords, cssDepth = '../', canonical = '', extraSchema = '', robots = 'index, follow') {
   const canonicalURL = canonical || '';
   return `<!DOCTYPE html>
 <html lang="en">
@@ -263,7 +263,7 @@ function head(title, description, keywords, cssDepth = '../', canonical = '', ex
   <title>${title} | Practical Data Work</title>
   <meta name="description" content="${description}">
   <meta name="keywords" content="${keywords}">
-  <meta name="robots" content="index, follow">
+  <meta name="robots" content="${robots}">
   ${canonicalURL ? `<link rel="canonical" href="${canonicalURL}">` : ''}
   <meta property="og:title" content="${title} | Practical Data Work">
   <meta property="og:description" content="${description}">
@@ -643,7 +643,7 @@ function industryPageHTML(svc, ind) {
     { name: `${svc.name} for ${ind.name}`, url: canonicalURL },
   ]);
 
-  return `${head(`${svc.name} for ${ind.name}`, `${svc.name} for ${ind.name} organizations. Navigate ${ind.regs} compliance while scaling analytics. Serving the ${ind.size} ${ind.name.toLowerCase()} market. Free consultation.`, `${svc.name.toLowerCase()} ${ind.name.toLowerCase()}, ${ind.name.toLowerCase()} ${svc.name.toLowerCase()}, ${ind.name.toLowerCase()} data consulting`, '../../', canonicalURL, extraSchema)}
+  return `${head(`${svc.name} for ${ind.name}`, `${svc.name} for ${ind.name} organizations. Navigate ${ind.regs} compliance while scaling analytics. Serving the ${ind.size} ${ind.name.toLowerCase()} market. Free consultation.`, `${svc.name.toLowerCase()} ${ind.name.toLowerCase()}, ${ind.name.toLowerCase()} ${svc.name.toLowerCase()}, ${ind.name.toLowerCase()} data consulting`, '../../', canonicalURL, extraSchema, 'noindex, follow')}
 ${nav('../../')}
 <main>
   <section class="page-hero">
@@ -727,7 +727,7 @@ function locationPageHTML(svc, city) {
     localBusinessSchema(city, svc.name),
   ].join('\n  ');
 
-  return `${head(`${svc.name} in ${city.name}, ${city.state}`, `${svc.name} in ${city.name}, ${city.state}. Serving ${city.economy} sectors with Fortune 50 expertise. ${city.fortune500} Fortune 500 companies nearby. Free consultation.`, `${svc.name.toLowerCase()} ${city.name.toLowerCase()}, ${city.name.toLowerCase()} ${svc.name.toLowerCase()}, data consultant ${city.name.toLowerCase()}`, '../../', canonicalURL, extraSchema)}
+  return `${head(`${svc.name} in ${city.name}, ${city.state}`, `${svc.name} in ${city.name}, ${city.state}. Serving ${city.economy} sectors with Fortune 50 expertise. ${city.fortune500} Fortune 500 companies nearby. Free consultation.`, `${svc.name.toLowerCase()} ${city.name.toLowerCase()}, ${city.name.toLowerCase()} ${svc.name.toLowerCase()}, data consultant ${city.name.toLowerCase()}`, '../../', canonicalURL, extraSchema, 'noindex, follow')}
 ${nav('../../')}
 <main>
   <section class="page-hero">
