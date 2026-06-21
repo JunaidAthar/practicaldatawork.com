@@ -388,6 +388,7 @@ function nav(depth = '../') {
       Practical<span class="nav-dot">·</span>Data<span class="nav-dot">·</span>Work
     </a>
     <nav class="nav-links" aria-label="Main navigation">
+      <a href="${depth}consulting/snowflake-migration-consulting.html">Migrations</a>
       <a href="${depth}index.html#services">Services</a>
       <a href="${depth}index.html#about">About</a>
       <a href="${depth}blog/index.html">Blog</a>
@@ -403,6 +404,7 @@ function nav(depth = '../') {
 </header>
 <!-- Mobile menu -->
 <div class="mobile-menu" id="mobile-menu" aria-hidden="true">
+  <a href="${depth}consulting/snowflake-migration-consulting.html">Migrations</a>
   <a href="${depth}index.html#services">Services</a>
   <a href="${depth}index.html#about">About</a>
   <a href="${depth}blog/index.html">Blog</a>
@@ -476,10 +478,10 @@ function footer(depth = '../') {
       <div>
         <div style="font-family:var(--font-mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Services</div>
         <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:10px;">
-          <li><a href="${depth}consulting/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Consulting</a></li>
+          <li><a href="${depth}consulting/snowflake-migration-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Snowflake Migration</a></li>
+          <li><a href="${depth}consulting/databricks-migration-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Databricks Migration</a></li>
           <li><a href="${depth}consulting/data-engineering-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Engineering</a></li>
-          <li><a href="${depth}consulting/data-analytics-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">Data Analytics</a></li>
-          <li><a href="${depth}consulting/mlops-consulting.html" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">MLOps</a></li>
+          <li><a href="${depth}consulting/" style="color:var(--bg);opacity:0.8;font-size:var(--step-0);">All consulting</a></li>
         </ul>
       </div>
       <div>
@@ -621,6 +623,159 @@ ${nav()}
       <h2>Related Services</h2>
       <div class="link-grid link-grid--wide">
         ${relatedSvcs.map(s => `<a href="./${s.slug}.html">${s.name}</a>`).join('\n        ')}
+      </div>
+    </div>
+  </section>
+</main>
+${footer()}`;
+}
+
+// ─── MIGRATION LANDING PAGES (Snowflake / Databricks) ─────────────────────────
+
+const MIGRATION_PAGES = [
+  {
+    slug: 'snowflake-migration-consulting',
+    platform: 'Snowflake',
+    target: 'Snowflake',
+    other: { slug: 'databricks-migration-consulting', name: 'Databricks migration consulting' },
+    h1: 'Snowflake migration consulting',
+    title: 'Snowflake Migration Consulting',
+    description: 'Migrate to Snowflake without the year-long horror story. Expert Snowflake migration consulting — move off Teradata, Oracle, Hadoop, SQL Server, or Redshift with validated data and a clean cutover.',
+    keywords: 'Snowflake migration consultant, migrate to Snowflake, Snowflake migration services, Teradata to Snowflake, Redshift to Snowflake, Hadoop to Snowflake',
+    lead: `A warehouse migration is the riskiest project most data teams will run all year — and the one they've never done before. We've moved data platforms at Facebook, BP, and Comcast scale, and we bring that same discipline to your migration to Snowflake: every table accounted for, every number reconciled, and a cutover your business doesn't feel.`,
+    problemPlatform: 'Snowflake',
+    whoFor: `Teams running a legacy or first-generation cloud warehouse — Teradata, Oracle, Netezza, SQL Server, on-prem Hadoop/Spark, or Redshift — who want to land on Snowflake with confidence rather than crossed fingers. Most of our clients are mid-market and growth-stage companies without a large platform team to spare for a year-long internal project.`,
+    whatYouGet: `A production-ready Snowflake environment with your data migrated and reconciled row-for-row against the source, your pipelines and transformations rebuilt on the new platform, your reports and dashboards repointed and verified, a documented cost and performance baseline, and a team that's been trained and shadowed until they own it. No dependency on us afterward — that's the point.`,
+    convert: `Schema, data types, and SQL/stored-procedure logic translated to Snowflake — automated where it's safe, hand-reviewed where it matters. We modernize as we go (warehouse sizing, partitioning/clustering, file formats) instead of lifting-and-shifting your old problems.`,
+    tags: ['Snowflake', 'Teradata', 'Redshift', 'Hadoop', 'SQL'],
+  },
+  {
+    slug: 'databricks-migration-consulting',
+    platform: 'Databricks',
+    target: 'Databricks Lakehouse',
+    other: { slug: 'snowflake-migration-consulting', name: 'Snowflake migration consulting' },
+    h1: 'Databricks migration consulting',
+    title: 'Databricks Migration Consulting',
+    description: 'Migrate to Databricks without the year-long horror story. Expert Databricks migration consulting — move off Teradata, Oracle, Hadoop, SQL Server, or Redshift to the Databricks Lakehouse with validated data and a clean cutover.',
+    keywords: 'Databricks migration consultant, migrate to Databricks, Databricks migration services, Teradata to Databricks, Hadoop to Databricks, Redshift to Databricks',
+    lead: `A warehouse migration is the riskiest project most data teams will run all year — and the one they've never done before. We've moved data platforms at Facebook, BP, and Comcast scale, and we bring that same discipline to your migration to Databricks Lakehouse: every table accounted for, every number reconciled, and a cutover your business doesn't feel.`,
+    problemPlatform: 'Databricks',
+    whoFor: `Teams running a legacy or first-generation cloud warehouse — Teradata, Oracle, Netezza, SQL Server, on-prem Hadoop/Spark, or Redshift, and teams standardizing on a lakehouse for combined BI + ML/AI workloads — who want to land on Databricks with confidence rather than crossed fingers. Most of our clients are mid-market and growth-stage companies without a large platform team to spare for a year-long internal project.`,
+    whatYouGet: `A production-ready Databricks environment with your data migrated and reconciled row-for-row against the source, your pipelines and transformations rebuilt on the new platform, your reports and dashboards repointed and verified, a documented cost and performance baseline, and a team that's been trained and shadowed until they own it. No dependency on us afterward — that's the point.`,
+    convert: `Schema, data types, and SQL/stored-procedure logic translated to Spark/Delta and Unity Catalog — automated where it's safe, hand-reviewed where it matters. We modernize as we go (warehouse sizing, partitioning/clustering, file formats) instead of lifting-and-shifting your old problems.`,
+    tags: ['Databricks', 'Delta Lake', 'Spark', 'Unity Catalog', 'ML/AI'],
+  },
+];
+
+function migrationLandingHTML(cfg) {
+  const canonicalURL = `https://practicaldatawork.com/consulting/${cfg.slug}.html`;
+  const phases = [
+    { n: 'Assess', meta: '1–2 weeks', text: `We inventory every source object, pipeline, and downstream report, map dependencies, flag what's obsolete, and size the effort. You get a written migration plan with scope, cost, risk, and sequencing per wave — yours to keep whether or not we continue.` },
+    { n: 'Convert', meta: '', text: cfg.convert },
+    { n: 'Validate', meta: '', text: `The step most migrations skip and later regret. We reconcile row counts, aggregates, and business-critical metrics between old and new, automatically, so you can prove the numbers match before anyone trusts a dashboard.` },
+    { n: 'Cut over', meta: '', text: `A rehearsed, low-drama switch with parallel-run and rollback options, scheduled around your business so reporting and pipelines keep working through the transition. No "big bang" weekend prayers.` },
+    { n: 'Handover', meta: '', text: `Documentation, runbooks, cost-optimization tuning, and hands-on training until your team is self-sufficient. We answer questions for 90 days after cutover.` },
+  ];
+  const faqs = [
+    { q: 'How long does a migration take?', a: 'Most mid-market migrations run 6–14 weeks depending on data volume, pipeline complexity, and how much legacy SQL needs translating. The assessment gives you a real number before you commit.' },
+    { q: 'Will our reporting break during the migration?', a: 'No. We keep source systems running and use parallel-run and validation so dashboards stay live until the new platform is proven.' },
+    { q: 'Snowflake or Databricks — which should we pick?', a: `If you're mostly BI, analytics, and SQL workloads, Snowflake is usually the simpler fit. If you're combining analytics with heavy ML/AI and data-science workloads, Databricks' lakehouse often wins. The assessment includes a platform recommendation if you haven't decided.` },
+    { q: 'Do we need a data team to maintain it afterward?', a: 'Not a large one. The whole engagement is built around handing you a platform your existing team can run, with the documentation and training to do it.' },
+    { q: 'What does it cost?', a: 'Fixed-scope pricing set per phase after the assessment — no open-ended hourly billing. Most full migrations land between $35,000 and $150,000 depending on data volume, pipeline complexity, and the number of source systems; the assessment gives you a firm number before you commit.' },
+  ];
+  const serviceSchema = `<script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    "name": ${JSON.stringify(cfg.title)},
+    "serviceType": ${JSON.stringify(cfg.title)},
+    "url": "${canonicalURL}",
+    "description": ${JSON.stringify(cfg.description)},
+    "areaServed": "US",
+    "provider": {
+      "@type": "ProfessionalService",
+      "name": "Practical Data Work",
+      "url": "https://practicaldatawork.com"
+    }
+  }
+  </script>`;
+  const socialMeta = `<meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="${canonicalURL}">
+  <meta name="twitter:title" content="${cfg.title} | Practical Data Work">
+  <meta name="twitter:description" content="${cfg.description}">
+  <meta name="twitter:image" content="https://practicaldatawork.com/images/twitter-image.jpg">`;
+  const extraSchema = [
+    socialMeta,
+    serviceSchema,
+    faqSchema(faqs),
+    breadcrumbSchema([
+      { name: 'Home', url: 'https://practicaldatawork.com/' },
+      { name: 'Consulting', url: 'https://practicaldatawork.com/consulting/' },
+      { name: cfg.title, url: canonicalURL },
+    ]),
+  ].join('\n  ');
+
+  return `${head(cfg.title, cfg.description, cfg.keywords, '../', canonicalURL, extraSchema)}
+${nav()}
+<main>
+  <section class="page-hero">
+    <div class="container">
+      <div class="breadcrumb"><a href="../index.html">Home</a> › <a href="./">Consulting</a> › ${cfg.h1}</div>
+      <h1>${cfg.h1}</h1>
+      <p class="page-hero__sub">${cfg.lead}</p>
+      <a href="../index.html#contact" class="btn btn--primary">Book a free migration assessment</a>
+    </div>
+  </section>
+
+  <div class="container page-layout">
+    <article class="page-content">
+      <p class="lead">${cfg.lead}</p>
+
+      <h2>The problem</h2>
+      <p>You're here because the status quo is getting expensive. Maybe your on-prem warehouse is out of headroom, your Teradata or Oracle licensing is bleeding cash, your Hadoop cluster is a maintenance tax nobody wants to own, or your Redshift bill scales faster than your business does. ${cfg.problemPlatform} is the obvious destination — but the path there is where projects die. Schema and SQL that don't translate cleanly. Pipelines that have to keep running while you move. Stakeholders who will notice the instant a dashboard number shifts. Done wrong, a migration is six months of risk for a platform nobody trusts at the end. Done right, it's a one-time, well-scoped project that lowers your bill and unblocks everything after it.</p>
+
+      <h2>Who this is for</h2>
+      <p>${cfg.whoFor}</p>
+
+      <h2>What you get</h2>
+      <p>${cfg.whatYouGet}</p>
+
+      ${adZoneInline()}
+
+      <h2>How the migration works</h2>
+      <p>A phased engagement with a decision gate after each step, so you're never committed to a path you can't see the end of.</p>
+      <div class="faq-list">
+        ${phases.map((p, i) => `<div class="faq-item"><h3>${i + 1}. ${p.n}${p.meta ? ` <span style="font-family:var(--font-mono);font-weight:400;text-transform:none;letter-spacing:0;color:var(--accent);font-size:0.8em;">(${p.meta})</span>` : ''}</h3><p>${p.text}</p></div>`).join('\n        ')}
+      </div>
+
+      <h2>How we de-risk it</h2>
+      <p>Migrations fail in predictable ways, so we plan for them up front. Data that doesn't match gets caught by automated reconciliation, not by an angry stakeholder. Hidden dependencies get found in the assessment, not at cutover. Runaway cloud spend gets controlled with right-sized compute and monitoring from day one. And the project never becomes a black box — you get weekly demos and a fixed, per-phase scope you approved.</p>
+
+      <h2>Frequently Asked Questions</h2>
+      <div class="faq-list">
+        ${faqs.map(f => `<div class="faq-item"><h3>${f.q}</h3><p>${f.a}</p></div>`).join('\n        ')}
+      </div>
+
+      <div class="cta-block">
+        <h2>Start with a free 30-minute migration assessment.</h2>
+        <p>Bring your current platform and your three biggest worries about moving. You'll leave with a candid plan and a real scope — even if you never hire us.</p>
+        <a href="../index.html#contact" class="btn btn--primary">Book a free migration assessment</a>
+      </div>
+    </article>
+
+    ${adZoneSidebar()}
+  </div>
+
+  <section class="related-section">
+    <div class="container">
+      <h2>Related Services</h2>
+      <div class="link-grid link-grid--wide">
+        <a href="./${cfg.other.slug}.html">${cfg.other.name}</a>
+        <a href="./data-warehouse-consulting.html">Data Warehouse Consulting</a>
+        <a href="./data-migration-consulting.html">Data Migration Consulting</a>
+        <a href="./cloud-data-consulting.html">Cloud Data Consulting</a>
+        <a href="./data-pipeline-consulting.html">Data Pipeline Consulting</a>
+        <a href="./data-engineering-consulting.html">Data Engineering Consulting</a>
       </div>
     </div>
   </section>
@@ -1194,7 +1349,13 @@ ${nav()}
   </section>
   <div class="container" style="padding: 3rem 0;">
     ${adZoneInline()}
-    <h2>Browse by Service</h2>
+    <h2>Flagship: Snowflake &amp; Databricks Migrations</h2>
+    <p style="color:var(--ink-2);max-width:62ch;">Our core practice. We move you off legacy Teradata, Oracle, Netezza, SQL Server, Hadoop, or Redshift onto Snowflake or Databricks — with validated data, a clean cutover, and your team trained to run it.</p>
+    <div class="link-grid link-grid--wide">
+      <a href="./snowflake-migration-consulting.html">Snowflake Migration Consulting</a>
+      <a href="./databricks-migration-consulting.html">Databricks Migration Consulting</a>
+    </div>
+    <h2 style="margin-top:3rem;">Browse by Service</h2>
     <div class="link-grid link-grid--wide">
       ${SERVICES.map(s => `<a href="./${s.slug}.html">${s.name}</a>`).join('\n      ')}
     </div>
@@ -1316,6 +1477,14 @@ function main() {
   write(path.join(BASE, 'consulting', 'index.html'), consultingIndexHTML());
   u('consulting/', 0.9);
   console.log(`   ✓ ${SERVICES.length} service pages`);
+
+  // 1b. Flagship migration landing pages (Snowflake / Databricks)
+  for (const mp of MIGRATION_PAGES) {
+    write(path.join(BASE, 'consulting', `${mp.slug}.html`), migrationLandingHTML(mp));
+    u(`consulting/${mp.slug}.html`, 0.95);
+    count++;
+  }
+  console.log(`   ✓ ${MIGRATION_PAGES.length} migration landing pages`);
 
   // 2. Industry × service pages
   console.log('📄 Generating industry pages...');
