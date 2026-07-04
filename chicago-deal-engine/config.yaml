@@ -61,8 +61,11 @@ enrichment:
   city: CHICAGO
   parcel_addresses_id: "3723-97qp"    # Assessor - Parcel Addresses
   parcel_sales_id: "wvhk-k5uv"        # Assessor - Parcel Sales
+  parcel_values_id: "uzyt-m557"       # Assessor - Assessed Values
+  assessment_ratio: 10                # residential assessed value ~= 10% of market value
+  high_equity_min: 150000             # est. market value - last sale price >= this => high-equity flag
   long_tenure_years: 15               # owned >= N years => long-tenure flag
-  sales_max_pins: 12000               # cap PINs we pull sales history for (highest-distress first)
+  sales_max_pins: 12000               # cap PINs we pull sales/value history for (highest-distress first)
 
 # Motivated-seller scoring. Score is summed then capped at max_score.
 scoring:
@@ -75,6 +78,7 @@ scoring:
     absentee_owner: 18            # owner's mailing address != property (enrichment)
     out_of_state_owner: 10        # owner mails out of Illinois (enrichment, stacks w/ absentee)
     long_tenure: 12               # owned >= long_tenure_years (enrichment)
+    high_equity: 8                # est. equity (market value - purchase price) >= high_equity_min
   recency:
     window_days: 365              # latest signal within this window ...
     bonus: 10                     # ... adds this many points

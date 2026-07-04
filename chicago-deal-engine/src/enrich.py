@@ -72,6 +72,35 @@ def _fetch_sales(cfg: dict, pins: list[str]) -> pd.DataFrame:
     return latest
 
 
+def _fetch_values(cfg: dict, pins: list[str]) -> pd.DataFrame:
+    """Latest available assessed total per PIN -> assessor-implied market value.
+    (2026 values aren't published yet, so we take the most recent year that has a
+    non-null total.)"""
+    client = SocrataClient(cfg["domain"], page_size=50000)
+    ds = cfg["parcel_values_id"]
+    frames = []
+    for i in range(0, len(pins), 500):
+        batch = [p for p in pins[i:i + 500] if p]
+        if not batch:
+            continue
+        in_list = ",".join("'" + p.replace("'", "") + "'" for p in batch)
+        rows = client.fetch_all(ds, select="pin,year,mailed_tot,certified_tot,board_tot",
+                                where=f"pin in ({in_list})", order="pin")
+        if rows:
+            frames.append(pd.DataFrame(rows))
+    if not frames:
+        return pd.DataFrame(columns=["pin", "assessed_tot"])
+    v = pd.concat(frames, ignore_index=True)
+    for c in ["mailed_tot", "certified_tot", "board_tot"]:
+        v[c] = pd.to_numeric(v.get(c), errors="coerce")
+    # board (post-appeal) > certified > mailed
+    v["assessed_tot"] = v["board_tot"].fillna(v["certified_tot"]).fillna(v["mailed_tot"])
+    v["year_num"] = pd.to_numeric(v["year"], errors="coerce")
+    v = v.dropna(subset=["assessed_tot"]).sort_values("year_num")
+    latest = v.groupby("pin", as_index=False).agg(assessed_tot=("assessed_tot", "last"))
+    return latest
+
+
 def enrich(features: pd.DataFrame, cfg: dict, raw_dir: Path,
            prescore: pd.Series | None = None) -> pd.DataFrame:
     if features.empty:
@@ -112,4 +141,11 @@ def enrich(features: pd.DataFrame, cfg: dict, raw_dir: Path,
     now = pd.Timestamp(datetime.utcnow())
     out["years_owned"] = ((now - pd.to_datetime(out["last_sale_date"], errors="coerce")).dt.days / 365.25)
     out["long_tenure"] = (out["years_owned"] >= cfg["long_tenure_years"]).fillna(False).astype(int)
+
+    # Assessor-implied market value + equity proxy (same PIN set as sales).
+    values = _fetch_values(cfg, pins)
+    out = out.merge(values, on="pin", how="left")
+    out["est_market_value"] = (out["assessed_tot"] * cfg["assessment_ratio"]).round(-3)
+    out["equity_proxy"] = out["est_market_value"] - out["last_sale_price"]
+    out["high_equity"] = (out["equity_proxy"] >= cfg["high_equity_min"]).fillna(False).astype(int)
     return out

@@ -21,6 +21,8 @@ def _signals_text(row) -> str:
         bits.append("absentee owner")
     if row.get("long_tenure") and row.get("years_owned") == row.get("years_owned"):  # not NaN
         bits.append(f"owned {int(row['years_owned'])}y")
+    if row.get("high_equity"):
+        bits.append("high equity")
     return "; ".join(bits) or "—"
 
 
@@ -57,6 +59,7 @@ def score(features: pd.DataFrame, config: dict) -> pd.DataFrame:
         + col("absentee_owner") * w["absentee_owner"]
         + col("out_of_state_owner") * w["out_of_state_owner"]
         + col("long_tenure") * w["long_tenure"]
+        + col("high_equity") * w.get("high_equity", 0)
     )
 
     cutoff = pd.Timestamp(datetime.utcnow() - timedelta(days=rec["window_days"]))
@@ -83,6 +86,7 @@ def apply_buy_box(scored: pd.DataFrame, config: dict) -> pd.DataFrame:
     out.insert(0, "rank", out.index + 1)
     cols = [
         "rank", "motivated_seller_score", "address", "zip", "signals", "suggested_action",
+        "est_market_value", "equity_proxy", "high_equity", "last_sale_price",
         "owner_name", "owner_city", "owner_state", "absentee_owner", "out_of_state_owner",
         "years_owned", "long_tenure", "pin",
         "open_violation_count", "vacancy_flag", "demolition_flag",
