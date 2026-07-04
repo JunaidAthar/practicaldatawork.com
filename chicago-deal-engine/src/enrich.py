@@ -120,10 +120,12 @@ def enrich(features: pd.DataFrame, cfg: dict, raw_dir: Path,
     addr["out_of_state_owner"] = ((mail_state != "IL") & (mail_state != "") & (mail_state != "NAN")).astype(int)
     addr["owner_name"] = addr["mail_address_name"].fillna(addr["owner_address_name"])
 
-    keep = ["norm_address", "pin", "owner_name", "mail_address_city_name", "mail_address_state",
-            "prop_address_zipcode_1", "absentee_owner", "out_of_state_owner", "is_multiparcel"]
+    keep = ["norm_address", "pin", "owner_name", "mail_address_full", "mail_address_city_name",
+            "mail_address_state", "prop_address_zipcode_1", "absentee_owner",
+            "out_of_state_owner", "is_multiparcel"]
     out = features.merge(addr[keep], on="norm_address", how="left")
-    out = out.rename(columns={"mail_address_city_name": "owner_city",
+    out = out.rename(columns={"mail_address_full": "owner_mailing_address",
+                              "mail_address_city_name": "owner_city",
                               "mail_address_state": "owner_state",
                               "prop_address_zipcode_1": "zip"})
     for c in ["absentee_owner", "out_of_state_owner", "is_multiparcel"]:

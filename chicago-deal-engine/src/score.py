@@ -87,7 +87,8 @@ def apply_buy_box(scored: pd.DataFrame, config: dict) -> pd.DataFrame:
     cols = [
         "rank", "motivated_seller_score", "address", "zip", "signals", "suggested_action",
         "est_market_value", "equity_proxy", "high_equity", "last_sale_price",
-        "owner_name", "owner_city", "owner_state", "absentee_owner", "out_of_state_owner",
+        "owner_name", "owner_mailing_address", "owner_city", "owner_state",
+        "absentee_owner", "out_of_state_owner",
         "years_owned", "long_tenure", "pin",
         "open_violation_count", "vacancy_flag", "demolition_flag",
         "latest_signal_date", "latitude", "longitude", "norm_address",
