@@ -1,0 +1,84 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Chicago Deal Engine — configuration
+#
+# Every dataset below is PUBLIC open data (City of Chicago / Cook County Socrata).
+# No login, no scraping of private systems. Verified live field names as of build.
+# ─────────────────────────────────────────────────────────────────────────────
+
+fetch:
+  lookback_days: 730          # only pull events from the last N days (distress recency)
+  max_records_per_source: 250000
+  page_size: 50000
+
+# Distress signals sourced from City of Chicago open data.
+# Each source is normalized to (address -> signal). `signal` names map to scoring weights.
+sources:
+  chicago_violations:
+    enabled: true
+    domain: data.cityofchicago.org
+    dataset_id: "22u3-xenr"           # Building Violations
+    signal: open_violation
+    date_field: violation_date
+    where: "violation_status='OPEN'"
+    address_field: address
+    select: [address, violation_date, violation_status, violation_description, latitude, longitude]
+
+  chicago_vacant:
+    enabled: true
+    domain: data.cityofchicago.org
+    dataset_id: "v6vf-nfxy"           # 311 Service Requests
+    signal: vacancy
+    date_field: created_date
+    where: "sr_type='Vacant/Abandoned Building Complaint'"
+    address_field: street_address
+    select: [street_address, created_date, status, sr_type, latitude, longitude]
+
+  chicago_demolition:
+    enabled: true
+    domain: data.cityofchicago.org
+    dataset_id: "ydr8-5enu"           # Building Permits
+    signal: demolition_permit
+    date_field: issue_date
+    where: "upper(permit_type) like '%WRECK%'"
+    # Permits have no single address column — build it from parts:
+    address_components: [street_number, street_direction, street_name]
+    # Out-of-state permit contact = weak absentee-owner hint.
+    owner_state_field: contact_1_state
+    select: [street_number, street_direction, street_name, issue_date, permit_type,
+             work_description, reported_cost, contact_1_name, contact_1_city,
+             contact_1_state, contact_1_zipcode, latitude, longitude]
+
+# ─────────────────────────────────────────────────────────────────────────────
+# OPTIONAL ENRICHMENT (disabled by default). Cook County Assessor / Treasurer add
+# owner name, mailing address (true absentee), assessed value, last sale (tenure/
+# equity), and tax delinquency. Dataset IDs drift, so confirm the current 4x4 id
+# at https://datacatalog.cookcountyil.gov before enabling. See README.
+# ─────────────────────────────────────────────────────────────────────────────
+enrichment:
+  enabled: false
+  # cook_parcel_sales:  { domain: datacatalog.cookcountyil.gov, dataset_id: "PASTE-ID" }
+  # cook_parcel_owner:  { domain: datacatalog.cookcountyil.gov, dataset_id: "PASTE-ID" }
+
+# Motivated-seller scoring. Score is summed then capped at max_score.
+scoring:
+  weights:
+    open_violation_each: 9        # points per open violation ...
+    open_violation_cap: 45        # ... capped here
+    vacancy: 30                   # vacant/abandoned complaint
+    demolition_permit: 22         # wrecking/demolition permit pulled
+    out_of_state_owner_hint: 6    # permit contact out of IL (weak absentee hint)
+  recency:
+    window_days: 365              # latest signal within this window ...
+    bonus: 10                     # ... adds this many points
+  max_score: 100
+
+# Buy-box: filters applied to the final ranked list.
+buy_box:
+  min_signals: 1                  # drop rows with no distress signal
+  min_score: 0                    # keep everything scored (raise to trim the list)
+  top_n: 200                      # size of the prioritized short-list
+
+output:
+  dir: data/processed
+  ranked_file: chicago_leads_ranked.csv
+  shortlist_file: chicago_leads_top.csv

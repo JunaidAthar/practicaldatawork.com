@@ -1,0 +1,15 @@
+# Data outputs — never commit scraped/derived property data or lead lists
+data/raw/
+data/processed/
+*.csv
+!config.yaml
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.pyc
+.venv/
+venv/
+.ipynb_checkpoints/
