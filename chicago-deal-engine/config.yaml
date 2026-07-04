@@ -49,15 +49,20 @@ sources:
              contact_1_state, contact_1_zipcode, latitude, longitude]
 
 # ─────────────────────────────────────────────────────────────────────────────
-# OPTIONAL ENRICHMENT (disabled by default). Cook County Assessor / Treasurer add
-# owner name, mailing address (true absentee), assessed value, last sale (tenure/
-# equity), and tax delinquency. Dataset IDs drift, so confirm the current 4x4 id
-# at https://datacatalog.cookcountyil.gov before enabling. See README.
+# COOK COUNTY ENRICHMENT (Assessor open data — verified live).
+#   Parcel Addresses -> PIN, owner name, mailing address => TRUE absentee flag
+#   Parcel Sales     -> last sale date/price            => tenure + equity proxy
+# (Tax delinquency is NOT on this portal; it lives on the Cook County Treasurer
+#  site and needs a separate scraper — see README roadmap.)
 # ─────────────────────────────────────────────────────────────────────────────
 enrichment:
-  enabled: false
-  # cook_parcel_sales:  { domain: datacatalog.cookcountyil.gov, dataset_id: "PASTE-ID" }
-  # cook_parcel_owner:  { domain: datacatalog.cookcountyil.gov, dataset_id: "PASTE-ID" }
+  enabled: true
+  domain: datacatalog.cookcountyil.gov
+  city: CHICAGO
+  parcel_addresses_id: "3723-97qp"    # Assessor - Parcel Addresses
+  parcel_sales_id: "wvhk-k5uv"        # Assessor - Parcel Sales
+  long_tenure_years: 15               # owned >= N years => long-tenure flag
+  sales_max_pins: 12000               # cap PINs we pull sales history for (highest-distress first)
 
 # Motivated-seller scoring. Score is summed then capped at max_score.
 scoring:
@@ -67,6 +72,9 @@ scoring:
     vacancy: 30                   # vacant/abandoned complaint
     demolition_permit: 22         # wrecking/demolition permit pulled
     out_of_state_owner_hint: 6    # permit contact out of IL (weak absentee hint)
+    absentee_owner: 18            # owner's mailing address != property (enrichment)
+    out_of_state_owner: 10        # owner mails out of Illinois (enrichment, stacks w/ absentee)
+    long_tenure: 12               # owned >= long_tenure_years (enrichment)
   recency:
     window_days: 365              # latest signal within this window ...
     bonus: 10                     # ... adds this many points

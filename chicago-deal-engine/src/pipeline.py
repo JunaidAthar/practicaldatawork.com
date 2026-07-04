@@ -7,6 +7,7 @@ import pandas as pd
 import yaml
 
 from . import fetch as fetch_mod
+from .enrich import enrich
 from .normalize import to_features
 from .score import apply_buy_box, score
 
@@ -31,6 +32,15 @@ def run(config: dict = None, limit: int | None = None) -> pd.DataFrame:
     print("2/4  Normalizing + joining on address…")
     features = to_features(config, frames)
     print(f"     {len(features):,} distinct properties with a distress signal")
+
+    enr = config.get("enrichment", {})
+    if enr.get("enabled"):
+        print("2b/4 Enriching with Cook County (owner, absentee, tenure)…")
+        prescore = score(features, config)["motivated_seller_score"]
+        features = enrich(features, enr, raw_dir, prescore=prescore)
+        matched = int(features["pin"].notna().sum()) if "pin" in features else 0
+        print(f"     matched {matched:,}/{len(features):,} to a parcel  "
+              f"({int(features.get('absentee_owner', pd.Series()).sum()):,} absentee)")
 
     print("3/4  Scoring motivated-seller propensity…")
     scored = score(features, config)

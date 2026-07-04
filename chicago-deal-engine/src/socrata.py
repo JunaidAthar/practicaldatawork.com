@@ -46,6 +46,10 @@ class SocrataClient:
         self._get(self._url(dataset_id), {"$limit": 1})
         return True
 
+    def query(self, dataset_id: str, **params) -> list:
+        """Single request with arbitrary SoQL params (e.g. $select/$group/$where)."""
+        return self._get(self._url(dataset_id), params)
+
     def fetch_all(self, dataset_id: str, select=None, where=None,
                   order: str = ":id", max_records: Optional[int] = None) -> list:
         """Page through an entire (filtered) dataset. `order` must be stable so

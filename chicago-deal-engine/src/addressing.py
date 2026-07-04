@@ -13,7 +13,7 @@ _DIRECTIONALS = {
     "NORTHEAST": "NE", "NORTHWEST": "NW", "SOUTHEAST": "SE", "SOUTHWEST": "SW",
 }
 _SUFFIXES = {
-    "STREET": "ST", "AVENUE": "AVE", "AVE.": "AVE", "BOULEVARD": "BLVD",
+    "STREET": "ST", "AVENUE": "AVE", "AV": "AVE", "BOULEVARD": "BLVD", "BLVD.": "BLVD",
     "ROAD": "RD", "DRIVE": "DR", "LANE": "LN", "COURT": "CT", "PLACE": "PL",
     "TERRACE": "TER", "PARKWAY": "PKWY", "HIGHWAY": "HWY", "SQUARE": "SQ",
     "TRAIL": "TRL", "CIRCLE": "CIR", "EXPRESSWAY": "EXPY", "PLAZA": "PLZ",
