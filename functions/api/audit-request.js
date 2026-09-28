@@ -63,7 +63,7 @@ export async function onRequestPost({ request, env }) {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        personalizations: [{ to: [{ email: env.NOTIFY_EMAIL || 'junaid.athar@gmail.com' }] }],
+        personalizations: [{ to: [{ email: env.NOTIFY_EMAIL || 'junaid@practicaldatawork.com' }] }],
         from: { email: 'noreply@practicaldatawork.com', name: 'Practical Data Work' },
         reply_to: { email: d.email, name: d.name },
         subject: `Audit request: ${d.pharmacy}`,

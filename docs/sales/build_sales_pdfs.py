@@ -2,7 +2,7 @@ import random, datetime as dt, asyncio, os
 from playwright.async_api import async_playwright
 
 BRAND = "Practical Data Work"
-CONTACT = "Junaid Athar &nbsp;·&nbsp; practicaldatawork.com<br>Junaid.Athar@gmail.com &nbsp;·&nbsp; 847-224-8510"
+CONTACT = "Junaid Athar &nbsp;·&nbsp; practicaldatawork.com<br>junaid@practicaldatawork.com &nbsp;·&nbsp; 847-224-8510"
 OUT = os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "..", "assets")
 HERE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "build")
 os.makedirs(HERE, exist_ok=True)
