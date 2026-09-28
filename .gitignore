@@ -1,36 +1,46 @@
-# Marketing campaigns and sensitive data
-marketing/
+# ---- Secrets ----
+.dev.vars
 *.env
-.env.local
-.env.*.local
-
-# API credentials and tokens
+.env
+.env.*
 *_credentials.json
 *_token.json
 config/secrets/
 
-# Campaign data and reports
-campaign_data/
-reports/
-analytics/
+# ---- PHI / claim data: NEVER commit real pharmacy data ----
+# Real data lives only in HIPAA-covered storage (see docs/hipaa.md).
+data/
+pipeline/data/
+pipeline/out/
+*.835
+*.x12
+*.edi
+*.ncpdp
+*.parquet
+# Allow synthetic fixtures only
+!pipeline/tests/fixtures/
 
-# Python
+# ---- Local tooling ----
+node_modules/
+.wrangler/
+.venv/
+venv/
 __pycache__/
 *.py[cod]
-*$py.class
-*.so
-.Python
-venv/
-env/
-ENV/
+.pytest_cache/
+*.egg-info/
+.claude/settings.local.json
 
-# IDE
+# ---- Old / unrelated projects kept locally ----
+marketing/
+chicago-deal-engine/
+
+# ---- OS / IDE ----
+.DS_Store
+Thumbs.db
 .vscode/
 .idea/
 *.swp
-*.swo
 
-# OS
-.DS_Store
-Thumbs.db
-
+# Generated sales PDF build files
+docs/sales/build/

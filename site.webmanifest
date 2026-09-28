@@ -1,11 +1,11 @@
 {
   "name": "Practical Data Work",
   "short_name": "PDW",
-  "description": "Practical insights, tutorials, and best practices for data engineering, analytics, and MLOps",
+  "description": "Medicare negotiated-price refund recovery for independent pharmacies",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#f9fafb",
-  "theme_color": "#7c3aed",
+  "background_color": "#ffffff",
+  "theme_color": "#14305a",
   "icons": [
     {
       "src": "/favicon-16x16.png",

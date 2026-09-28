@@ -1,0 +1,18 @@
+# Workers static assets: never serve internal files
+pipeline
+docs
+functions
+admin/*.md
+.claude
+.git
+.github
+node_modules
+marketing
+chicago-deal-engine
+*.md
+*.toml
+*.sql
+*.py
+.dev.vars
+.gitignore
+.assetsignore

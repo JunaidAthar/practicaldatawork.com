@@ -1,1102 +1,248 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-S0D95QHB9M"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'G-S0D95QHB9M');
-</script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Snowflake &amp; Databricks Migrations Done Right | Practical Data Work</title>
-<meta name="title" content="Snowflake &amp; Databricks Migrations Done Right | Practical Data Work">
-<meta name="description" content="Snowflake and Databricks migrations, done right the first time. We move you off legacy Teradata, Hadoop, on-prem SQL, or Redshift with validated data, a clean cutover, and your team trained to run it. Built on a decade of data engineering at Facebook, BP, and Comcast.">
-<meta name="keywords" content="Snowflake migration consultant, Databricks migration services, migrate to Snowflake, migrate to Databricks, Teradata to Snowflake, Hadoop to Databricks, Redshift migration, data warehouse migration consulting">
-<meta name="author" content="Practical Data Work">
-<meta name="robots" content="index, follow">
-<link rel="canonical" href="https://practicaldatawork.com/">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://practicaldatawork.com/">
-<meta property="og:title" content="Snowflake &amp; Databricks Migrations Done Right | Practical Data Work">
-<meta property="og:description" content="Snowflake and Databricks migrations, done right the first time. Validated data, a clean cutover, and your team trained to run it. Built on a decade of data engineering at Facebook, BP, and Comcast.">
-<meta property="og:image" content="https://practicaldatawork.com/images/og-image.jpg">
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="https://practicaldatawork.com/">
-<meta property="twitter:title" content="Snowflake &amp; Databricks Migrations Done Right | Practical Data Work">
-<meta property="twitter:description" content="Snowflake and Databricks migrations, done right the first time. Validated data, a clean cutover, and your team trained to run it. Built on a decade of data engineering at Facebook, BP, and Comcast.">
-<meta property="twitter:image" content="https://practicaldatawork.com/images/twitter-image.jpg">
-<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
-<link rel="icon" type="image/x-icon" href="/favicon.ico">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,300..700;1,6..72,300..600&family=Geist:wght@300..800&family=Geist+Mono:wght@300..600&display=swap">
-<script>
-  !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-  n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
-  n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
-  t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}
-  (window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
-  var pixelId='YOUR_PIXEL_ID';
-  if(pixelId!=='YOUR_PIXEL_ID'){fbq('init',pixelId);fbq('track','PageView');
-  fbq('track','ViewContent',{content_name:'Homepage',content_category:'Main'});}
-</script>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=YOUR_PIXEL_ID&ev=PageView&noscript=1"/></noscript>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"ProfessionalService","name":"Practical Data Work","url":"https://practicaldatawork.com","description":"Snowflake and Databricks migration consulting. We move data teams off legacy Teradata, Oracle, Netezza, SQL Server, Hadoop, and Redshift onto Snowflake or Databricks with validated data and a clean cutover.","serviceType":"Snowflake & Databricks Migration Consulting","areaServed":"Worldwide","hasOfferCatalog":{"@type":"OfferCatalog","name":"Data Platform Migration Services","itemListElement":[{"@type":"Offer","itemOffered":{"@type":"Service","name":"Snowflake Migration","description":"Migrate from Teradata, Oracle, Hadoop, SQL Server, or Redshift to Snowflake with row-for-row validation and a clean cutover","url":"https://practicaldatawork.com/consulting/snowflake-migration-consulting.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Databricks Migration","description":"Migrate to the Databricks Lakehouse for combined BI and ML/AI workloads with validated data and a rehearsed cutover","url":"https://practicaldatawork.com/consulting/databricks-migration-consulting.html"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Data Engineering","description":"Build robust, scalable data pipelines and infrastructure"}},{"@type":"Offer","itemOffered":{"@type":"Service","name":"Data Governance","description":"Enterprise-grade governance, lineage, and quality frameworks"}}]}}
-</script>
-<style>
-:root {
-  --bg:#ffffff; --bg-soft:#f4f3ef; --bg-card:#ffffff; --bg-dark:#0a0b0d;
-  --ink:#0a0b0d; --ink-2:#2c2e33; --ink-3:#6a6c73; --ink-4:#9aa0a8;
-  --rule:#e4e2dc; --rule-soft:#efede7;
-  --accent:#2740e0; --accent-ink:#1a2db0; --accent-soft:#e9ecfb; --accent-2:#d97a3b;
-  --serif:"Newsreader",Georgia,serif;
-  --sans:"Geist",ui-sans-serif,system-ui,-apple-system,sans-serif;
-  --mono:"Geist Mono",ui-monospace,"SF Mono",Menlo,monospace;
-  --step--1:clamp(0.78rem,0.74rem + 0.2vw,0.86rem);
-  --step-0:clamp(0.95rem,0.91rem + 0.2vw,1.05rem);
-  --step-1:clamp(1.12rem,1.04rem + 0.4vw,1.30rem);
-  --step-2:clamp(1.42rem,1.28rem + 0.7vw,1.85rem);
-  --step-3:clamp(1.80rem,1.55rem + 1.3vw,2.75rem);
-  --step-4:clamp(2.40rem,1.95rem + 2.3vw,4.20rem);
-  --step-5:clamp(3.10rem,2.30rem + 4.2vw,6.00rem);
-  --step-6:clamp(3.80rem,2.80rem + 5.4vw,8.40rem);
-  --maxw:1440px; --gutter:clamp(20px,4vw,64px); --radius:0px;
-}
-*{box-sizing:border-box;}
-html,body{margin:0;padding:0;}
-html{scroll-behavior:smooth;}
-body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:var(--step-0);line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;letter-spacing:-0.005em;}
-::selection{background:var(--accent);color:var(--bg);}
-a{color:inherit;text-decoration:none;}
-button{font:inherit;cursor:pointer;}
-ul{padding:0;margin:0;list-style:none;}
-h1,h2,h3,h4{font-family:var(--sans);font-weight:600;letter-spacing:-0.035em;line-height:1.02;margin:0;}
-p{margin:0;}
-.container{max-width:var(--maxw);margin:0 auto;padding-left:var(--gutter);padding-right:var(--gutter);}
-.section{padding-top:clamp(72px,9vw,160px);padding-bottom:clamp(72px,9vw,160px);}
-.section-tight{padding-top:clamp(40px,5vw,80px);padding-bottom:clamp(40px,5vw,80px);}
-
-/* Buttons */
-.btn{display:inline-flex;align-items:center;gap:12px;padding:16px 28px;border:1px solid var(--ink);background:var(--ink);color:var(--bg);font-family:var(--sans);font-size:calc(var(--step--1) + 1px);font-weight:500;letter-spacing:-0.005em;white-space:nowrap;transition:all .22s ease;border-radius:0;}
-.btn:hover{background:var(--accent);border-color:var(--accent);color:var(--bg);}
-.btn--ghost{background:transparent;color:var(--ink);}
-.btn--ghost:hover{background:var(--ink);color:var(--bg);}
-.btn--accent{background:var(--accent);border-color:var(--accent);color:#fff;}
-.btn--accent:hover{background:var(--accent-ink);border-color:var(--accent-ink);}
-.btn--white{background:#fff;color:var(--ink);border-color:#fff;}
-.btn--white:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
-.btn--sm{padding:10px 16px;}
-.btn--full{width:100%;justify-content:center;}
-.link-arrow{display:inline-flex;align-items:center;gap:10px;font-family:var(--sans);font-size:var(--step-0);font-weight:500;letter-spacing:-0.005em;border-bottom:1px solid var(--ink);padding-bottom:4px;transition:all .2s ease;}
-.link-arrow:hover{color:var(--accent);border-color:var(--accent);}
-.arr{transition:transform .2s ease;display:inline-block;}
-.link-arrow:hover .arr{transform:translateX(4px);}
-
-/* Type */
-.font-serif{font-family:var(--serif);font-weight:400;letter-spacing:-0.015em;font-style:italic;}
-.font-mono{font-family:var(--mono);font-weight:400;letter-spacing:0;}
-.eyebrow{font-family:var(--mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:500;}
-.section-label{font-family:var(--mono);display:flex;justify-content:space-between;align-items:baseline;font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--ink);padding-top:14px;margin-bottom:clamp(40px,5vw,80px);}
-.tag{font-family:var(--mono);display:inline-block;font-size:calc(var(--step--1) - 1px);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-2);border:1px solid var(--rule);padding:5px 10px;border-radius:2px;background:var(--bg-card);}
-.pill{display:inline-block;font-family:var(--sans);font-size:0.78em;font-weight:500;border:1px solid var(--ink);padding:3px 12px;border-radius:100px;transform:translateY(-0.12em);background:var(--bg);color:var(--ink);}
-
-/* Photo placeholder */
-.imgph{position:relative;overflow:hidden;background:var(--bg-dark);isolation:isolate;}
-.imgph::before,.imgph::after{content:"";position:absolute;inset:0;z-index:0;}
-.imgph::before{background:radial-gradient(120% 60% at 20% 0%,color-mix(in oklab,var(--accent) 60%,#000) 0%,transparent 55%),radial-gradient(80% 60% at 100% 100%,color-mix(in oklab,var(--accent-2) 60%,#000) 0%,transparent 60%),linear-gradient(180deg,#14161b 0%,#0a0b0d 100%);}
-.imgph::after{background-image:linear-gradient(rgba(255,255,255,0.04) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.04) 1px,transparent 1px);background-size:22px 22px;mix-blend-mode:overlay;opacity:0.5;}
-.imgph-caption{position:absolute;left:16px;bottom:14px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);}
-.imgph-tl{position:absolute;left:16px;top:14px;z-index:2;font-family:var(--mono);font-size:11px;letter-spacing:0.08em;text-transform:uppercase;color:rgba(255,255,255,0.7);display:flex;align-items:center;gap:6px;}
-.imgph-tl::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--accent-2);}
-
-/* Insights rail */
-.rail{display:flex;gap:24px;overflow-x:auto;overflow-y:hidden;scroll-snap-type:x mandatory;scrollbar-width:thin;scrollbar-color:var(--ink-4) transparent;padding-bottom:8px;}
-.rail>*{scroll-snap-align:start;flex:0 0 auto;}
-.rail::-webkit-scrollbar{height:6px;}
-.rail::-webkit-scrollbar-thumb{background:var(--ink-4);}
-
-/* Reveal */
-.reveal{opacity:0;transform:translateY(14px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1);}
-.reveal.in{opacity:1;transform:none;}
-
-/* Nav */
-.nav{position:fixed;top:0;left:0;right:0;z-index:50;transition:background .25s ease,border-color .25s ease;border-bottom:1px solid transparent;}
-.nav.scrolled{background:color-mix(in oklab,var(--bg) 90%,transparent);backdrop-filter:blur(12px) saturate(140%);-webkit-backdrop-filter:blur(12px) saturate(140%);border-bottom-color:var(--rule);}
-.nav-inner{max-width:var(--maxw);margin:0 auto;padding:0 var(--gutter);display:flex;align-items:center;justify-content:space-between;height:72px;}
-.nav-wordmark{display:flex;align-items:center;gap:12px;font-family:var(--mono);font-size:13px;text-transform:uppercase;letter-spacing:0.08em;}
-.nav-wordmark .dot{color:var(--ink-3);}
-.nav-links{display:flex;align-items:center;gap:clamp(20px,2.4vw,36px);}
-.nav-links a{font-family:var(--mono);font-size:12px;text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);transition:color .2s ease;}
-.nav-links a:hover{color:var(--ink);}
-.mobile-toggle{display:none;background:transparent;border:1px solid var(--ink);color:var(--ink);width:40px;height:40px;align-items:center;justify-content:center;border-radius:2px;flex-direction:column;gap:5px;padding:0;}
-.mobile-toggle span{display:block;width:16px;height:1px;background:currentColor;transition:transform .2s ease,opacity .2s ease;}
-.mobile-toggle.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
-.mobile-toggle.open span:nth-child(2){opacity:0;}
-.mobile-toggle.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
-.mobile-menu{display:none;position:fixed;inset:72px 0 0 0;z-index:49;background:var(--bg);padding:var(--gutter);flex-direction:column;gap:4px;overflow-y:auto;}
-.mobile-menu.open{display:flex;}
-.mobile-menu a{display:block;font-size:var(--step-3);line-height:1.1;padding:14px 0;border-bottom:1px solid var(--rule);color:var(--ink);}
-
-/* Capability cards */
-.cap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));border-top:1px solid var(--ink);border-left:1px solid var(--rule);}
-.cap-card{border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);padding:clamp(28px,3.5vw,44px);background:var(--bg);transition:background .25s ease;min-height:300px;display:flex;flex-direction:column;justify-content:space-between;}
-.cap-card:hover{background:var(--bg-soft);}
-.cap-card:hover .cap-arrow{opacity:1;transform:translate(0,0);}
-.cap-arrow{opacity:0;transform:translate(-4px,4px);transition:all .2s ease;color:var(--accent);}
-
-/* Timeline */
-.timeline{display:flex;flex-direction:column;gap:0;}
-.timeline-item{padding:clamp(24px,3vw,36px) 0;border-bottom:1px solid var(--rule);display:grid;grid-template-columns:180px 1fr;gap:clamp(24px,3vw,40px);}
-.timeline-item:first-child{border-top:1px solid var(--ink);}
-
-/* Pricing */
-.pricing-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);}
-.pricing-card{background:var(--bg);padding:clamp(28px,3.5vw,48px);display:flex;flex-direction:column;gap:24px;}
-.pricing-card--featured{background:var(--ink);color:var(--bg);}
-.pricing-card--featured .tag{border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.7);background:transparent;}
-.pricing-card--featured .btn{background:var(--bg);color:var(--ink);border-color:var(--bg);}
-.pricing-card--featured .btn:hover{background:var(--accent);border-color:var(--accent);color:#fff;}
-.price-amount{font-size:var(--step-4);font-weight:600;letter-spacing:-0.045em;line-height:1;}
-.price-period{font-family:var(--mono);font-size:var(--step--1);color:var(--ink-3);text-transform:uppercase;letter-spacing:0.08em;}
-.pricing-card--featured .price-period{color:rgba(255,255,255,0.5);}
-.feature-list{display:flex;flex-direction:column;gap:10px;}
-.feature-list li{display:flex;align-items:baseline;gap:10px;font-size:var(--step-0);}
-.feature-list li::before{content:"";display:inline-block;width:4px;height:4px;border-radius:50%;background:var(--accent);flex-shrink:0;transform:translateY(-2px);}
-.pricing-card--featured .feature-list li::before{background:#7fc28a;}
-
-/* Form */
-.form-group{margin-bottom:20px;}
-.form-label{display:block;font-family:var(--mono);font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);margin-bottom:8px;}
-.form-label .opt{font-style:italic;text-transform:none;letter-spacing:0;color:var(--ink-4);}
-.form-input,.form-select,.form-textarea{display:block;width:100%;padding:14px 16px;background:var(--bg);border:1px solid var(--rule);color:var(--ink);font-family:var(--sans);font-size:var(--step-0);transition:border-color .2s ease;border-radius:0;outline:none;-webkit-appearance:none;}
-.form-input:focus,.form-select:focus,.form-textarea:focus{border-color:var(--ink);}
-.form-textarea{resize:vertical;min-height:120px;}
-.form-select{cursor:pointer;background-image:url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%236a6c73' stroke-width='1.4'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 16px center;padding-right:40px;}
-
-/* Internal link chips */
-.chip{display:inline-block;background:var(--bg);border:1px solid var(--rule);padding:6px 14px;font-size:var(--step--1);color:var(--accent);font-family:var(--sans);transition:border-color .2s ease,background .2s ease;}
-.chip:hover{border-color:var(--accent);background:var(--accent-soft);}
-.chip--filled{background:var(--accent);color:#fff;border-color:var(--accent);}
-.chip--filled:hover{background:var(--accent-ink);border-color:var(--accent-ink);}
-
-/* Footer */
-.footer{background:var(--ink);color:var(--bg);padding-top:clamp(80px,10vw,160px);padding-bottom:clamp(40px,5vw,60px);}
-.footer-rule{border:0;border-top:1px solid color-mix(in oklab,var(--bg) 18%,transparent);margin:0;}
-.footer-link{color:var(--bg);opacity:0.8;transition:opacity .2s ease;}
-.footer-link:hover{opacity:1;}
-
-:focus-visible{outline:2px solid var(--accent);outline-offset:3px;}
-
-@media(max-width:720px){
-  .hide-mobile{display:none!important;}
-  .nav-links{display:none!important;}
-  .btn--sm-hide{display:none!important;}
-  .mobile-toggle{display:flex!important;}
-  .timeline-item{grid-template-columns:1fr;}
-  .hero-grid{grid-template-columns:1fr!important;}
-  .cap-grid{grid-template-columns:1fr;}
-}
-@media(min-width:721px){.show-mobile{display:none!important;}}
-</style>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Medicare Negotiated-Price (MFP) Refund Recovery for Independent Pharmacies | Practical Data Work</title>
+  <meta name="description" content="We match every Medicare negotiated-price claim to its manufacturer refund, find what's missing, late or wrongly denied as 340B, and recover it. Free audit. You only pay if we recover money.">
+  <link rel="canonical" href="https://practicaldatawork.com/">
+  <meta property="og:title" content="Get every Medicare negotiated-price refund you're owed">
+  <meta property="og:description" content="MFP refund reconciliation and recovery for independent pharmacies. Free audit, pay only on results.">
+  <meta property="og:url" content="https://practicaldatawork.com/">
+  <meta property="og:type" content="website">
+  <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+  <link rel="apple-touch-icon" href="/apple-touch-icon.png">
+  <link rel="manifest" href="/site.webmanifest">
+  <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
-
-<!-- Nav -->
-<header class="nav" id="nav">
-  <div class="nav-inner">
-    <a href="/" class="nav-wordmark" aria-label="Practical Data Work — home">
-      <svg width="28" height="28" viewBox="0 0 28 28" aria-hidden="true">
-        <rect x="0.5" y="0.5" width="27" height="27" fill="var(--ink)"/>
-        <rect x="4" y="4" width="8" height="8" fill="var(--bg)"/>
-        <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
-        <rect x="20" y="4" width="4" height="4" fill="var(--bg)"/>
-        <rect x="14" y="10" width="10" height="2" fill="var(--bg)"/>
-        <rect x="4" y="14" width="20" height="2" fill="var(--bg)"/>
-        <rect x="4" y="18" width="6" height="6" fill="var(--bg)"/>
-        <rect x="12" y="18" width="2" height="6" fill="var(--bg)"/>
-        <rect x="16" y="18" width="8" height="2" fill="var(--bg)"/>
-        <rect x="16" y="22" width="4" height="2" fill="var(--bg)"/>
-      </svg>
-      Practical<span class="dot">·</span>Data<span class="dot">·</span>Work
-    </a>
-    <nav class="nav-links" aria-label="Main navigation">
-      <a href="/consulting/snowflake-migration-consulting.html">Migrations</a>
-      <a href="#services">Services</a>
-      <a href="#about">About</a>
-      <a href="/consulting/">Consulting</a>
-      <a href="/blog">Blog</a>
-      <a href="#contact" class="btn btn--sm">Start a project
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-      </a>
+<a class="skip" href="#main">Skip to content</a>
+<header class="nav">
+  <div class="wrap">
+    <a class="brand" href="/"><img src="/images/logo.svg" alt=""> Practical Data Work</a>
+    <nav aria-label="Main">
+      <a href="#how">How it works</a>
+      <a href="#pricing">Pricing</a>
+      <a href="#security">Security</a>
+      <a href="#faq">FAQ</a>
+      <a class="btn sm" href="#audit">Free audit</a>
     </nav>
-    <button class="mobile-toggle" id="mobile-toggle" aria-label="Toggle menu" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </div>
 </header>
 
-<!-- Mobile menu -->
-<div class="mobile-menu" id="mobile-menu" aria-hidden="true">
-  <a href="/consulting/snowflake-migration-consulting.html">Migrations</a>
-  <a href="#services">Services</a>
-  <a href="#about">About</a>
-  <a href="/consulting/">Consulting</a>
-  <a href="/blog">Blog</a>
-  <a href="#contact" class="btn" style="margin-top:24px;justify-content:center;">Start a project
-    <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-  </a>
-</div>
-
-<!-- Hero -->
-<section style="padding-top:clamp(120px,14vw,200px);padding-bottom:clamp(48px,7vw,100px);position:relative;">
-  <div class="container">
-    <!-- Meta row -->
-    <div style="display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;border-top:1px solid var(--ink);padding-top:14px;margin-bottom:clamp(48px,6vw,80px);">
-      <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;">Snowflake &amp; Databricks migration specialists</div>
-      <div class="font-mono hide-mobile" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);">Practical Data Work · Index 01</div>
-    </div>
-
-    <!-- Headline + photo -->
-    <div class="hero-grid" style="display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:clamp(40px,5vw,80px);align-items:end;">
-      <div>
-        <h1 style="font-size:clamp(2.8rem,5.8vw,6rem);line-height:1.0;letter-spacing:-0.04em;font-weight:600;text-wrap:balance;">
-          Snowflake and Databricks migrations,
-          <span class="font-serif" style="color:var(--accent);font-weight:400;letter-spacing:-0.025em;"> done right the first time.</span>
-        </h1>
+<main id="main">
+<section class="hero">
+  <div class="wrap grid">
+    <div>
+      <div class="eyebrow">For independent pharmacies</div>
+      <h1>Get every Medicare negotiated-price refund you're owed.</h1>
+      <p class="lede">We match every negotiated-drug claim to its manufacturer refund, find what's missing, late or wrongly denied, and recover it for you. <b>You pay nothing unless we recover money.</b></p>
+      <div class="ctas">
+        <a class="btn" href="#audit">Request a free audit</a>
+        <a class="btn ghost" href="/assets/Sample_MFP_Refund_Audit.pdf">See a sample report</a>
       </div>
-      <div class="imgph hide-mobile" style="aspect-ratio:4/5;min-height:380px;" role="img" aria-label="Practical Data Work — Snowflake and Databricks migration consulting"></div>
+      <p class="small">Setup takes about 30 minutes. HIPAA business associate agreement signed before we see any data.</p>
     </div>
+    <div class="hero-card" aria-label="Sample audit summary">
+      <span class="tag">Sample audit · fictional pharmacy</span>
+      <div class="row"><span>Negotiated-drug claims reviewed</span><b>486</b></div>
+      <div class="row"><span>Refunds owed</span><b>$188,403</b></div>
+      <div class="row"><span>Average wait for refunds</span><b>26 days</b></div>
+      <div class="row"><span>Wrongly denied as 340B</span><b>7 claims</b></div>
+      <div style="margin-top:14px">Missing or underpaid</div>
+      <div class="big">$6,698</div>
+    </div>
+  </div>
+</section>
 
-    <!-- Lede + CTAs -->
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:clamp(28px,4vw,56px);margin-top:clamp(56px,7vw,96px);align-items:start;">
-      <p style="margin:0;max-width:60ch;font-size:var(--step-2);line-height:1.4;color:var(--ink-2);text-wrap:pretty;font-weight:400;letter-spacing:-0.015em;">
-        Warehouse migrations are high-stakes and easy to get wrong — stalled timelines, budget overruns, broken reporting. We move you off legacy Teradata, Hadoop, on-prem SQL, or Redshift with validated data, a clean cutover, and your team trained to run it. Built on a decade of data engineering at
-        <span class="pill">Facebook</span>, <span class="pill">BP</span>, and <span class="pill">Comcast</span>.
-      </p>
-      <div style="display:flex;gap:14px;flex-wrap:wrap;align-items:center;">
-        <a href="#contact" class="btn btn--accent">Get a free migration assessment
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-        <a href="#method" class="link-arrow">See how the migration works
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
+<section class="soft" id="problem">
+  <div class="wrap">
+    <div class="eyebrow">The problem</div>
+    <h2>Since January, every negotiated drug you fill leaves you waiting on a check.</h2>
+    <p class="lede">Medicare now pays a negotiated price for drugs like Eliquis, Jardiance, Xarelto, Farxiga, Januvia and Entresto. You still buy them near list price, so the manufacturer owes you the difference as a refund, often hundreds of dollars per fill. Those refunds are slow, hard to reconcile, and sometimes never arrive.</p>
+    <div class="stats">
+      <div class="stat"><b>67%</b>of independent pharmacies wait 22+ days for manufacturer refunds.</div>
+      <div class="stat"><b>78%</b>have trouble reconciling refunds to their claims.</div>
+      <div class="stat"><b>15 more</b>drugs join in January 2027, including Ozempic and Wegovy.</div>
+    </div>
+    <div class="note">Refunds are also being denied as "340B" (code N907) at pharmacies that have no 340B contracts. Those denials can be overturned.</div>
+    <p class="small" style="margin-top:14px">Sources: NCPA survey of independent pharmacies, February 2026; KFF; NCPA, August 2026.</p>
+  </div>
+</section>
+
+<section id="what">
+  <div class="wrap">
+    <div class="eyebrow">What we do</div>
+    <h2>Find it. Fix it. Forget about it.</h2>
+    <div class="cards">
+      <div class="card"><div class="k">Find it</div><h3>Every claim, matched</h3><p class="muted">We compare what you dispensed, what each refund should be, and what actually hit your bank, claim by claim.</p></div>
+      <div class="card"><div class="k">Fix it</div><h3>We chase it for you</h3><p class="muted">We file the disputes with manufacturers and escalate through CMS, including wrongful 340B denials and underpayments.</p></div>
+      <div class="card"><div class="k">Forget it</div><h3>Nothing for you to do</h3><p class="muted">A 30-minute setup, read-only access and a clear monthly report. We never touch your dispensing system.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="soft" id="how">
+  <div class="wrap">
+    <div class="eyebrow">How it works</div>
+    <h2>From setup to recovered dollars.</h2>
+    <div class="steps">
+      <div class="step"><h3>1 · Setup</h3>Sign our HIPAA agreement, add us as a user on Beacon, name us as your MTF vendor, and send one dispensing export. About 30 minutes.</div>
+      <div class="step"><h3>2 · Free audit</h3>In about two weeks you get a report showing, in dollars, what's missing, late and wrongly denied.</div>
+      <div class="step"><h3>3 · Recovery</h3>We work every open claim through the manufacturer and CMS processes until it's paid or closed.</div>
+      <div class="step"><h3>4 · Monitoring</h3>Ongoing claim-level tracking and alerts, ready for the 2027 drug list.</div>
+    </div>
+  </div>
+</section>
+
+<section id="calculator">
+  <div class="wrap">
+    <div class="eyebrow">Quick math</div>
+    <h2>How much flows through your store?</h2>
+    <div class="calc">
+      <form id="calcForm" onsubmit="return false">
+        <label for="fills">Monthly fills of negotiated drugs</label>
+        <input id="fills" type="number" min="0" step="1" value="80" inputmode="numeric">
+        <p class="small">Eliquis, Jardiance, Xarelto, Farxiga, Januvia, Entresto and the other negotiated drugs combined.</p>
+        <label for="refund" style="margin-top:12px">Average refund per fill ($)</label>
+        <input id="refund" type="number" min="0" step="5" value="375" inputmode="numeric">
+        <p class="small">About $375 for 60 tablets of Eliquis (list price minus the negotiated price). Varies by drug.</p>
+        <label for="leak" style="margin-top:12px">Share missing or underpaid (%)</label>
+        <input id="leak" type="number" min="0" max="100" step="0.5" value="3">
+        <p class="small">An assumption for illustration. The free audit measures your actual number.</p>
+      </form>
+      <div class="out" aria-live="polite">
+        <div class="line"><span>Refunds owed to you each month</span><span class="n" id="oMonth">$30,000</span></div>
+        <div class="line"><span>Refunds owed per year</span><span class="n" id="oYear">$360,000</span></div>
+        <div class="line"><span>At risk per year at that rate</span><span class="n" id="oRisk">$10,800</span></div>
+        <p class="small" style="color:#c9d5e5">Estimates only, based on the numbers you enter.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- Impact Strip -->
-<section style="background:var(--bg-soft);padding:clamp(48px,6vw,80px) 0;border-top:1px solid var(--rule);border-bottom:1px solid var(--rule);">
-  <div class="container">
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:clamp(32px,4vw,64px);">
-      <div class="reveal" style="transition-delay:0ms;">
-        <div style="font-size:var(--step-3);line-height:1.0;color:var(--ink);margin-bottom:14px;font-weight:600;letter-spacing:-0.04em;font-family:var(--sans);text-wrap:balance;">10+ yrs</div>
-        <div style="color:var(--ink-2);font-size:var(--step-0);max-width:32ch;line-height:1.4;">Enterprise data engineering at Fortune 50 scale</div>
-      </div>
-      <div class="reveal" style="transition-delay:60ms;">
-        <div style="font-size:var(--step-3);line-height:1.0;color:var(--ink);margin-bottom:14px;font-weight:600;letter-spacing:-0.04em;font-family:var(--sans);text-wrap:balance;">Facebook · BP · Comcast</div>
-        <div style="color:var(--ink-2);font-size:var(--step-0);max-width:32ch;line-height:1.4;">Where the methodology was forged</div>
-      </div>
-      <div class="reveal" style="transition-delay:120ms;">
-        <div style="font-size:var(--step-3);line-height:1.0;color:var(--ink);margin-bottom:14px;font-weight:600;letter-spacing:-0.04em;font-family:var(--sans);text-wrap:balance;">Fixed scope</div>
-        <div style="color:var(--ink-2);font-size:var(--step-0);max-width:32ch;line-height:1.4;">Per-phase pricing, no black boxes, no open-ended hours</div>
-      </div>
-      <div class="reveal" style="transition-delay:180ms;">
-        <div style="font-size:var(--step-3);line-height:1.0;color:var(--ink);margin-bottom:14px;font-weight:600;letter-spacing:-0.04em;font-family:var(--sans);text-wrap:balance;">You own it</div>
-        <div style="color:var(--ink-2);font-size:var(--step-0);max-width:32ch;line-height:1.4;">Full handover, runbooks, and 90 days of support after cutover</div>
-      </div>
+<section class="soft" id="pricing">
+  <div class="wrap">
+    <div class="eyebrow">Pricing</div>
+    <h2>Simple, and only when it works.</h2>
+    <div class="pricing">
+      <div class="price"><h3>Audit</h3><div class="amt">Free</div><p class="muted">A claim-by-claim review of the last 3–6 months. No commitment.</p></div>
+      <div class="price feat"><h3>Recovery</h3><div class="amt">25%</div><p class="muted">Of what we actually recover. Nothing upfront, and nothing if we find nothing.</p></div>
+      <div class="price"><h3>Monitoring</h3><div class="amt">$199<span class="small">/mo</span></div><p class="muted">Ongoing reconciliation, alerts and monthly reports. Month to month, cancel anytime.</p></div>
+    </div>
+    <p class="small" style="margin-top:14px">Multi-store groups and pharmacy co-ops: ask about volume pricing.</p>
+  </div>
+</section>
+
+<section id="security">
+  <div class="wrap two">
+    <div>
+      <div class="eyebrow">Security & HIPAA</div>
+      <h2>Your data is handled like it matters, because it does.</h2>
+      <p class="muted">We act as your HIPAA business associate. Nothing moves until the agreement is signed.</p>
+    </div>
+    <ul class="check">
+      <li><b>BAA first.</b> We sign a HIPAA business associate agreement before we see any claim data.</li>
+      <li><b>Read-only.</b> We read payment files and reports. We never touch your dispensing system.</li>
+      <li><b>Minimum necessary.</b> We only request negotiated-drug claims, not your full dispensing history.</li>
+      <li><b>No email attachments.</b> Files move through the MTF and Beacon portals or an encrypted upload link. <b>Never email patient information</b>, including through the form below.</li>
+      <li><b>Encrypted and logged.</b> Data is encrypted in transit and at rest, access is logged, and data is deleted on a set schedule.</li>
+    </ul>
+  </div>
+</section>
+
+<section class="soft" id="about">
+  <div class="wrap two">
+    <div>
+      <div class="eyebrow">Who we are</div>
+      <h2>Built by a data engineer, for independents.</h2>
+    </div>
+    <div>
+      <p>I'm Junaid Athar. I've spent my career building large-scale data systems at Facebook, Comcast and BP: the kind of claim matching and reconciliation work this problem needs. I started Practical Data Work to give independent pharmacies the same level of tooling that large health systems are buying for their refunds.</p>
+      <p class="small">Practical Data Work is independent and is not affiliated with CMS, NCPA, Beacon, or any drug manufacturer.</p>
     </div>
   </div>
 </section>
 
-<!-- Services / Capabilities -->
-<section id="services" class="section">
-  <div class="container">
-    <div class="section-label">
-      <span>02 — Services</span><span>What we ship</span>
-    </div>
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(40px,5vw,80px);margin-bottom:clamp(48px,6vw,80px);align-items:end;" class="hero-grid">
-      <h2 class="reveal" style="font-size:var(--step-5);line-height:0.98;letter-spacing:-0.045em;font-weight:600;">
-        One specialty.<br><span style="color:var(--ink-3);">Everything to support it.</span>
-      </h2>
-      <p class="reveal" style="font-size:var(--step-1);color:var(--ink-2);max-width:58ch;text-wrap:pretty;">
-        We don't sell hours — we ship outcomes. Snowflake and Databricks migrations are the practice; the rest of our work exists to land them cleanly and keep them healthy after handover.
-      </p>
-    </div>
-
-    <!-- Flagship: Migration -->
-    <div class="reveal flagship-card" style="border:1px solid var(--ink);background:var(--bg-dark);color:#fff;padding:clamp(32px,4.5vw,64px);margin-bottom:clamp(28px,3.5vw,44px);position:relative;overflow:hidden;">
-      <div style="display:grid;grid-template-columns:minmax(0,1.5fr) minmax(0,1fr);gap:clamp(28px,4vw,64px);align-items:end;" class="hero-grid">
-        <div>
-          <div class="font-mono" style="font-size:var(--step--1);color:color-mix(in oklab,var(--accent) 85%,#fff);letter-spacing:0.1em;text-transform:uppercase;font-weight:500;margin-bottom:20px;">Flagship · The practice</div>
-          <h3 style="font-size:var(--step-4);margin:0 0 18px;line-height:1.0;letter-spacing:-0.04em;font-weight:600;">Snowflake &amp; Databricks Migration</h3>
-          <p style="color:color-mix(in oklab,#fff 78%,transparent);font-size:var(--step-1);max-width:56ch;text-wrap:pretty;margin:0 0 24px;">A warehouse migration is the riskiest project most data teams run all year. We move you off legacy Teradata, Oracle, Netezza, SQL Server, Hadoop, or Redshift onto Snowflake or Databricks — every table accounted for, every number reconciled, and a cutover your business doesn't feel. Assess → Convert → Validate → Cut over → Handover, with a decision gate after each phase.</p>
-          <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:28px;">
-            <span class="tag" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);background:transparent;">Snowflake</span>
-            <span class="tag" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);background:transparent;">Databricks</span>
-            <span class="tag" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);background:transparent;">Teradata</span>
-            <span class="tag" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);background:transparent;">Redshift</span>
-            <span class="tag" style="border-color:rgba(255,255,255,0.2);color:rgba(255,255,255,0.75);background:transparent;">Hadoop</span>
-          </div>
-          <a href="/consulting/snowflake-migration-consulting.html" class="link-arrow" style="color:#fff;border-color:rgba(255,255,255,0.5);">See how the migration works
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-        <div style="border-left:1px solid rgba(255,255,255,0.2);padding-left:clamp(20px,2.5vw,32px);display:flex;flex-direction:column;gap:20px;" class="flagship-aside">
-          <div>
-            <div class="font-mono" style="font-size:var(--step--1);color:color-mix(in oklab,#fff 55%,transparent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Timeline</div>
-            <div style="font-size:var(--step-1);font-weight:500;">6–14 weeks, fixed per-phase scope</div>
-          </div>
-          <div>
-            <div class="font-mono" style="font-size:var(--step--1);color:color-mix(in oklab,#fff 55%,transparent);text-transform:uppercase;letter-spacing:0.08em;margin-bottom:6px;">Pick your target</div>
-            <div style="display:flex;gap:12px;flex-wrap:wrap;">
-              <a href="/consulting/snowflake-migration-consulting.html" class="link-arrow" style="color:#fff;border-color:rgba(255,255,255,0.4);font-size:var(--step-0);">Snowflake →</a>
-              <a href="/consulting/databricks-migration-consulting.html" class="link-arrow" style="color:#fff;border-color:rgba(255,255,255,0.4);font-size:var(--step-0);">Databricks →</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="font-mono reveal" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:14px;margin-bottom:clamp(24px,3vw,36px);">Also available — services that support the migration</div>
-
-    <div class="cap-grid">
-
-      <div class="cap-card reveal" style="transition-delay:0ms;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
-            <span class="font-mono" style="font-size:var(--step--1);color:var(--accent);letter-spacing:0.08em;font-weight:500;">01</span>
-            <span class="cap-arrow">
-              <svg width="18" height="18" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 10l6-6M5 4h5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-            </span>
-          </div>
-          <h3 style="font-size:var(--step-3);margin:0 0 16px;line-height:1.02;letter-spacing:-0.035em;font-weight:600;">Data Pipeline Modernization</h3>
-          <p style="color:var(--ink-2);font-size:var(--step-0);max-width:40ch;text-wrap:pretty;">Move from fragmented, manual processes to resilient, automated data flows that scale with your business. Leveraging expertise from Facebook (Meta). Starting at $5,000+.</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:28px;">
-          <span class="tag">dbt</span><span class="tag">Airflow</span><span class="tag">Kafka</span>
-        </div>
-      </div>
-
-      <div class="cap-card reveal" style="transition-delay:40ms;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
-            <span class="font-mono" style="font-size:var(--step--1);color:var(--accent);letter-spacing:0.08em;font-weight:500;">02</span>
-            <span class="cap-arrow">
-              <svg width="18" height="18" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 10l6-6M5 4h5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-            </span>
-          </div>
-          <h3 style="font-size:var(--step-3);margin:0 0 16px;line-height:1.02;letter-spacing:-0.035em;font-weight:600;">Data Governance &amp; Quality</h3>
-          <p style="color:var(--ink-2);font-size:var(--step-0);max-width:40ch;text-wrap:pretty;">Reduce compliance risk and increase trust in your data with enterprise-grade governance frameworks. Leveraging expertise from Comcast. Starting at $3,500+.</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:28px;">
-          <span class="tag">Lineage</span><span class="tag">SOC 2</span><span class="tag">HIPAA</span>
-        </div>
-      </div>
-
-      <div class="cap-card reveal" style="transition-delay:80ms;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
-            <span class="font-mono" style="font-size:var(--step--1);color:var(--accent);letter-spacing:0.08em;font-weight:500;">03</span>
-            <span class="cap-arrow">
-              <svg width="18" height="18" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 10l6-6M5 4h5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-            </span>
-          </div>
-          <h3 style="font-size:var(--step-3);margin:0 0 16px;line-height:1.02;letter-spacing:-0.035em;font-weight:600;">Cloud Data Strategy</h3>
-          <p style="color:var(--ink-2);font-size:var(--step-0);max-width:40ch;text-wrap:pretty;">Optimize operational efficiency and safety through cloud-first data architecture and digital transformation. Leveraging expertise from BP. Starting at $7,500+.</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:28px;">
-          <span class="tag">AWS</span><span class="tag">Azure</span><span class="tag">GCP</span>
-        </div>
-      </div>
-
-      <div class="cap-card reveal" style="transition-delay:120ms;">
-        <div>
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:28px;">
-            <span class="font-mono" style="font-size:var(--step--1);color:var(--accent);letter-spacing:0.08em;font-weight:500;">04</span>
-            <span class="cap-arrow">
-              <svg width="18" height="18" viewBox="0 0 14 14" fill="none" aria-hidden="true"><path d="M4 10l6-6M5 4h5v5" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-            </span>
-          </div>
-          <h3 style="font-size:var(--step-3);margin:0 0 16px;line-height:1.02;letter-spacing:-0.035em;font-weight:600;">Data Strategy &amp; Roadmapping</h3>
-          <p style="color:var(--ink-2);font-size:var(--step-0);max-width:40ch;text-wrap:pretty;">Develop a comprehensive data strategy aligned with your business objectives. Define ROI metrics, select technology stacks, and create sequenced roadmaps. Starting at $2,500+.</p>
-        </div>
-        <div style="display:flex;gap:6px;flex-wrap:wrap;margin-top:28px;">
-          <span class="tag">Architecture</span><span class="tag">Roadmap</span><span class="tag">ROI</span>
-        </div>
-      </div>
-
-    </div>
-    <div style="margin-top:clamp(32px,4vw,56px);">
-      <a href="/consulting/" class="link-arrow">View all consulting services
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-      </a>
-    </div>
+<section id="faq">
+  <div class="wrap">
+    <div class="eyebrow">FAQ</div>
+    <h2>Questions owners ask</h2>
+    <details><summary>My co-op already helps with this. Why would I need you?</summary><p>Keep them. Co-ops help with enrollment and flag problems. We go claim by claim and do the chasing: filing disputes with each manufacturer and escalating through CMS. The free audit shows whether anything is slipping through. If it's clean, you've lost nothing.</p></details>
+    <details><summary>What exactly do you need from me?</summary><p>Three things, after we sign a HIPAA agreement: add us as a user on your Beacon account, name us as your third-party vendor on the Medicare Transaction Facilitator (MTF), and send one dispensing export for the negotiated drugs. It takes about 30 minutes.</p></details>
+    <details><summary>What if I have 340B contracts?</summary><p>We can still help. We'll also need reports from your 340B administrator so we can compare their 340B determinations with the manufacturers' flags. If you have no 340B contracts, we verify that against HRSA's public 340B registry and use it to overturn wrongful denials.</p></details>
+    <details><summary>How much does it cost?</summary><p>The audit is free. Recovery is 25% of what we actually recover, with nothing upfront. Ongoing monitoring is $199 a month, month to month.</p></details>
+    <details><summary>Which drugs are covered?</summary><p>All Part D drugs in the Medicare Drug Price Negotiation Program. That's 10 drugs in 2026, with 15 more (including Ozempic and Wegovy) starting in January 2027.</p></details>
+    <details><summary>Do you contact my patients, my PBM or my wholesaler?</summary><p>No. We work with the refund payment files, Beacon reports and your records. Disputes go to the manufacturers and, when needed, CMS. We may ask you for wholesaler invoices to support an underpayment claim.</p></details>
   </div>
 </section>
 
-<!-- About -->
-<section id="about" class="section" style="background:var(--bg-soft);">
-  <div class="container">
-    <div class="section-label">
-      <span>03 — Background</span><span>From Fortune 50 to your business</span>
+<section class="soft" id="audit">
+  <div class="wrap formwrap">
+    <div>
+      <div class="eyebrow">Free audit</div>
+      <h2>Find out what you're owed.</h2>
+      <p class="muted">Tell us about your pharmacy and we'll set up a 15-minute call. The audit is free and there's no commitment.</p>
+      <p><b>Junaid Athar</b><br><a href="mailto:Junaid.Athar@gmail.com">Junaid.Athar@gmail.com</a><br><a href="tel:+18472248510">847-224-8510</a></p>
+      <div class="note">Please don't include patient names, prescription numbers or other patient information in this form.</div>
     </div>
-    <div style="display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:clamp(48px,6vw,100px);align-items:start;" class="hero-grid">
-      <div>
-        <h2 class="reveal" style="font-size:var(--step-5);line-height:0.98;letter-spacing:-0.045em;font-weight:600;margin-bottom:clamp(32px,4vw,56px);">
-          A decade of enterprise<br><span style="color:var(--ink-3);">now available to you.</span>
-        </h2>
-        <p class="reveal" style="font-size:var(--step-1);color:var(--ink-2);max-width:58ch;text-wrap:pretty;margin-bottom:clamp(40px,5vw,64px);">
-          With over a decade of hands-on experience building data systems at scale, I've seen firsthand how the right data strategy can transform businesses. My mission: bring enterprise-grade data engineering practices to businesses of all sizes.
-        </p>
-        <div class="timeline">
-          <div class="timeline-item reveal">
-            <div>
-              <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:500;margin-bottom:6px;">Facebook (Meta)</div>
-              <div class="font-mono" style="font-size:var(--step--1);color:var(--ink-3);text-transform:uppercase;letter-spacing:0.06em;">Data Engineer</div>
-            </div>
-            <div>
-              <p style="color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Designed and built data pipelines for billions of users, managing service level agreements and ensuring data security at unprecedented scale. Collaborated with software engineering, data science, and product teams to generate business insights that shaped user experience.</p>
-            </div>
-          </div>
-          <div class="timeline-item reveal">
-            <div>
-              <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:500;margin-bottom:6px;">BP</div>
-              <div class="font-mono" style="font-size:var(--step--1);color:var(--ink-3);text-transform:uppercase;letter-spacing:0.06em;">Data Engineer</div>
-            </div>
-            <div>
-              <p style="color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Applied data engineering to industrial operations, using AI for pipeline corrosion monitoring and operating digital twins of critical assets. Helped digitize refineries and trading systems to support BP's net-zero transformation goals.</p>
-            </div>
-          </div>
-          <div class="timeline-item reveal">
-            <div>
-              <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--accent);font-weight:500;margin-bottom:6px;">Comcast</div>
-              <div class="font-mono" style="font-size:var(--step--1);color:var(--ink-3);text-transform:uppercase;letter-spacing:0.06em;">Data Engineer</div>
-            </div>
-            <div>
-              <p style="color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Built modern audit data platforms with strong emphasis on automation, governance, and observability using AWS-native tools. Implemented data quality checks, end-to-end pipeline monitoring, and security controls for regulatory compliance.</p>
-            </div>
-          </div>
-        </div>
-        <div style="margin-top:clamp(32px,4vw,48px);">
-          <a href="#contact" class="btn">Let's discuss your data challenges
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
+    <form class="audit" id="auditForm" novalidate>
+      <div class="fields">
+        <div><label for="f-name">Your name *</label><input id="f-name" name="name" required autocomplete="name"></div>
+        <div><label for="f-role">Your role</label><select id="f-role" name="role"><option value="">Select…</option><option>Owner</option><option>Pharmacist in charge</option><option>Manager / billing</option><option>Co-op or group</option><option>Other</option></select></div>
+        <div><label for="f-email">Email *</label><input id="f-email" name="email" type="email" required autocomplete="email"></div>
+        <div><label for="f-phone">Phone</label><input id="f-phone" name="phone" type="tel" autocomplete="tel"></div>
+        <div class="full"><label for="f-pharmacy">Pharmacy name *</label><input id="f-pharmacy" name="pharmacy" required autocomplete="organization"></div>
+        <div><label for="f-location">City, state</label><input id="f-location" name="location"></div>
+        <div><label for="f-stores">Number of stores</label><select id="f-stores" name="stores"><option value="">Select…</option><option>1</option><option>2–5</option><option>6–20</option><option>20+</option></select></div>
+        <div><label for="f-340b">Any 340B contracts?</label><select id="f-340b" name="has340b"><option value="">Select…</option><option>No</option><option>Yes</option><option>Not sure</option></select></div>
+        <div><label for="f-fills">Approx. monthly negotiated-drug fills</label><input id="f-fills" name="fills" inputmode="numeric" placeholder="e.g. 80"></div>
+        <div class="full"><label for="f-msg">Anything else? (no patient information)</label><textarea id="f-msg" name="message" rows="3"></textarea></div>
+        <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       </div>
-      <div class="reveal hide-mobile" style="position:sticky;top:100px;">
-        <div style="aspect-ratio:3/4;background:var(--bg-dark);position:relative;overflow:hidden;">
-          <img src="/images/headshot.jpeg" alt="Data Engineering Consultant" style="width:100%;height:100%;object-fit:cover;display:block;">
-          <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(10,11,13,0.4) 0%,transparent 50%);"></div>
-          <div class="imgph-caption">Junaid Athar · Founder</div>
-        </div>
-        <div style="display:flex;flex-direction:column;gap:1px;margin-top:1px;">
-          <div style="background:var(--bg);border:1px solid var(--rule);padding:16px 20px;display:flex;align-items:center;gap:12px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:#7fc28a;flex-shrink:0;"></div>
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-2);">AWS Certified</span>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--rule);padding:16px 20px;display:flex;align-items:center;gap:12px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent);flex-shrink:0;"></div>
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-2);">Fortune 50 Experience</span>
-          </div>
-          <div style="background:var(--bg);border:1px solid var(--rule);padding:16px 20px;display:flex;align-items:center;gap:12px;">
-            <div style="width:8px;height:8px;border-radius:50%;background:var(--accent-2);flex-shrink:0;"></div>
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-2);">Worldwide Remote</span>
-          </div>
-        </div>
-      </div>
-    </div>
+      <button class="btn" type="submit" style="margin-top:16px">Request my free audit</button>
+      <div class="formmsg" id="formMsg" role="status"></div>
+    </form>
   </div>
 </section>
+</main>
 
-<!-- Insights Rail -->
-<section id="insights" class="section">
-  <div class="container">
-    <div class="section-label">
-      <span>04 — Insights</span><span>Latest perspectives</span>
-    </div>
-    <div style="display:grid;gap:clamp(40px,5vw,64px);grid-template-columns:repeat(auto-fit,minmax(280px,1fr));align-items:end;margin-bottom:clamp(40px,5vw,64px);" class="hero-grid">
-      <h2 class="reveal" style="font-size:var(--step-5);line-height:0.98;letter-spacing:-0.045em;font-weight:600;">
-        Practical insights<br>from real engagements.
-      </h2>
-      <p class="reveal" style="color:var(--ink-2);font-size:var(--step-1);max-width:56ch;text-wrap:pretty;">
-        Hands-on essays and guides covering the modern data stack, cloud platforms, and practical implementation strategies. No newsletter funnel — read what's useful.
-        <br><br>
-        <a href="/blog" class="link-arrow">All articles
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-      </p>
-    </div>
-    <div class="rail">
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:0ms;">
-        <a href="/blog/modern-data-stack.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(230 60% 45%);">
-            <span class="imgph-tl">Data Engineering</span>
-            <span class="imgph-caption">2024 · 8 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">Modern Data Stack 2024</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">An overview of the current state of the modern data stack, including key tools, trends, and architectural patterns.</p>
-          <a href="/blog/modern-data-stack.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:60ms;">
-        <a href="/blog/mlops-fundamentals.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(160 60% 40%);">
-            <span class="imgph-tl">MLOps</span>
-            <span class="imgph-caption">2024 · 6 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">MLOps Fundamentals</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Essential concepts and practices for deploying and managing machine learning systems in production environments.</p>
-          <a href="/blog/mlops-fundamentals.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:120ms;">
-        <a href="/blog/data-quality.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(30 60% 45%);">
-            <span class="imgph-tl">Data Quality</span>
-            <span class="imgph-caption">2024 · 7 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">Data Quality Best Practices</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Strategies and tools for ensuring data quality throughout your data pipeline and analytics workflows.</p>
-          <a href="/blog/data-quality.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:180ms;">
-        <a href="/blog/cloud-data-platforms.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(270 60% 45%);">
-            <span class="imgph-tl">Cloud Platforms</span>
-            <span class="imgph-caption">2024 · 9 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">Cloud Data Platforms</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Comparing and evaluating cloud-based data platforms for your organization's specific needs and requirements.</p>
-          <a href="/blog/cloud-data-platforms.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:240ms;">
-        <a href="/blog/data-governance.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(15 60% 45%);">
-            <span class="imgph-tl">Governance</span>
-            <span class="imgph-caption">2024 · 6 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">Data Governance Framework</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">Building a comprehensive data governance framework to ensure data quality, security, and compliance.</p>
-          <a href="/blog/data-governance.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-      <article class="reveal" style="width:min(360px,80vw);background:var(--bg);border:1px solid var(--rule);display:flex;flex-direction:column;transition-delay:300ms;">
-        <a href="/blog/ai-data-analytics.html">
-          <div class="imgph" style="aspect-ratio:4/3;--accent:hsl(200 60% 45%);">
-            <span class="imgph-tl">Analytics</span>
-            <span class="imgph-caption">2024 · 7 min read</span>
-          </div>
-        </a>
-        <div style="padding:clamp(20px,2.5vw,28px);display:flex;flex-direction:column;gap:16px;flex:1;">
-          <h3 style="margin:0;font-size:var(--step-2);line-height:1.15;letter-spacing:-0.025em;font-weight:600;text-wrap:pretty;">AI in Data Analytics</h3>
-          <p style="margin:0;color:var(--ink-2);font-size:var(--step-0);text-wrap:pretty;">How artificial intelligence is transforming data analytics and what it means for your business.</p>
-          <a href="/blog/ai-data-analytics.html" class="link-arrow" style="margin-top:auto;align-self:flex-start;">Read
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </a>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- Process / Method — dark section -->
-<section id="method" class="section" style="background:var(--bg-dark);color:#fff;">
-  <div class="container">
-    <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,#fff 60%,transparent);border-top:1px solid color-mix(in oklab,#fff 20%,transparent);padding-top:14px;margin-bottom:clamp(40px,5vw,80px);display:flex;justify-content:space-between;">
-      <span>05 — Method</span><span>How the migration works</span>
-    </div>
-    <div style="display:grid;gap:clamp(40px,5vw,64px);grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);margin-bottom:clamp(48px,6vw,72px);" class="hero-grid">
-      <h2 class="reveal" style="font-size:var(--step-5);line-height:0.98;letter-spacing:-0.045em;font-weight:600;">
-        Five phases,<br>a gate after each.
-      </h2>
-      <p class="reveal" style="font-size:var(--step-1);color:color-mix(in oklab,#fff 75%,transparent);max-width:58ch;text-wrap:pretty;align-self:end;">
-        We don't sell discovery decks. A phased migration with a decision gate after each step, so you're never committed to a path you can't see the end of — short feedback loops, transparent estimates, and a clean exit.
-        <br><br>
-        <a href="#contact" class="link-arrow" style="color:#fff;border-color:color-mix(in oklab,#fff 50%,transparent);">Discuss your migration
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-      </p>
-    </div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));border-top:1px solid color-mix(in oklab,#fff 25%,transparent);">
-      <div class="reveal" style="transition-delay:0ms;padding:clamp(28px,3.5vw,44px) clamp(20px,2vw,28px) clamp(28px,3.5vw,44px) 0;border-right:1px solid color-mix(in oklab,#fff 20%,transparent);">
-        <div style="font-size:var(--step-4);line-height:0.92;color:color-mix(in oklab,var(--accent-2) 90%,#fff);margin-bottom:20px;letter-spacing:-0.045em;font-weight:600;font-family:var(--sans);">01</div>
-        <h3 style="margin:0 0 12px;font-size:var(--step-2);letter-spacing:-0.03em;font-weight:600;">Assess</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 70%,transparent);font-size:var(--step-0);text-wrap:pretty;">One-to-two-week inventory of every source object, pipeline, and report. You get a written migration plan with scope, cost, and risk — yours to keep whether or not we continue.</p>
-      </div>
-      <div class="reveal" style="transition-delay:80ms;padding:clamp(28px,3.5vw,44px) clamp(20px,2vw,28px);border-right:1px solid color-mix(in oklab,#fff 20%,transparent);">
-        <div style="font-size:var(--step-4);line-height:0.92;color:color-mix(in oklab,var(--accent-2) 90%,#fff);margin-bottom:20px;letter-spacing:-0.045em;font-weight:600;font-family:var(--sans);">02</div>
-        <h3 style="margin:0 0 12px;font-size:var(--step-2);letter-spacing:-0.03em;font-weight:600;">Convert</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 70%,transparent);font-size:var(--step-0);text-wrap:pretty;">Schema, data types, and SQL/stored-procedure logic translated to the new platform — automated where it's safe, hand-reviewed where it matters. We modernize as we go.</p>
-      </div>
-      <div class="reveal" style="transition-delay:160ms;padding:clamp(28px,3.5vw,44px) clamp(20px,2vw,28px);border-right:1px solid color-mix(in oklab,#fff 20%,transparent);">
-        <div style="font-size:var(--step-4);line-height:0.92;color:color-mix(in oklab,var(--accent-2) 90%,#fff);margin-bottom:20px;letter-spacing:-0.045em;font-weight:600;font-family:var(--sans);">03</div>
-        <h3 style="margin:0 0 12px;font-size:var(--step-2);letter-spacing:-0.03em;font-weight:600;">Validate</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 70%,transparent);font-size:var(--step-0);text-wrap:pretty;">The step most migrations skip and later regret. We reconcile row counts, aggregates, and business-critical metrics automatically, so you can prove the numbers match.</p>
-      </div>
-      <div class="reveal" style="transition-delay:240ms;padding:clamp(28px,3.5vw,44px) clamp(20px,2vw,28px);border-right:1px solid color-mix(in oklab,#fff 20%,transparent);">
-        <div style="font-size:var(--step-4);line-height:0.92;color:color-mix(in oklab,var(--accent-2) 90%,#fff);margin-bottom:20px;letter-spacing:-0.045em;font-weight:600;font-family:var(--sans);">04</div>
-        <h3 style="margin:0 0 12px;font-size:var(--step-2);letter-spacing:-0.03em;font-weight:600;">Cut over</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 70%,transparent);font-size:var(--step-0);text-wrap:pretty;">A rehearsed, low-drama switch with parallel-run and rollback options, scheduled around your business so reporting keeps working. No "big bang" weekend prayers.</p>
-      </div>
-      <div class="reveal" style="transition-delay:320ms;padding:clamp(28px,3.5vw,44px) 0 clamp(28px,3.5vw,44px) clamp(20px,2vw,28px);">
-        <div style="font-size:var(--step-4);line-height:0.92;color:color-mix(in oklab,var(--accent-2) 90%,#fff);margin-bottom:20px;letter-spacing:-0.045em;font-weight:600;font-family:var(--sans);">05</div>
-        <h3 style="margin:0 0 12px;font-size:var(--step-2);letter-spacing:-0.03em;font-weight:600;">Handover</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 70%,transparent);font-size:var(--step-0);text-wrap:pretty;">Documentation, runbooks, cost-optimization tuning, and shadowing until your team owns it. We answer questions for 90 days after cutover.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Pricing -->
-<section id="pricing" class="section">
-  <div class="container">
-    <div class="section-label">
-      <span>06 — Pricing</span><span>Transparent, no surprises</span>
-    </div>
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.4fr);gap:clamp(40px,5vw,80px);margin-bottom:clamp(48px,6vw,72px);align-items:end;" class="hero-grid">
-      <h2 class="reveal" style="font-size:var(--step-5);line-height:0.98;letter-spacing:-0.045em;font-weight:600;">
-        Choose the plan<br><span style="color:var(--ink-3);">that fits your needs.</span>
-      </h2>
-      <p class="reveal" style="font-size:var(--step-1);color:var(--ink-2);max-width:58ch;text-wrap:pretty;">Every engagement includes a free 30-minute data audit. No contracts longer than 90 days. Cancel anytime.</p>
-    </div>
-    <div class="pricing-grid">
-      <div class="pricing-card">
-        <div>
-          <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);margin-bottom:16px;">Starter</div>
-          <div style="margin-bottom:8px;">
-            <span class="price-amount">$2,500</span>
-          </div>
-          <div class="price-period">/month · Perfect for small teams</div>
-        </div>
-        <ul class="feature-list">
-          <li>Basic data pipeline setup</li>
-          <li>Simple analytics dashboard</li>
-          <li>Email support</li>
-          <li>Monthly reporting</li>
-          <li>Up to 5 data sources</li>
-        </ul>
-        <a href="#contact" class="btn btn--ghost">Get started
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-      </div>
-      <div class="pricing-card pricing-card--featured">
-        <div>
-          <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:rgba(255,255,255,0.5);margin-bottom:8px;">Professional · Most popular</div>
-          <div style="margin-bottom:8px;">
-            <span class="price-amount">$5,000</span>
-          </div>
-          <div class="price-period">/month · Ideal for growing businesses</div>
-        </div>
-        <ul class="feature-list">
-          <li>Advanced data engineering</li>
-          <li>Custom analytics solutions</li>
-          <li>Priority support</li>
-          <li>Weekly reporting</li>
-          <li>Up to 20 data sources</li>
-          <li>ML model deployment</li>
-          <li>Data governance setup</li>
-        </ul>
-        <a href="#contact" class="btn">Get started
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-      </div>
-      <div class="pricing-card">
-        <div>
-          <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);margin-bottom:16px;">Enterprise</div>
-          <div style="margin-bottom:8px;">
-            <span class="price-amount">$10,000</span>
-          </div>
-          <div class="price-period">/month · For large organizations</div>
-        </div>
-        <ul class="feature-list">
-          <li>Full-scale data platform</li>
-          <li>Advanced MLOps</li>
-          <li>24/7 dedicated support</li>
-          <li>Real-time reporting</li>
-          <li>Unlimited data sources</li>
-          <li>Custom integrations</li>
-          <li>Compliance &amp; security</li>
-          <li>Training &amp; documentation</li>
-        </ul>
-        <a href="#contact" class="btn btn--ghost">Contact us
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-      </div>
-    </div>
-    <!-- Add-ons -->
-    <div style="margin-top:clamp(40px,5vw,72px);">
-      <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:14px;margin-bottom:clamp(28px,3.5vw,44px);">Additional services</div>
-      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1px;background:var(--rule);border:1px solid var(--rule);">
-        <div style="background:var(--bg-soft);padding:clamp(20px,2.5vw,32px);">
-          <h4 style="font-size:var(--step-1);font-weight:600;letter-spacing:-0.025em;margin:0 0 10px;">Snowflake / Databricks Migration</h4>
-          <p style="color:var(--ink-2);font-size:var(--step-0);margin:0 0 16px;">Our flagship engagement. A validated, full-scope migration off Teradata, Hadoop, SQL Server, or Redshift — priced per phase after a free assessment, not by the hour. <a href="/consulting/snowflake-migration-consulting.html" style="color:var(--accent);">See how it works →</a></p>
-          <div class="font-mono" style="font-size:var(--step--1);color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;">$35K – $150K+</div>
-        </div>
-        <div style="background:var(--bg-soft);padding:clamp(20px,2.5vw,32px);">
-          <h4 style="font-size:var(--step-1);font-weight:600;letter-spacing:-0.025em;margin:0 0 10px;">Training &amp; Workshops</h4>
-          <p style="color:var(--ink-2);font-size:var(--step-0);margin:0 0 16px;">Train your team on modern data tools and best practices.</p>
-          <div class="font-mono" style="font-size:var(--step--1);color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;">$2,000 – $5,000</div>
-        </div>
-        <div style="background:var(--bg-soft);padding:clamp(20px,2.5vw,32px);">
-          <h4 style="font-size:var(--step-1);font-weight:600;letter-spacing:-0.025em;margin:0 0 10px;">Data Audit</h4>
-          <p style="color:var(--ink-2);font-size:var(--step-0);margin:0 0 16px;">Comprehensive assessment of your current data infrastructure.</p>
-          <div class="font-mono" style="font-size:var(--step--1);color:var(--accent);text-transform:uppercase;letter-spacing:0.08em;">$1,500 – $3,000</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Testimonial -->
-<section class="section">
-  <div class="container">
-    <div class="reveal" style="border-top:1px solid var(--ink);border-bottom:1px solid var(--ink);padding:clamp(56px,8vw,120px) 0;">
-      <div class="font-mono" style="font-size:var(--step--1);color:var(--accent);text-transform:uppercase;letter-spacing:0.1em;font-weight:500;margin-bottom:clamp(24px,3vw,40px);">Client feedback</div>
-      <blockquote class="font-serif" style="margin:0;font-size:var(--step-4);line-height:1.15;letter-spacing:-0.025em;text-wrap:balance;font-style:italic;font-weight:400;color:var(--ink);max-width:28ch;">
-        "They acted like senior engineers on our payroll, not consultants. We've never had a clearer picture of our data — and now our team actually owns it."
-      </blockquote>
-      <div style="display:flex;gap:18px;align-items:center;margin-top:clamp(28px,3.5vw,48px);">
-        <div style="width:48px;height:48px;border-radius:50%;background:var(--ink);color:#fff;display:flex;align-items:center;justify-content:center;font-family:var(--sans);font-size:1rem;font-weight:500;flex-shrink:0;">VP</div>
-        <div>
-          <div style="font-size:var(--step-1);font-weight:500;letter-spacing:-0.015em;">VP of Data Engineering</div>
-          <div style="font-size:var(--step--1);color:var(--ink-3);">Series D logistics company</div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- CTA Block -->
-<section class="section-tight" style="padding-bottom:clamp(48px,6vw,100px);">
-  <div class="container">
-    <div class="reveal" style="background:var(--accent);color:#fff;padding:clamp(48px,7vw,100px);display:grid;gap:clamp(28px,4vw,56px);grid-template-columns:minmax(0,1.4fr) auto;align-items:center;">
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,#fff 75%,transparent);margin-bottom:24px;font-weight:500;">Free · no obligation</div>
-        <h3 style="margin:0 0 16px;font-size:var(--step-4);line-height:0.98;letter-spacing:-0.045em;text-wrap:balance;max-width:22ch;font-weight:600;">Start with a 30-minute data audit.</h3>
-        <p style="margin:0;color:color-mix(in oklab,#fff 85%,transparent);max-width:55ch;text-wrap:pretty;font-size:var(--step-1);">Bring your current architecture and your three biggest headaches. You'll leave with a written assessment and a candid plan — even if you never hire us.</p>
-      </div>
-      <a href="#contact" class="btn btn--white" style="flex-shrink:0;">Schedule audit
-        <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-      </a>
-    </div>
-  </div>
-</section>
-
-<!-- Contact -->
-<section id="contact" class="section" style="background:var(--bg-soft);">
-  <div class="container">
-    <div class="section-label">
-      <span>07 — Contact</span><span>Ready to transform your data?</span>
-    </div>
-    <div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.3fr);gap:clamp(48px,6vw,100px);" class="hero-grid">
-      <div>
-        <h2 class="reveal" style="font-size:var(--step-4);line-height:1;letter-spacing:-0.04em;font-weight:600;margin-bottom:clamp(24px,3vw,40px);">Let's discuss your data challenges.</h2>
-        <p class="reveal" style="color:var(--ink-2);font-size:var(--step-1);max-width:46ch;text-wrap:pretty;margin-bottom:clamp(40px,5vw,64px);">Get in touch for a free consultation. We'll help you build a robust data infrastructure that drives real business value.</p>
-        <div style="display:flex;flex-direction:column;gap:0;">
-          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:16px;">
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);flex-shrink:0;min-width:80px;">Email</span>
-            <a href="mailto:junaid.athar@gmail.com" style="color:var(--ink);font-size:var(--step-0);">junaid.athar@gmail.com</a>
-          </div>
-          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:16px;">
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);flex-shrink:0;min-width:80px;">Phone</span>
-            <a href="tel:+18472248510" style="color:var(--ink);font-size:var(--step-0);">847-224-8510</a>
-          </div>
-          <div style="padding:20px 0;border-bottom:1px solid var(--rule);display:flex;align-items:baseline;gap:16px;">
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);flex-shrink:0;min-width:80px;">Response</span>
-            <span style="color:var(--ink-2);font-size:var(--step-0);">Within 24 hours</span>
-          </div>
-          <div style="padding:20px 0;display:flex;align-items:baseline;gap:16px;">
-            <span class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--ink-3);flex-shrink:0;min-width:80px;">Location</span>
-            <span style="color:var(--ink-2);font-size:var(--step-0);">Worldwide remote consulting</span>
-          </div>
-        </div>
-      </div>
-      <div>
-        <form id="contact-form" action="/api/contact" method="POST">
-          <div class="form-group">
-            <label for="name" class="form-label">Full Name</label>
-            <input type="text" id="name" name="name" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label for="email" class="form-label">Email Address</label>
-            <input type="email" id="email" name="email" class="form-input" required>
-          </div>
-          <div class="form-group">
-            <label for="company" class="form-label">Company <span class="opt">(optional)</span></label>
-            <input type="text" id="company" name="company" class="form-input">
-          </div>
-          <div class="form-group">
-            <label for="service" class="form-label">Service Interest <span class="opt">(optional)</span></label>
-            <select id="service" name="service" class="form-select">
-              <option value="snowflake-databricks-migration" selected>Snowflake / Databricks Migration</option>
-              <option value="">Select a service</option>
-              <option value="data-engineering">Data Engineering</option>
-              <option value="data-analytics">Data Analytics</option>
-              <option value="mlops">MLOps</option>
-              <option value="data-governance">Data Governance</option>
-              <option value="consulting">General Consulting</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="budget" class="form-label">Budget Range <span class="opt">(optional)</span></label>
-            <select id="budget" name="budget" class="form-select">
-              <option value="">Select budget range</option>
-              <option value="under-5k">Under $5,000</option>
-              <option value="5k-10k">$5,000 – $10,000</option>
-              <option value="10k-25k">$10,000 – $25,000</option>
-              <option value="25k-plus">$25,000+</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label for="message" class="form-label">Project Details <span class="opt">(optional)</span></label>
-            <textarea id="message" name="message" class="form-textarea" placeholder="Tell us about your data challenges and goals..."></textarea>
-          </div>
-          <button type="submit" class="btn btn--full">Send message
-            <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-          </button>
-        </form>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- Internal Linking -->
-<section style="padding:clamp(48px,6vw,96px) 0;border-top:1px solid var(--rule);">
-  <div class="container">
-    <div style="display:grid;gap:clamp(40px,5vw,64px);">
-
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:14px;margin-bottom:20px;">Data Consulting Services</div>
-        <p style="color:var(--ink-3);margin-bottom:20px;font-size:var(--step-0);">Expert guidance across every dimension of your data journey.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <a href="/consulting/snowflake-migration-consulting.html" class="chip chip--filled">Snowflake Migration</a>
-          <a href="/consulting/databricks-migration-consulting.html" class="chip chip--filled">Databricks Migration</a>
-          <a href="/consulting/data-warehouse-consulting.html" class="chip">Data Warehouse</a>
-          <a href="/consulting/data-engineering-consulting.html" class="chip">Data Engineering</a>
-          <a href="/consulting/data-pipeline-consulting.html" class="chip">Data Pipelines</a>
-          <a href="/consulting/data-analytics-consulting.html" class="chip">Data Analytics</a>
-          <a href="/consulting/cloud-data-consulting.html" class="chip">Cloud Data</a>
-          <a href="/consulting/data-governance-consulting.html" class="chip">Data Governance</a>
-          <a href="/consulting/data-strategy-consulting.html" class="chip">Data Strategy</a>
-          <a href="/consulting/mlops-consulting.html" class="chip">MLOps</a>
-          <a href="/consulting/" class="chip">View all 30 services →</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:14px;margin-bottom:20px;">By Industry</div>
-        <p style="color:var(--ink-3);margin-bottom:20px;font-size:var(--step-0);">Specialized expertise for regulated and high-growth sectors.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <a href="/consulting/industries/healthcare-data-consulting.html" class="chip">Healthcare</a>
-          <a href="/consulting/industries/finance-data-consulting.html" class="chip">Finance</a>
-          <a href="/consulting/industries/banking-data-consulting.html" class="chip">Banking</a>
-          <a href="/consulting/industries/retail-data-consulting.html" class="chip">Retail</a>
-          <a href="/consulting/industries/pharmaceuticals-data-consulting.html" class="chip">Pharma</a>
-          <a href="/consulting/industries/saas-data-consulting.html" class="chip">SaaS</a>
-          <a href="/consulting/industries/insurance-data-consulting.html" class="chip">Insurance</a>
-          <a href="/consulting/industries/ecommerce-data-consulting.html" class="chip">E-Commerce</a>
-          <a href="/consulting/industries/" class="chip chip--filled">All 25 industries →</a>
-        </div>
-      </div>
-
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:var(--ink-3);border-top:1px solid var(--rule);padding-top:14px;margin-bottom:20px;">By Location</div>
-        <p style="color:var(--ink-3);margin-bottom:20px;font-size:var(--step-0);">Serving all major US markets, remote-first with local availability.</p>
-        <div style="display:flex;flex-wrap:wrap;gap:8px;">
-          <a href="/consulting/locations/new-york-data-consulting.html" class="chip">New York</a>
-          <a href="/consulting/locations/san-francisco-data-consulting.html" class="chip">San Francisco</a>
-          <a href="/consulting/locations/chicago-data-consulting.html" class="chip">Chicago</a>
-          <a href="/consulting/locations/los-angeles-data-consulting.html" class="chip">Los Angeles</a>
-          <a href="/consulting/locations/austin-data-consulting.html" class="chip">Austin</a>
-          <a href="/consulting/locations/boston-data-consulting.html" class="chip">Boston</a>
-          <a href="/consulting/locations/seattle-data-consulting.html" class="chip">Seattle</a>
-          <a href="/consulting/locations/washington-dc-data-consulting.html" class="chip">Washington DC</a>
-          <a href="/consulting/locations/" class="chip chip--filled">All 49 cities →</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</section>
-
-<!-- Footer -->
-<footer class="footer">
-  <div class="container">
-    <!-- Big CTA -->
-    <div style="display:grid;gap:clamp(28px,4vw,48px);padding-bottom:clamp(60px,8vw,110px);border-bottom:1px solid color-mix(in oklab,var(--bg) 18%,transparent);">
-      <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:color-mix(in oklab,var(--bg) 70%,transparent);display:flex;gap:12px;align-items:center;">
-        <span style="width:8px;height:8px;border-radius:50%;background:#7fc28a;flex-shrink:0;"></span>
-        Currently accepting new engagements
-      </div>
-      <h2 style="font-size:var(--step-6);line-height:0.95;margin:0;letter-spacing:-0.02em;max-width:15ch;">
-        Let's build something <em style="color:color-mix(in oklab,var(--accent) 80%,var(--bg));font-style:italic;">practical</em>.
-      </h2>
-      <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:center;">
-        <a href="#contact" class="btn btn--white">Start a project
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" class="arr" aria-hidden="true"><path d="M2 7h10M8 3l4 4-4 4" stroke="currentColor" stroke-width="1.4" stroke-linecap="square"/></svg>
-        </a>
-        <a href="mailto:junaid.athar@gmail.com" class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.08em;color:var(--bg);border-bottom:1px solid color-mix(in oklab,var(--bg) 40%,transparent);padding-bottom:4px;">junaid.athar@gmail.com</a>
-      </div>
-    </div>
-
-    <!-- Footer columns -->
-    <div style="display:grid;gap:clamp(36px,5vw,60px);grid-template-columns:repeat(auto-fit,minmax(160px,1fr));padding-top:clamp(40px,5vw,60px);">
-      <div>
-        <svg width="36" height="36" viewBox="0 0 28 28" aria-hidden="true" style="margin-bottom:20px;">
-          <rect x="0.5" y="0.5" width="27" height="27" fill="var(--bg)"/>
-          <rect x="4" y="4" width="8" height="8" fill="var(--ink)"/>
-          <rect x="14" y="4" width="4" height="4" fill="var(--accent)"/>
-          <rect x="20" y="4" width="4" height="4" fill="var(--ink)"/>
-          <rect x="14" y="10" width="10" height="2" fill="var(--ink)"/>
-          <rect x="4" y="14" width="20" height="2" fill="var(--ink)"/>
-          <rect x="4" y="18" width="6" height="6" fill="var(--ink)"/>
-          <rect x="12" y="18" width="2" height="6" fill="var(--ink)"/>
-          <rect x="16" y="18" width="8" height="2" fill="var(--ink)"/>
-          <rect x="16" y="22" width="4" height="2" fill="var(--ink)"/>
-        </svg>
-        <p style="max-width:30ch;color:color-mix(in oklab,var(--bg) 70%,transparent);font-size:var(--step--1);">Enterprise-grade data engineering for businesses of every size. Veterans of Facebook, BP, and Comcast.</p>
-      </div>
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Services</div>
-        <ul style="display:flex;flex-direction:column;gap:10px;">
-          <li><a href="/consulting/snowflake-migration-consulting.html" class="footer-link" style="font-size:var(--step-0);">Snowflake Migration</a></li>
-          <li><a href="/consulting/databricks-migration-consulting.html" class="footer-link" style="font-size:var(--step-0);">Databricks Migration</a></li>
-          <li><a href="#services" class="footer-link" style="font-size:var(--step-0);">Data Engineering</a></li>
-          <li><a href="#services" class="footer-link" style="font-size:var(--step-0);">Data Governance</a></li>
-          <li><a href="/consulting/" class="footer-link" style="font-size:var(--step-0);">All services</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Resources</div>
-        <ul style="display:flex;flex-direction:column;gap:10px;">
-          <li><a href="/blog" class="footer-link" style="font-size:var(--step-0);">Blog</a></li>
-          <li><a href="/guides/" class="footer-link" style="font-size:var(--step-0);">Guides</a></li>
-          <li><a href="/directory/" class="footer-link" style="font-size:var(--step-0);">Directory</a></li>
-          <li><a href="/media-kit.html" class="footer-link" style="font-size:var(--step-0);">Advertise</a></li>
-          <li><a href="/privacy-policy.html" class="footer-link" style="font-size:var(--step-0);">Privacy Policy</a></li>
-        </ul>
-      </div>
-      <div>
-        <div class="font-mono" style="font-size:var(--step--1);text-transform:uppercase;letter-spacing:0.1em;color:color-mix(in oklab,var(--bg) 60%,transparent);margin-bottom:16px;">Contact</div>
-        <ul style="display:flex;flex-direction:column;gap:10px;">
-          <li><a href="mailto:junaid.athar@gmail.com" class="footer-link" style="font-size:var(--step-0);">junaid.athar@gmail.com</a></li>
-          <li><a href="tel:+18472248510" class="footer-link" style="font-size:var(--step-0);">847-224-8510</a></li>
-          <li><a href="#contact" class="footer-link" style="font-size:var(--step-0);">Get started</a></li>
-          <li><a href="#pricing" class="footer-link" style="font-size:var(--step-0);">Pricing</a></li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Colophon -->
-    <div style="margin-top:clamp(60px,8vw,100px);padding-top:24px;border-top:1px solid color-mix(in oklab,var(--bg) 18%,transparent);display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;font-size:calc(var(--step--1) - 1px);color:color-mix(in oklab,var(--bg) 55%,transparent);font-family:var(--mono);text-transform:uppercase;letter-spacing:0.1em;">
-      <div>© 2025 Practical Data Work, LLC</div>
-      <div>Chicago · Remote</div>
-      <div><a href="/privacy-policy.html" style="color:inherit;">Privacy</a></div>
-    </div>
+<footer>
+  <div class="wrap">
+    <div><b style="color:#fff">Practical Data Work</b><br>Medicare negotiated-price refund recovery for independent pharmacies.<br><a href="mailto:Junaid.Athar@gmail.com">Junaid.Athar@gmail.com</a> · <a href="tel:+18472248510">847-224-8510</a></div>
+    <div><a href="/assets/Pharmacy_One_Pager.pdf">One-pager (PDF)</a><br><a href="/assets/Sample_MFP_Refund_Audit.pdf">Sample audit (PDF)</a><br><a href="/privacy.html">Privacy</a></div>
+    <div style="max-width:360px">Not affiliated with CMS, NCPA, Beacon, or any drug manufacturer. Statistics: NCPA survey, Feb 2026; KFF.<br>© 2026 Practical Data Work</div>
   </div>
 </footer>
 
 <script>
-// Nav scroll effect
-const nav = document.getElementById('nav');
-function updateNav() {
-  nav.classList.toggle('scrolled', window.scrollY > 12);
-}
-updateNav();
-window.addEventListener('scroll', updateNav, { passive: true });
-
-// Mobile menu
-const toggle = document.getElementById('mobile-toggle');
-const mobileMenu = document.getElementById('mobile-menu');
-toggle.addEventListener('click', () => {
-  const isOpen = mobileMenu.classList.toggle('open');
-  toggle.classList.toggle('open', isOpen);
-  toggle.setAttribute('aria-expanded', isOpen);
-  mobileMenu.setAttribute('aria-hidden', !isOpen);
-});
-mobileMenu.querySelectorAll('a').forEach(a => {
-  a.addEventListener('click', () => {
-    mobileMenu.classList.remove('open');
-    toggle.classList.remove('open');
-    toggle.setAttribute('aria-expanded', false);
-    mobileMenu.setAttribute('aria-hidden', true);
-  });
-});
-
-// Reveal on scroll
-const io = new IntersectionObserver((entries) => {
-  entries.forEach(e => {
-    if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
-  });
-}, { rootMargin: '-8% 0px', threshold: 0.05 });
-document.querySelectorAll('.reveal').forEach(el => io.observe(el));
-
-// Contact form
-document.getElementById('contact-form').addEventListener('submit', async function(e) {
-  e.preventDefault();
-  const form = e.target;
-  const btn = form.querySelector('button[type="submit"]');
-  const orig = btn.textContent;
-  btn.disabled = true;
-  btn.textContent = 'Sending…';
-  try {
-    const data = Object.fromEntries(new FormData(form).entries());
-    const res = await fetch('/api/contact', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data)
-    });
-    if (res.ok) {
-      if (typeof fbq !== 'undefined') {
-        fbq('track', 'Lead', { content_name: 'Contact Form Submission', content_category: 'Contact', value: 10.00, currency: 'USD' });
-      }
-      if (typeof gtag !== 'undefined') {
-        gtag('event', 'generate_lead', { event_category: 'Contact', event_label: 'Contact Form', value: 10 });
-      }
-      alert("Thank you for your message! I'll get back to you within 24 hours.");
-      form.reset();
-    } else { throw new Error('Failed'); }
-  } catch {
-    alert('Sorry, there was an error. Please email me directly at junaid.athar@gmail.com');
-  } finally {
-    btn.disabled = false;
-    btn.textContent = orig;
+(function () {
+  var $ = function (id) { return document.getElementById(id); };
+  var fmt = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
+  function calc() {
+    var f = Math.max(0, +$('fills').value || 0), r = Math.max(0, +$('refund').value || 0), l = Math.min(100, Math.max(0, +$('leak').value || 0)) / 100;
+    $('oMonth').textContent = fmt(f * r); $('oYear').textContent = fmt(f * r * 12); $('oRisk').textContent = fmt(f * r * 12 * l);
   }
-});
+  ['fills', 'refund', 'leak'].forEach(function (id) { $(id).addEventListener('input', calc); });
+  calc();
+
+  var form = $('auditForm'), msg = $('formMsg');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    msg.className = 'formmsg'; msg.textContent = '';
+    var data = Object.fromEntries(new FormData(form));
+    if (!data.name || !data.email || !data.pharmacy) { msg.className = 'formmsg err'; msg.textContent = 'Please add your name, email and pharmacy name.'; return; }
+    var btn = form.querySelector('button'); btn.disabled = true; btn.textContent = 'Sending…';
+    fetch('/api/audit-request', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) })
+      .then(function (r) { return r.json().then(function (j) { return { ok: r.ok, j: j }; }); })
+      .then(function (res) {
+        if (!res.ok) throw new Error(res.j.error || 'Error');
+        form.reset(); msg.className = 'formmsg ok'; msg.textContent = "Thanks! We'll be in touch within one business day.";
+      })
+      .catch(function (err) { msg.className = 'formmsg err'; msg.textContent = (err && err.message) || 'Something went wrong. Please email or call us.'; })
+      .finally(function () { btn.disabled = false; btn.textContent = 'Request my free audit'; });
+  });
+})();
 </script>
 </body>
 </html>
