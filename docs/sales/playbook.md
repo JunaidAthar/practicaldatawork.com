@@ -12,6 +12,6 @@
 
 **Objections:** co-op already helps → keep them, we do claim-level chasing · no time → 30 min then we do it · data/HIPAA → BAA first, read-only, minimum necessary · who are you → free audit, judge the number · 25% too much → 25% of money you're not getting; tier down for 3+ stores · "send info" → book 15 minutes Thursday.
 
-**Materials:** `assets/Pharmacy_One_Pager.pdf`, `assets/Sample_MFP_Refund_Audit.pdf` (regenerate with `python docs/sales/build_sales_pdfs.py`; needs `pip install playwright`).
+**Materials:** `assets/TallyRx_One_Pager.pdf` (TallyRx brand, see `docs/brand/`), `assets/Sample_MFP_Refund_Audit.pdf` (older style; regenerate with `python docs/sales/build_sales_pdfs.py`).
 
 **Economics:** `docs/business/MFP_Reconciliation_Unit_Economics.xlsx` (scenario selector on Assumptions!E4).

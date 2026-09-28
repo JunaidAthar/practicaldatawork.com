@@ -3,27 +3,32 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Medicare Negotiated-Price (MFP) Refund Recovery for Independent Pharmacies | Practical Data Work</title>
-  <meta name="description" content="We match every Medicare negotiated-price claim to its manufacturer refund, find what's missing, late or wrongly denied as 340B, and recover it. Free audit. You only pay if we recover money.">
+  <title>TallyRx: Medicare MFP Refund Recovery for Independent Pharmacies | Practical Data Work</title>
+  <meta name="description" content="TallyRx matches every Medicare negotiated-price claim to its manufacturer refund, finds what's missing, late, underpaid or wrongly denied as 340B, and recovers it. Free audit. Pay only when we recover money.">
   <link rel="canonical" href="https://practicaldatawork.com/">
-  <meta property="og:title" content="Get every Medicare negotiated-price refund you're owed">
-  <meta property="og:description" content="MFP refund reconciliation and recovery for independent pharmacies. Free audit, pay only on results.">
+  <meta property="og:title" content="TallyRx: Every MFP refund. Found. Recovered.">
+  <meta property="og:description" content="Claim-by-claim Medicare refund recovery for independent pharmacies. Free audit, pay only on results.">
   <meta property="og:url" content="https://practicaldatawork.com/">
   <meta property="og:type" content="website">
+  <meta name="theme-color" content="#0E1B2C">
+  <link rel="icon" href="/favicon.svg" type="image/svg+xml">
   <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
   <link rel="apple-touch-icon" href="/apple-touch-icon.png">
   <link rel="manifest" href="/site.webmanifest">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap">
   <link rel="stylesheet" href="/styles.css">
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 <header class="nav">
   <div class="wrap">
-    <a class="brand" href="/"><img src="/images/logo.svg" alt=""> Practical Data Work</a>
+    <a class="brand" href="/" aria-label="TallyRx by Practical Data Work, home"><img src="/images/tallyrx-mark-reverse.svg" alt=""><span class="wm">Tally<span>Rx</span></span><span class="by">by Practical Data Work</span></a>
     <nav aria-label="Main">
       <a href="#how">How it works</a>
+      <a href="#calculator">Calculator</a>
       <a href="#pricing">Pricing</a>
-      <a href="#security">Security</a>
       <a href="#faq">FAQ</a>
       <a class="btn sm" href="#audit">Free audit</a>
     </nav>
@@ -31,160 +36,174 @@
 </header>
 
 <main id="main">
-<section class="hero">
+<!-- HERO -->
+<section class="hero on-ink">
   <div class="wrap grid">
     <div>
       <div class="eyebrow">For independent pharmacies</div>
-      <h1>Get every Medicare negotiated-price refund you're owed.</h1>
-      <p class="lede">We match every negotiated-drug claim to its manufacturer refund, find what's missing, late or wrongly denied, and recover it for you. <b>You pay nothing unless we recover money.</b></p>
+      <h1>Every MFP refund.<br><span class="green">Found. Recovered.</span></h1>
+      <p class="sub">Medicare's negotiated drug prices left manufacturers owing you refunds on every fill. We match every claim and chase every dollar. <b>Free audit. You pay only when we recover money.</b></p>
       <div class="ctas">
-        <a class="btn" href="#audit">Request a free audit</a>
+        <a class="btn" href="#audit">Get my free audit →</a>
         <a class="btn ghost" href="/assets/Sample_MFP_Refund_Audit.pdf">See a sample report</a>
       </div>
-      <p class="small">Setup takes about 30 minutes. HIPAA business associate agreement signed before we see any data.</p>
+      <div class="trust"><span>30-minute setup</span><span>HIPAA BAA first</span><span>Read-only access</span></div>
     </div>
-    <div class="hero-card" aria-label="Sample audit summary">
-      <span class="tag">Sample audit · fictional pharmacy</span>
-      <div class="row"><span>Negotiated-drug claims reviewed</span><b>486</b></div>
-      <div class="row"><span>Refunds owed</span><b>$188,403</b></div>
-      <div class="row"><span>Average wait for refunds</span><b>26 days</b></div>
-      <div class="row"><span>Wrongly denied as 340B</span><b>7 claims</b></div>
-      <div style="margin-top:14px">Missing or underpaid</div>
-      <div class="big">$6,698</div>
+    <div class="receipt" aria-label="Example refund">
+      <div class="t"><span>Eliquis · 60 tablets</span><span class="chip missing">Missing</span></div>
+      <div class="r"><span>List price</span><b>$606</b></div>
+      <div class="r"><span>Medicare negotiated price</span><b>− $231</b></div>
+      <div class="r"><span>Refund received</span><b style="color:var(--red)">$0</b></div>
+      <div class="owed"><span>Refund owed to you</span><b>$375</b></div>
+      <div class="stamp"><span>Approximate example. One fill.</span><span class="chip rec">Recoverable</span></div>
     </div>
   </div>
 </section>
 
-<section class="soft" id="problem">
+<!-- HOW MONEY FLOWS -->
+<section id="flow">
   <div class="wrap">
-    <div class="eyebrow">The problem</div>
-    <h2>Since January, every negotiated drug you fill leaves you waiting on a check.</h2>
-    <p class="lede">Medicare now pays a negotiated price for drugs like Eliquis, Jardiance, Xarelto, Farxiga, Januvia and Entresto. You still buy them near list price, so the manufacturer owes you the difference as a refund, often hundreds of dollars per fill. Those refunds are slow, hard to reconcile, and sometimes never arrive.</p>
+    <div class="eyebrow">Where your refund travels</div>
+    <h2>Five stops between your counter and your cash.</h2>
+    <p class="lede">Since January 2026, the Part D plan pays you the negotiated price and the manufacturer owes you the rest. The refund is supposed to land in about 21 days. Often it doesn't.</p>
+    <div class="flow">
+      <div class="rail"></div>
+      <div class="node"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M3 9h18"/><path d="M10 20v-5h4v5"/><path d="M12 11v3M10.5 12.5h3"/></svg></div><b>You fill</b><span>Day 0</span></div>
+      <div class="node"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l7 3v6c0 4.5-3 7.5-7 9-4-1.5-7-4.5-7-9V6z"/><path d="M9 12l2 2 4-4"/></svg></div><b>Plan pays MFP</b><span>below your cost</span></div>
+      <div class="node"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M5 21V10M9.5 21V10M14.5 21V10M19 21V10"/><path d="M2.5 10L12 4l9.5 6z"/></svg></div><b>CMS · MTF</b><span>routes the claim</span></div>
+      <div class="node"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21V11l5 3V11l5 3V7h3l1 14"/><path d="M3 21h18"/><path d="M17 7V4h2v17"/></svg></div><b>Manufacturer</b><span>owes the difference</span></div>
+      <div class="node you"><div class="dot"><svg viewBox="0 0 24 24" fill="none" stroke="#0E1B2C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="2.6"/><path d="M6.5 9.5v5M17.5 9.5v5"/></svg></div><b>Refund to you</b><span class="amber">target ≈ 21 days</span></div>
+    </div>
+    <div class="leaks">
+      <div class="lead"><b>4 ways money leaks</b><span>We catch every one, claim by claim.</span></div>
+      <div class="leak m"><span class="chip missing">Missing</span><b>Never paid</b>No refund line at all.</div>
+      <div class="leak b"><span class="chip b340">340B</span><b>Wrongly denied</b>Flagged 340B at a store with no 340B contracts.</div>
+      <div class="leak u"><span class="chip short">Short</span><b>Underpaid</b>Priced below what you actually paid.</div>
+      <div class="leak l"><span class="chip late">Late</span><b>Slow</b>Weeks of your cash tied up.</div>
+    </div>
+  </div>
+</section>
+
+<!-- STATS -->
+<section class="on-ink">
+  <div class="wrap">
+    <div class="eyebrow">You're not alone</div>
+    <h2>Independents are carrying the float.</h2>
     <div class="stats">
-      <div class="stat"><b>67%</b>of independent pharmacies wait 22+ days for manufacturer refunds.</div>
-      <div class="stat"><b>78%</b>have trouble reconciling refunds to their claims.</div>
-      <div class="stat"><b>15 more</b>drugs join in January 2027, including Ozempic and Wegovy.</div>
+      <div class="stat"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#1E3048" stroke-width="6"/><circle cx="22" cy="22" r="18" fill="none" stroke="#F5A524" stroke-width="6" stroke-dasharray="75.8 113.1" stroke-linecap="round" transform="rotate(-90 22 22)"/></svg><div><div class="n">67%</div><div class="d">of independents wait 22+ days for refunds</div></div></div>
+      <div class="stat"><svg class="ring" viewBox="0 0 44 44"><circle cx="22" cy="22" r="18" fill="none" stroke="#1E3048" stroke-width="6"/><circle cx="22" cy="22" r="18" fill="none" stroke="#E5484D" stroke-width="6" stroke-dasharray="88.2 113.1" stroke-linecap="round" transform="rotate(-90 22 22)"/></svg><div><div class="n">78%</div><div class="d">struggle to reconcile refunds to claims</div></div></div>
+      <div class="stat"><svg class="ring" viewBox="0 0 44 44"><rect x="3" y="3" width="38" height="38" rx="11" fill="#19C37D"/><path d="M22 13v18M13 22h18" stroke="#0E1B2C" stroke-width="4" stroke-linecap="round"/></svg><div><div class="n">+15</div><div class="d">drugs join in January 2027, including Ozempic and Wegovy</div></div></div>
     </div>
-    <div class="note">Refunds are also being denied as "340B" (code N907) at pharmacies that have no 340B contracts. Those denials can be overturned.</div>
-    <p class="small" style="margin-top:14px">Sources: NCPA survey of independent pharmacies, February 2026; KFF; NCPA, August 2026.</p>
+    <div class="note">Refunds are also being denied as "340B" (code N907) at pharmacies with no 340B contracts. Those denials can be overturned.</div>
+    <p class="source">Sources: NCPA survey of independent pharmacies, Feb 2026; KFF; NCPA, Aug 2026.</p>
   </div>
 </section>
 
-<section id="what">
-  <div class="wrap">
-    <div class="eyebrow">What we do</div>
-    <h2>Find it. Fix it. Forget about it.</h2>
-    <div class="cards">
-      <div class="card"><div class="k">Find it</div><h3>Every claim, matched</h3><p class="muted">We compare what you dispensed, what each refund should be, and what actually hit your bank, claim by claim.</p></div>
-      <div class="card"><div class="k">Fix it</div><h3>We chase it for you</h3><p class="muted">We file the disputes with manufacturers and escalate through CMS, including wrongful 340B denials and underpayments.</p></div>
-      <div class="card"><div class="k">Forget it</div><h3>Nothing for you to do</h3><p class="muted">A 30-minute setup, read-only access and a clear monthly report. We never touch your dispensing system.</p></div>
-    </div>
-  </div>
-</section>
-
-<section class="soft" id="how">
+<!-- HOW IT WORKS -->
+<section id="how">
   <div class="wrap">
     <div class="eyebrow">How it works</div>
-    <h2>From setup to recovered dollars.</h2>
+    <h2>Three steps. You only do the first.</h2>
     <div class="steps">
-      <div class="step"><h3>1 · Setup</h3>Sign our HIPAA agreement, add us as a user on Beacon, name us as your MTF vendor, and send one dispensing export. About 30 minutes.</div>
-      <div class="step"><h3>2 · Free audit</h3>In about two weeks you get a report showing, in dollars, what's missing, late and wrongly denied.</div>
-      <div class="step"><h3>3 · Recovery</h3>We work every open claim through the manufacturer and CMS processes until it's paid or closed.</div>
-      <div class="step"><h3>4 · Monitoring</h3>Ongoing claim-level tracking and alerts, ready for the 2027 drug list.</div>
+      <div class="step"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0E1B2C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 7V3M15 7V3"/><path d="M7 7h10v4a5 5 0 01-10 0z"/><path d="M12 16v5"/></svg></div><h3><span class="num">1</span>Connect</h3><p>30 minutes. Sign our HIPAA agreement, add us to Beacon, name us as your MTF vendor, send one export.</p></div>
+      <div class="step"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0E1B2C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/><path d="M8.5 11h5M11 8.5v5"/></svg></div><h3><span class="num">2</span>Free audit</h3><p>In about two weeks you see, in dollars, what's missing, late, underpaid or wrongly denied.</p></div>
+      <div class="step"><div class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="#0E1B2C" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 12a8 8 0 1 0 3-6.2"/><path d="M4 4v4h4"/><path d="M12 8v8M9.8 10.2c0-1 1-1.6 2.2-1.6s2.2.6 2.2 1.6-1 1.4-2.2 1.8-2.2.8-2.2 1.8 1 1.6 2.2 1.6 2.2-.6 2.2-1.6"/></svg></div><h3><span class="num">3</span>We recover</h3><p>We file every dispute with manufacturers and CMS, then keep watch with monthly reports.</p></div>
     </div>
   </div>
 </section>
 
-<section id="calculator">
+<!-- CALCULATOR -->
+<section class="soft" id="calculator">
   <div class="wrap">
     <div class="eyebrow">Quick math</div>
     <h2>How much flows through your store?</h2>
     <div class="calc">
-      <form id="calcForm" onsubmit="return false">
-        <label for="fills">Monthly fills of negotiated drugs</label>
-        <input id="fills" type="number" min="0" step="1" value="80" inputmode="numeric">
-        <p class="small">Eliquis, Jardiance, Xarelto, Farxiga, Januvia, Entresto and the other negotiated drugs combined.</p>
-        <label for="refund" style="margin-top:12px">Average refund per fill ($)</label>
-        <input id="refund" type="number" min="0" step="5" value="375" inputmode="numeric">
-        <p class="small">About $375 for 60 tablets of Eliquis (list price minus the negotiated price). Varies by drug.</p>
-        <label for="leak" style="margin-top:12px">Share missing or underpaid (%)</label>
-        <input id="leak" type="number" min="0" max="100" step="0.5" value="3">
-        <p class="small">An assumption for illustration. The free audit measures your actual number.</p>
+      <form class="in" id="calcForm" onsubmit="return false">
+        <div class="range"><div class="top"><label for="fills">Negotiated-drug fills per month</label><output id="fillsOut">80</output></div><input id="fills" type="range" min="0" max="400" step="5" value="80"></div>
+        <div class="range"><div class="top"><label for="refund">Average refund per fill</label><output id="refundOut">$375</output></div><input id="refund" type="range" min="100" max="700" step="5" value="375"></div>
+        <div class="range"><div class="top"><label for="leak">Share missing or underpaid</label><output id="leakOut">3%</output></div><input id="leak" type="range" min="0" max="15" step="0.5" value="3"></div>
+        <p class="small">About $375 is one 60-tablet Eliquis fill (list minus negotiated price). The leak rate is an assumption; your free audit measures the real one.</p>
       </form>
       <div class="out" aria-live="polite">
-        <div class="line"><span>Refunds owed to you each month</span><span class="n" id="oMonth">$30,000</span></div>
-        <div class="line"><span>Refunds owed per year</span><span class="n" id="oYear">$360,000</span></div>
-        <div class="line"><span>At risk per year at that rate</span><span class="n" id="oRisk">$10,800</span></div>
-        <p class="small" style="color:#c9d5e5">Estimates only, based on the numbers you enter.</p>
+        <div class="line"><span>Refunds owed to you per month</span><span class="v" id="oMonth">$30,000</span></div>
+        <div class="line"><span>Refunds owed per year</span><span class="v g" id="oYear">$360,000</span></div>
+        <div class="line"><span>At risk per year</span><span class="v a" id="oRisk">$10,800</span></div>
+        <a class="btn" href="#audit" style="margin-top:18px;align-self:flex-start">Find my real number →</a>
       </div>
     </div>
   </div>
 </section>
 
-<section class="soft" id="pricing">
+<!-- PRICING -->
+<section id="pricing">
   <div class="wrap">
     <div class="eyebrow">Pricing</div>
-    <h2>Simple, and only when it works.</h2>
-    <div class="pricing">
-      <div class="price"><h3>Audit</h3><div class="amt">Free</div><p class="muted">A claim-by-claim review of the last 3–6 months. No commitment.</p></div>
-      <div class="price feat"><h3>Recovery</h3><div class="amt">25%</div><p class="muted">Of what we actually recover. Nothing upfront, and nothing if we find nothing.</p></div>
-      <div class="price"><h3>Monitoring</h3><div class="amt">$199<span class="small">/mo</span></div><p class="muted">Ongoing reconciliation, alerts and monthly reports. Month to month, cancel anytime.</p></div>
+    <h2>We get paid when you do.</h2>
+    <div class="price">
+      <div><div class="k">Audit</div><div class="amt">Free</div><p>Claim-by-claim review of the last 3–6 months. No commitment.</p></div>
+      <div class="hl"><div class="k">Recovery</div><div class="amt">25%</div><p>Of what we actually recover. Nothing upfront. $0 if we find nothing.</p></div>
+      <div><div class="k">Monitoring</div><div class="amt">$199<small>/mo</small></div><p>Ongoing reconciliation, alerts and monthly reports. Cancel anytime.</p></div>
     </div>
     <p class="small" style="margin-top:14px">Multi-store groups and pharmacy co-ops: ask about volume pricing.</p>
   </div>
 </section>
 
-<section id="security">
+<!-- SECURITY -->
+<section class="soft" id="security">
   <div class="wrap two">
     <div>
       <div class="eyebrow">Security & HIPAA</div>
-      <h2>Your data is handled like it matters, because it does.</h2>
-      <p class="muted">We act as your HIPAA business associate. Nothing moves until the agreement is signed.</p>
+      <h2>BAA first. Read-only. Always.</h2>
+      <p class="lede">We act as your HIPAA business associate. Nothing moves until the agreement is signed, and we only touch what we need.</p>
     </div>
-    <ul class="check">
-      <li><b>BAA first.</b> We sign a HIPAA business associate agreement before we see any claim data.</li>
-      <li><b>Read-only.</b> We read payment files and reports. We never touch your dispensing system.</li>
-      <li><b>Minimum necessary.</b> We only request negotiated-drug claims, not your full dispensing history.</li>
-      <li><b>No email attachments.</b> Files move through the MTF and Beacon portals or an encrypted upload link. <b>Never email patient information</b>, including through the form below.</li>
-      <li><b>Encrypted and logged.</b> Data is encrypted in transit and at rest, access is logged, and data is deleted on a set schedule.</li>
-    </ul>
-  </div>
-</section>
-
-<section class="soft" id="about">
-  <div class="wrap two">
-    <div>
-      <div class="eyebrow">Who we are</div>
-      <h2>Built by a data engineer, for independents.</h2>
-    </div>
-    <div>
-      <p>I'm Junaid Athar. I've spent my career building large-scale data systems at Facebook, Comcast and BP: the kind of claim matching and reconciliation work this problem needs. I started Practical Data Work to give independent pharmacies the same level of tooling that large health systems are buying for their refunds.</p>
-      <p class="small">Practical Data Work is independent and is not affiliated with CMS, NCPA, Beacon, or any drug manufacturer.</p>
+    <div class="sec">
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#12A468" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5"/><path d="M9 14l2 2 4-4"/></svg><b>BAA before data</b><span>Signed before we see a single claim.</span></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#12A468" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></svg><b>Read-only</b><span>We never touch your dispensing system.</span></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#12A468" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 6h16M7 12h10M10 18h4"/></svg><b>Minimum necessary</b><span>Negotiated-drug claims only.</span></div>
+      <div><svg viewBox="0 0 24 24" fill="none" stroke="#12A468" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="5" y="11" width="14" height="10" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg><b>Encrypted & logged</b><span>No email attachments. Portals or encrypted upload only.</span></div>
     </div>
   </div>
 </section>
 
-<section id="faq">
-  <div class="wrap">
+<!-- ABOUT -->
+<section id="about">
+  <div class="wrap about">
+    <div class="badge"><img src="/images/tallyrx-mark-reverse.svg" alt="TallyRx mark"></div>
+    <div>
+      <div class="eyebrow">Who's behind TallyRx</div>
+      <h2 style="font-size:32px">Built by a data engineer, for independents.</h2>
+      <p class="lede">I'm Junaid Athar. I've built large-scale data systems at Facebook, Comcast and BP. TallyRx brings that level of claim matching to independent pharmacies, the stores the big vendors don't serve.</p>
+      <div class="creds"><span>Facebook</span><span>Comcast</span><span>BP</span><span>Chicagoland-based</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="soft" id="faq">
+  <div class="wrap faq">
     <div class="eyebrow">FAQ</div>
     <h2>Questions owners ask</h2>
-    <details><summary>My co-op already helps with this. Why would I need you?</summary><p>Keep them. Co-ops help with enrollment and flag problems. We go claim by claim and do the chasing: filing disputes with each manufacturer and escalating through CMS. The free audit shows whether anything is slipping through. If it's clean, you've lost nothing.</p></details>
-    <details><summary>What exactly do you need from me?</summary><p>Three things, after we sign a HIPAA agreement: add us as a user on your Beacon account, name us as your third-party vendor on the Medicare Transaction Facilitator (MTF), and send one dispensing export for the negotiated drugs. It takes about 30 minutes.</p></details>
-    <details><summary>What if I have 340B contracts?</summary><p>We can still help. We'll also need reports from your 340B administrator so we can compare their 340B determinations with the manufacturers' flags. If you have no 340B contracts, we verify that against HRSA's public 340B registry and use it to overturn wrongful denials.</p></details>
-    <details><summary>How much does it cost?</summary><p>The audit is free. Recovery is 25% of what we actually recover, with nothing upfront. Ongoing monitoring is $199 a month, month to month.</p></details>
-    <details><summary>Which drugs are covered?</summary><p>All Part D drugs in the Medicare Drug Price Negotiation Program. That's 10 drugs in 2026, with 15 more (including Ozempic and Wegovy) starting in January 2027.</p></details>
-    <details><summary>Do you contact my patients, my PBM or my wholesaler?</summary><p>No. We work with the refund payment files, Beacon reports and your records. Disputes go to the manufacturers and, when needed, CMS. We may ask you for wholesaler invoices to support an underpayment claim.</p></details>
+    <details><summary>My co-op already helps with this. Why would I need you?</summary><p>Keep them. Co-ops help with enrollment and flag problems. We go claim by claim and do the chasing with each manufacturer and CMS. The free audit shows whether anything is slipping through.</p></details>
+    <details><summary>What exactly do you need from me?</summary><p>After we sign a HIPAA agreement: add us as a Beacon user, name us as your third-party vendor on the Medicare Transaction Facilitator (MTF), and send one dispensing export for the negotiated drugs. About 30 minutes.</p></details>
+    <details><summary>What if I have 340B contracts?</summary><p>We can still help. We'll also use reports from your 340B administrator to compare their determinations with the manufacturers' flags. If you have no 340B contracts, we verify that against HRSA's public 340B registry to overturn wrongful denials.</p></details>
+    <details><summary>How much does it cost?</summary><p>The audit is free. Recovery is 25% of what we actually recover, with nothing upfront. Monitoring is $199 a month, month to month.</p></details>
+    <details><summary>Which drugs are covered?</summary><p>All Part D drugs in the Medicare Drug Price Negotiation Program: 10 drugs in 2026, with 15 more (including Ozempic and Wegovy) starting January 2027.</p></details>
+    <details><summary>Do you contact my patients, PBM or wholesaler?</summary><p>No. We work from refund payment files, Beacon reports and your records. Disputes go to manufacturers and, when needed, CMS. We may ask for wholesaler invoices to support an underpayment.</p></details>
   </div>
 </section>
 
-<section class="soft" id="audit">
+<!-- FORM -->
+<section class="on-ink" id="audit">
   <div class="wrap formwrap">
     <div>
       <div class="eyebrow">Free audit</div>
       <h2>Find out what you're owed.</h2>
-      <p class="muted">Tell us about your pharmacy and we'll set up a 15-minute call. The audit is free and there's no commitment.</p>
-      <p><b>Junaid Athar</b><br><a href="mailto:Junaid.Athar@gmail.com">Junaid.Athar@gmail.com</a><br><a href="tel:+18472248510">847-224-8510</a></p>
-      <div class="note">Please don't include patient names, prescription numbers or other patient information in this form.</div>
+      <p style="color:#C9D5E5">Tell us about your pharmacy and we'll set up a 15-minute call. No commitment.</p>
+      <div class="contact">
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="#19C37D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 4h4l2 5-2.5 1.5a11 11 0 005 5L15 13l5 2v4a2 2 0 01-2 2A16 16 0 013 6a2 2 0 012-2"/></svg><a href="tel:+18472248510">847-224-8510</a></div>
+        <div><svg viewBox="0 0 24 24" fill="none" stroke="#19C37D" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg><a href="mailto:Junaid.Athar@gmail.com">Junaid.Athar@gmail.com</a></div>
+      </div>
+      <div class="warn">Please don't include patient names, prescription numbers or other patient information in this form.</div>
     </div>
     <form class="audit" id="auditForm" novalidate>
       <div class="fields">
@@ -200,7 +219,7 @@
         <div class="full"><label for="f-msg">Anything else? (no patient information)</label><textarea id="f-msg" name="message" rows="3"></textarea></div>
         <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
       </div>
-      <button class="btn" type="submit" style="margin-top:16px">Request my free audit</button>
+      <button class="btn dark" type="submit" style="margin-top:18px">Request my free audit →</button>
       <div class="formmsg" id="formMsg" role="status"></div>
     </form>
   </div>
@@ -209,9 +228,9 @@
 
 <footer>
   <div class="wrap">
-    <div><b style="color:#fff">Practical Data Work</b><br>Medicare negotiated-price refund recovery for independent pharmacies.<br><a href="mailto:Junaid.Athar@gmail.com">Junaid.Athar@gmail.com</a> · <a href="tel:+18472248510">847-224-8510</a></div>
-    <div><a href="/assets/Pharmacy_One_Pager.pdf">One-pager (PDF)</a><br><a href="/assets/Sample_MFP_Refund_Audit.pdf">Sample audit (PDF)</a><br><a href="/privacy.html">Privacy</a></div>
-    <div style="max-width:360px">Not affiliated with CMS, NCPA, Beacon, or any drug manufacturer. Statistics: NCPA survey, Feb 2026; KFF.<br>© 2026 Practical Data Work</div>
+    <div><a class="brand" href="/" style="margin-bottom:8px"><img src="/images/tallyrx-mark-reverse.svg" alt=""><span class="wm">Tally<span>Rx</span></span></a>by Practical Data Work · Medicare negotiated-price refund recovery for independent pharmacies.</div>
+    <div><a href="/assets/TallyRx_One_Pager.pdf">One-pager (PDF)</a><br><a href="/assets/Sample_MFP_Refund_Audit.pdf">Sample audit (PDF)</a><br><a href="/privacy.html">Privacy</a></div>
+    <div style="max-width:380px">Not affiliated with CMS, NCPA, Beacon, or any drug manufacturer. Statistics: NCPA survey, Feb 2026; KFF.<br>© 2026 Practical Data Work</div>
   </div>
 </footer>
 
@@ -220,7 +239,8 @@
   var $ = function (id) { return document.getElementById(id); };
   var fmt = function (n) { return '$' + Math.round(n).toLocaleString('en-US'); };
   function calc() {
-    var f = Math.max(0, +$('fills').value || 0), r = Math.max(0, +$('refund').value || 0), l = Math.min(100, Math.max(0, +$('leak').value || 0)) / 100;
+    var f = +$('fills').value, r = +$('refund').value, l = +$('leak').value / 100;
+    $('fillsOut').textContent = f; $('refundOut').textContent = fmt(r); $('leakOut').textContent = (+$('leak').value) + '%';
     $('oMonth').textContent = fmt(f * r); $('oYear').textContent = fmt(f * r * 12); $('oRisk').textContent = fmt(f * r * 12 * l);
   }
   ['fills', 'refund', 'leak'].forEach(function (id) { $(id).addEventListener('input', calc); });
@@ -240,7 +260,7 @@
         form.reset(); msg.className = 'formmsg ok'; msg.textContent = "Thanks! We'll be in touch within one business day.";
       })
       .catch(function (err) { msg.className = 'formmsg err'; msg.textContent = (err && err.message) || 'Something went wrong. Please email or call us.'; })
-      .finally(function () { btn.disabled = false; btn.textContent = 'Request my free audit'; });
+      .finally(function () { btn.disabled = false; btn.textContent = 'Request my free audit →'; });
   });
 })();
 </script>

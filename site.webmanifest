@@ -1,12 +1,17 @@
 {
-  "name": "Practical Data Work",
-  "short_name": "PDW",
+  "name": "TallyRx by Practical Data Work",
+  "short_name": "TallyRx",
   "description": "Medicare negotiated-price refund recovery for independent pharmacies",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
-  "theme_color": "#14305a",
+  "theme_color": "#0E1B2C",
   "icons": [
+    {
+      "src": "/favicon.svg",
+      "sizes": "any",
+      "type": "image/svg+xml"
+    },
     {
       "src": "/favicon-16x16.png",
       "sizes": "16x16",

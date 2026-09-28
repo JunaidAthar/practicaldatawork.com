@@ -44,3 +44,6 @@ Thumbs.db
 
 # Generated sales PDF build files
 docs/sales/build/
+
+# Local exports
+Claude outputs/
