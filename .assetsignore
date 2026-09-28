@@ -16,3 +16,8 @@ chicago-deal-engine
 .dev.vars
 .gitignore
 .assetsignore
+worker
+package.json
+package-lock.json
+.wrangler
+Claude outputs

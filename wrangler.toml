@@ -1,21 +1,30 @@
 name = "practicaldatawork-com"
-compatibility_date = "2024-01-15"
+main = "worker/index.js"
+compatibility_date = "2025-09-01"
 
-# Static site configuration - assets only
+# Static site served from the repo root. Internal files are excluded by .assetsignore.
+# Requests that don't match a file (e.g. /api/*) run worker/index.js.
 [assets]
 directory = "."
+binding = "ASSETS"
+not_found_handling = "404-page"
+
+# D1 database for audit requests (schema: setup-database.sql)
+[[d1_databases]]
+binding = "DB"
+database_name = "contacts"
+database_id = "9ef2d0a0-ca96-43de-940d-e3bb667f6c27"
 
 # Production environment configuration
 [env.production]
 name = "practicaldatawork-com"
 route = "practicaldatawork.com/*"
 
-# Preview environment (for non-main branches)
-[env.preview]
-name = "practicaldatawork-com-preview"
-
-# D1 Database for contact storage
-[[d1_databases]]
+[[env.production.d1_databases]]
 binding = "DB"
 database_name = "contacts"
 database_id = "9ef2d0a0-ca96-43de-940d-e3bb667f6c27"
+
+# Preview environment (for non-main branches)
+[env.preview]
+name = "practicaldatawork-com-preview"

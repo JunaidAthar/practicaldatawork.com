@@ -5,7 +5,7 @@ Guidance for Claude Code in this repository.
 ## What this is
 **Practical Data Work**: Medicare negotiated-price (MFP) refund reconciliation and recovery for independent
 pharmacies. Two parts:
-1. **Website** (repo root): static HTML on Cloudflare Pages with Pages Functions and a D1 database for audit requests.
+1. **Website** (repo root): static HTML deployed as a **Cloudflare Worker with static assets** (`wrangler.toml`). `worker/index.js` routes `/api/*` to the handlers in `functions/api/` and serves everything else from assets. D1 database `contacts` stores audit requests.
 2. **Engine** (`pipeline/`): `mfp-recon`, a Python package that matches dispensed MFP claims to manufacturer refunds and classifies them.
 
 The old consulting site (2,400 SEO pages, blog, generator) is archived at tag `archive/consulting-site-2026-09-28`. Don't restore it here.
@@ -13,16 +13,17 @@ The old consulting site (2,400 SEO pages, blog, generator) is archived at tag `a
 ## Hard rules
 - **No PHI anywhere in this repo, in commits, logs, tests, fixtures or prompts.** Use `mfp-recon synth` data. Real pharmacy files live only in HIPAA-covered storage (`docs/hipaa.md`).
 - The website form collects business contact info only. Keep the "no patient information" warnings.
-- Pages serves the entire repo root. `functions/_middleware.js` (Pages) and `.assetsignore` (Workers assets) block `/pipeline`, `/docs`, `*.md`, `*.toml`, `*.sql`, `*.py`, dotfiles. If you add internal folders, add them to both.
+- The Worker serves the repo root as static assets. `.assetsignore` excludes internal files (`pipeline`, `docs`, `worker`, `functions`, `*.md`, `*.toml`, `*.sql`, `*.py`, dotfiles); `functions/_middleware.js` does the same if ever deployed on Pages. If you add internal folders, add them to both.
+- Infrastructure for client data is **Google Cloud** (+ Google Workspace), each under its own BAA. See `docs/infrastructure.md` and `docs/hipaa.md`. Don't introduce AWS/Azure.
 - Don't claim affiliation with CMS, NCPA, Beacon or manufacturers. Sourced statistics only (see `docs/data-sources.md`).
 
 ## Commands
 ```bash
-# Website: local dev with Functions + D1
-npx wrangler pages dev . --d1=DB:contacts
+# Website: dry-run the Worker bundle (wrangler dev reload-loops because assets dir is the repo root)
+npx wrangler deploy --dry-run --outdir /tmp/pdw-out
 
-# Deploy: Cloudflare auto-deploys main; other branches get preview URLs
-git push origin <branch>
+# Deploy: pushing main triggers the Cloudflare build
+git push origin main
 
 # Audit requests (production D1)
 npx wrangler d1 execute contacts --remote --command="SELECT created_at,name,email,company,budget,message FROM contacts WHERE service='MFP refund audit' ORDER BY created_at DESC LIMIT 20"
