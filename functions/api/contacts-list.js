@@ -35,45 +35,22 @@ export async function onRequestGet(context) {
     const status = url.searchParams.get('status') || null;
     const search = url.searchParams.get('search') || null;
     
-    // Build query
-    let query = 'SELECT * FROM contacts WHERE 1=1';
+    let where = ' WHERE 1=1';
     const params = [];
-    
     if (status) {
-      query += ' AND status = ?';
+      where += ' AND status = ?';
       params.push(status);
     }
-    
     if (search) {
-      query += ' AND (name LIKE ? OR email LIKE ? OR company LIKE ? OR message LIKE ?)';
-      const searchPattern = `%${search}%`;
-      params.push(searchPattern, searchPattern, searchPattern, searchPattern);
+      where += ' AND (name LIKE ? OR email LIKE ? OR pharmacy LIKE ? OR location LIKE ? OR notes LIKE ?)';
+      const p = `%${search}%`;
+      params.push(p, p, p, p, p);
     }
-    
-    query += ' ORDER BY created_at DESC LIMIT ? OFFSET ?';
-    params.push(limit, offset);
-    
-    // Execute query
-    const stmt = env.DB.prepare(query);
-    const { results } = await stmt.bind(...params).all();
-    
-    // Get total count
-    let countQuery = 'SELECT COUNT(*) as total FROM contacts WHERE 1=1';
-    const countParams = [];
-    
-    if (status) {
-      countQuery += ' AND status = ?';
-      countParams.push(status);
-    }
-    
-    if (search) {
-      countQuery += ' AND (name LIKE ? OR email LIKE ? OR company LIKE ? OR message LIKE ?)';
-      const searchPattern = `%${search}%`;
-      countParams.push(searchPattern, searchPattern, searchPattern, searchPattern);
-    }
-    
-    const countStmt = env.DB.prepare(countQuery);
-    const { results: countResults } = await countStmt.bind(...countParams).all();
+
+    const { results } = await env.DB.prepare(`SELECT * FROM audit_requests${where} ORDER BY created_at DESC LIMIT ? OFFSET ?`)
+      .bind(...params, limit, offset).all();
+    const { results: countResults } = await env.DB.prepare(`SELECT COUNT(*) as total FROM audit_requests${where}`)
+      .bind(...params).all();
     const total = countResults[0]?.total || 0;
     
     return new Response(JSON.stringify({ 

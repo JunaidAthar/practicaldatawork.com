@@ -4,7 +4,7 @@
  * Collects BUSINESS contact information only. No patient data (PHI) is accepted here;
  * claim files are exchanged later through HIPAA-covered channels after a BAA is signed.
  *
- * Stores the request in D1 (table `contacts`, see setup-database.sql), then tries to send
+ * Stores the request in D1 (table `audit_requests`, see setup-database.sql), then tries to send
  * a notification email via MailChannels. The D1 write is the source of truth.
  */
 const MAX = { name: 120, email: 160, phone: 40, pharmacy: 160, location: 120, stores: 20, role: 60, has340b: 20, fills: 20, message: 1500 };
@@ -44,10 +44,15 @@ export async function onRequestPost({ request, env }) {
   let saved = false;
   if (env.DB) {
     try {
+      const fills = parseInt(d.fills.replace(/[^\d]/g, ''), 10);
       await env.DB.prepare(
-        `INSERT INTO contacts (name, email, company, service, budget, message, ip_address, user_agent, created_at, status)
-         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'new')`
-      ).bind(d.name, d.email, d.pharmacy, 'MFP refund audit', d.stores || null, summary, ip, ua, now).run();
+        `INSERT INTO audit_requests
+           (created_at, name, email, phone, role, pharmacy, location, stores, has_340b, monthly_mfp_fills, notes, ip_address, user_agent)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`
+      ).bind(
+        now, d.name, d.email, d.phone || null, d.role || null, d.pharmacy, d.location || null,
+        d.stores || null, d.has340b || null, Number.isFinite(fills) ? fills : null, d.message || null, ip, ua
+      ).run();
       saved = true;
     } catch (e) {
       console.error('D1 insert failed', e);

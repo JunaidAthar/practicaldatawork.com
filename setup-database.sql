@@ -1,39 +1,26 @@
--- Cloudflare D1 Database Setup for Contact Form
--- Run this to create the contacts table
+-- D1 schema for free MFP refund audit requests (database: contacts).
+-- Business contact info only. Never store patient information here.
+-- Apply: npx wrangler d1 execute contacts --remote --file=setup-database.sql
 
-CREATE TABLE IF NOT EXISTS contacts (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  name TEXT NOT NULL,
-  email TEXT NOT NULL,
-  company TEXT,
-  service TEXT,
-  budget TEXT,
-  message TEXT NOT NULL,
-  ip_address TEXT,
-  user_agent TEXT,
-  created_at TEXT NOT NULL DEFAULT (datetime('now')),
-  status TEXT DEFAULT 'new',
-  notes TEXT
+CREATE TABLE IF NOT EXISTS audit_requests (
+  id                INTEGER PRIMARY KEY AUTOINCREMENT,
+  created_at        TEXT NOT NULL DEFAULT (strftime('%Y-%m-%dT%H:%M:%fZ', 'now')),
+  name              TEXT NOT NULL,
+  email             TEXT NOT NULL,
+  phone             TEXT,
+  role              TEXT,     -- Owner | Pharmacist in charge | Manager / billing | Co-op or group | Other
+  pharmacy          TEXT NOT NULL,
+  location          TEXT,     -- "City, ST"
+  stores            TEXT,     -- 1 | 2–5 | 6–20 | 20+
+  has_340b          TEXT,     -- No | Yes | Not sure
+  monthly_mfp_fills INTEGER,
+  notes             TEXT,
+  status            TEXT NOT NULL DEFAULT 'new',  -- new | contacted | converted | closed
+  admin_notes       TEXT,
+  ip_address        TEXT,
+  user_agent        TEXT
 );
 
--- Create index for faster queries
-CREATE INDEX IF NOT EXISTS idx_created_at ON contacts(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_email ON contacts(email);
-CREATE INDEX IF NOT EXISTS idx_status ON contacts(status);
-
--- Create a view for easy querying
-CREATE VIEW IF NOT EXISTS recent_contacts AS
-SELECT 
-  id,
-  name,
-  email,
-  company,
-  service,
-  budget,
-  substr(message, 1, 100) || '...' as message_preview,
-  created_at,
-  status
-FROM contacts
-ORDER BY created_at DESC
-LIMIT 50;
-
+CREATE INDEX IF NOT EXISTS idx_audit_requests_created ON audit_requests(created_at DESC);
+CREATE INDEX IF NOT EXISTS idx_audit_requests_status ON audit_requests(status);
+CREATE INDEX IF NOT EXISTS idx_audit_requests_email ON audit_requests(email);

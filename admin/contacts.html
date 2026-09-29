@@ -440,8 +440,10 @@
               <th>Date</th>
               <th>Name</th>
               <th>Email</th>
-              <th>Company</th>
-              <th>Service</th>
+              <th>Pharmacy</th>
+              <th>Location</th>
+              <th>Stores</th>
+              <th>Fills/mo</th>
               <th>Status</th>
               <th>Actions</th>
             </tr>
@@ -578,8 +580,10 @@
           <td>${date}</td>
           <td><strong>${escapeHtml(contact.name)}</strong></td>
           <td><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></td>
-          <td>${escapeHtml(contact.company || '-')}</td>
-          <td>${escapeHtml(contact.service || '-')}</td>
+          <td>${escapeHtml(contact.pharmacy || '-')}</td>
+          <td>${escapeHtml(contact.location || '-')}</td>
+          <td>${escapeHtml(contact.stores || '-')}</td>
+          <td>${escapeHtml(contact.monthly_mfp_fills ?? '-')}</td>
           <td><span class="status-badge status-${contact.status}">${contact.status}</span></td>
           <td>
             <button class="action-btn primary" onclick="viewContact(${contact.id})">View</button>
@@ -622,31 +626,25 @@
         timeStyle: 'short'
       });
       
-      const details = `
+      const field = (label, v) => `
         <div class="field">
-          <div class="label">Name:</div>
-          <div class="value">${escapeHtml(contact.name)}</div>
-        </div>
+          <div class="label">${label}:</div>
+          <div class="value" style="white-space: pre-wrap;">${escapeHtml(v ?? '-')}</div>
+        </div>`;
+      const details = `
+        ${field('Name', contact.name)}
         <div class="field">
           <div class="label">Email:</div>
           <div class="value"><a href="mailto:${escapeHtml(contact.email)}">${escapeHtml(contact.email)}</a></div>
         </div>
-        <div class="field">
-          <div class="label">Company:</div>
-          <div class="value">${escapeHtml(contact.company || 'Not provided')}</div>
-        </div>
-        <div class="field">
-          <div class="label">Service Interest:</div>
-          <div class="value">${escapeHtml(contact.service || 'Not specified')}</div>
-        </div>
-        <div class="field">
-          <div class="label">Budget Range:</div>
-          <div class="value">${escapeHtml(contact.budget || 'Not specified')}</div>
-        </div>
-        <div class="field">
-          <div class="label">Message:</div>
-          <div class="value" style="white-space: pre-wrap;">${escapeHtml(contact.message)}</div>
-        </div>
+        ${field('Phone', contact.phone)}
+        ${field('Role', contact.role)}
+        ${field('Pharmacy', contact.pharmacy)}
+        ${field('Location', contact.location)}
+        ${field('Stores', contact.stores)}
+        ${field('340B contracts', contact.has_340b)}
+        ${field('Monthly MFP fills', contact.monthly_mfp_fills)}
+        ${field('Notes', contact.notes)}
         <div class="field">
           <div class="label">Submitted:</div>
           <div class="value">${date}</div>
@@ -671,7 +669,7 @@
       const contact = id ? contacts.find(c => c.id === id) : currentContact;
       if (!contact) return;
       
-      const subject = encodeURIComponent(`Re: Your inquiry about ${contact.service || 'our services'}`);
+      const subject = encodeURIComponent(`Re: Free MFP refund audit for ${contact.pharmacy}`);
       const body = encodeURIComponent(`Hi ${contact.name},\n\nThank you for reaching out through Practical Data Work.\n\n`);
       window.location.href = `mailto:${contact.email}?subject=${subject}&body=${body}`;
     }
@@ -694,17 +692,9 @@
 
     // Export to CSV
     function exportCSV() {
-      const headers = ['Date', 'Name', 'Email', 'Company', 'Service', 'Budget', 'Status', 'Message'];
-      const rows = contacts.map(c => [
-        new Date(c.created_at).toLocaleString(),
-        c.name,
-        c.email,
-        c.company || '',
-        c.service || '',
-        c.budget || '',
-        c.status,
-        c.message.replace(/"/g, '""')
-      ]);
+      const cols = ['created_at', 'name', 'email', 'phone', 'role', 'pharmacy', 'location', 'stores', 'has_340b', 'monthly_mfp_fills', 'status', 'notes'];
+      const headers = cols;
+      const rows = contacts.map(c => cols.map(k => String(c[k] ?? '').replace(/"/g, '""')));
       
       const csv = [
         headers.join(','),
