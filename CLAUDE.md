@@ -22,8 +22,8 @@ The old consulting site (2,400 SEO pages, blog, generator) is archived at tag `a
 # Website: dry-run the Worker bundle (wrangler dev reload-loops because assets dir is the repo root)
 npx wrangler deploy --dry-run --outdir /tmp/pdw-out
 
-# Deploy: pushing main triggers the Cloudflare build
-git push origin main
+# Deploy: the Worker on practicaldatawork.com does NOT auto-deploy on push (push only rebuilds the Pages project on *.pages.dev)
+git push origin main && npx wrangler deploy --env production
 
 # Audit requests (production D1)
 npx wrangler d1 execute contacts --remote --command="SELECT created_at,name,email,company,budget,message FROM contacts WHERE service='MFP refund audit' ORDER BY created_at DESC LIMIT 20"

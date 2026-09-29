@@ -14,6 +14,10 @@ chicago-deal-engine
 *.sql
 *.py
 .dev.vars
+.env
+*.env
+.env.*
+**/.env
 .gitignore
 .assetsignore
 worker
